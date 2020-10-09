@@ -1,8 +1,8 @@
 int				    [0-9]*
 
 %%
-["+""-"]?{int}"."?{int}([Ee]["+""-"]?{int})?
-.	            ;
+[\+\-]?{int}"."?{int}([Ee][\+\-]?{int})?        {printf("REAL(%s)\n", yytext);}
+.	            ECHO;
 \n	            ;
 
 %%
