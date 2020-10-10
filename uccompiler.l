@@ -1,6 +1,8 @@
 int				    [0-9]+
+%X                  LOG
 
 %%
+<LOG>.                  {printf("logstate");}
 char                    {printf("CHAR\n");}
 if                      {printf("IF\n");}
 else                    {printf("ELSE\n");}
@@ -46,8 +48,12 @@ auto|break|case|const|continue|default|do|long|register|signed|sizeof|static|str
 \n	            ;
 
 %%
-int main()
+int main(int argc, char *argv[])
 {
+    if(argc >= 2 && strcmp(argv[1], "-l") == 0){
+        BEGIN LOG;
+    }
+
 yylex();
 return 0;
 }
