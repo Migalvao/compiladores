@@ -1,48 +1,51 @@
 int				    [0-9]+
-%X                  LOG
+
+%{
+    #include <stdbool.h>
+    bool l = false;
+%}
 
 %%
-<LOG>.                  {printf("logstate");}
-char                    {printf("CHAR\n");}
-if                      {printf("IF\n");}
-else                    {printf("ELSE\n");}
-while                   {printf("WHILE\n");}
-int                     {printf("INT\n");}
-short                   {printf("SHORT\n");}
-double                  {printf("DOUBLE\n");}
-return                  {printf("RETURN\n");}
-void                    {printf("VOID\n");}
-&                       {printf("BITWISEAND\n");}
-\|                      {printf("BITWISEOR\n");}
-\^                      {printf("BITWISEXOR\n");}
-&&                      {printf("AND\n");}
-=                       {printf("ASSIGN\n");}
-\*                      {printf("MUL\n");}
-,                       {printf("COMMA\n");}
-\/                      {printf("DIV\n");}
-==                      {printf("EQ\n");}
->=                      {printf("GE\n");}
->                       {printf("GT\n");}
-\{                      {printf("LBRACE\n");}
-\<=                     {printf("LE\n");}
-\(                      {printf("LPAR\n");}
-\<                      {printf("LT\n");}
-\-                      {printf("MINUS\n");}
-%                       {printf("MOD\n");}
-!=                      {printf("NE\n");}
-!                       {printf("NOT\n");}
-\|\|                    {printf("OR\n");}
-\+                      {printf("PLUS\n");}
-\}                      {printf("RBRACE\n");}
-\)                      {printf("RPAR\n");}
-\;                      {printf("SEMI\n");}
+char                    {if(l) printf("CHAR\n");}
+if                      {if(l) printf("IF\n");}
+else                    {if(l) printf("ELSE\n");}
+while                   {if(l) printf("WHILE\n");}
+int                     {if(l) printf("INT\n");}
+short                   {if(l) printf("SHORT\n");}
+double                  {if(l) printf("DOUBLE\n");}
+return                  {if(l) printf("RETURN\n");}
+void                    {if(l) printf("VOID\n");}
+&                       {if(l) printf("BITWISEAND\n");}
+\|                      {if(l) printf("BITWISEOR\n");}
+\^                      {if(l) printf("BITWISEXOR\n");}
+&&                      {if(l) printf("AND\n");}
+=                       {if(l) printf("ASSIGN\n");}
+\*                      {if(l) printf("MUL\n");}
+,                       {if(l) printf("COMMA\n");}
+\/                      {if(l) printf("DIV\n");}
+==                      {if(l) printf("EQ\n");}
+>=                      {if(l) printf("GE\n");}
+>                       {if(l) printf("GT\n");}
+\{                      {if(l) printf("LBRACE\n");}
+\<=                     {if(l) printf("LE\n");}
+\(                      {if(l) printf("LPAR\n");}
+\<                      {if(l) printf("LT\n");}
+\-                      {if(l) printf("MINUS\n");}
+%                       {if(l) printf("MOD\n");}
+!=                      {if(l) printf("NE\n");}
+!                       {if(l) printf("NOT\n");}
+\|\|                    {if(l) printf("OR\n");}
+\+                      {if(l) printf("PLUS\n");}
+\}                      {if(l) printf("RBRACE\n");}
+\)                      {if(l) printf("RPAR\n");}
+\;                      {if(l) printf("SEMI\n");}
 
-auto|break|case|const|continue|default|do|long|register|signed|sizeof|static|struct|switch|typedef|union|unsigned|volatile|enum|extern|float|for|goto {printf("RESERVED(%s)\n", yytext);}
+auto|break|case|const|continue|default|do|long|register|signed|sizeof|static|struct|switch|typedef|union|unsigned|volatile|enum|extern|float|for|goto {if(l) printf("RESERVED(%s)\n", yytext);}
 
-[\+\-]?{int}                                                            {printf("INTLIT(%s)\n", yytext);}
-([\+\-]?{int}?"."{int}?([Ee][\+\-]?{int})?)|{int}[Ee][\+\-]?{int}       {printf("REAL(%s)\n", yytext);}
-([a-z]|[A-Z]|"_")([a-z]|[A-Z]|[0-9]|"_")*		                        {printf("ID(%s)\n", yytext);}
-'([^(\n|')]|\\[0-7]{1,3}|\\n|\\t|\\\\|\\'|\\\")'	                    {printf("CHRLIT(%s)\n", yytext);}
+[\+\-]?{int}                                                            {if(l) printf("INTLIT(%s)\n", yytext);}
+([\+\-]?{int}?"."{int}?([Ee][\+\-]?{int})?)|{int}[Ee][\+\-]?{int}       {if(l) printf("REAL(%s)\n", yytext);}
+([a-z]|[A-Z]|"_")([a-z]|[A-Z]|[0-9]|"_")*		                        {if(l) printf("ID(%s)\n", yytext);}
+'([^(\n|')]|\\[0-7]{1,3}|\\n|\\t|\\\\|\\'|\\\")'	                    {if(l) printf("CHRLIT(%s)\n", yytext);}
 
 .	            ;
 \n	            ;
@@ -51,9 +54,8 @@ auto|break|case|const|continue|default|do|long|register|signed|sizeof|static|str
 int main(int argc, char *argv[])
 {
     if(argc >= 2 && strcmp(argv[1], "-l") == 0){
-        BEGIN LOG;
+        l = true;
     }
-
 yylex();
 return 0;
 }
