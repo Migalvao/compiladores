@@ -1,54 +1,65 @@
 int				    [0-9]+
-
+%X                  CHAR
 %{
     #include <stdbool.h>
-    bool l = false;
+    bool l = false, unterminated_char = false;
+    int line = 1, column = 1;
 %}
 
 %%
-char                    {if(l) printf("CHAR\n");}
-if                      {if(l) printf("IF\n");}
-else                    {if(l) printf("ELSE\n");}
-while                   {if(l) printf("WHILE\n");}
-int                     {if(l) printf("INT\n");}
-short                   {if(l) printf("SHORT\n");}
-double                  {if(l) printf("DOUBLE\n");}
-return                  {if(l) printf("RETURN\n");}
-void                    {if(l) printf("VOID\n");}
-&                       {if(l) printf("BITWISEAND\n");}
-\|                      {if(l) printf("BITWISEOR\n");}
-\^                      {if(l) printf("BITWISEXOR\n");}
-&&                      {if(l) printf("AND\n");}
-=                       {if(l) printf("ASSIGN\n");}
-\*                      {if(l) printf("MUL\n");}
-,                       {if(l) printf("COMMA\n");}
-\/                      {if(l) printf("DIV\n");}
-==                      {if(l) printf("EQ\n");}
->=                      {if(l) printf("GE\n");}
->                       {if(l) printf("GT\n");}
-\{                      {if(l) printf("LBRACE\n");}
-\<=                     {if(l) printf("LE\n");}
-\(                      {if(l) printf("LPAR\n");}
-\<                      {if(l) printf("LT\n");}
-\-                      {if(l) printf("MINUS\n");}
-%                       {if(l) printf("MOD\n");}
-!=                      {if(l) printf("NE\n");}
-!                       {if(l) printf("NOT\n");}
-\|\|                    {if(l) printf("OR\n");}
-\+                      {if(l) printf("PLUS\n");}
-\}                      {if(l) printf("RBRACE\n");}
-\)                      {if(l) printf("RPAR\n");}
-\;                      {if(l) printf("SEMI\n");}
+char                    {if(l) printf("CHAR\n"); column += yyleng;}
+if                      {if(l) printf("IF\n"); column += yyleng; }
+else                    {if(l) printf("ELSE\n"); column += yyleng;}
+while                   {if(l) printf("WHILE\n"); column += yyleng;}
+int                     {if(l) printf("INT\n"); column += yyleng;}
+short                   {if(l) printf("SHORT\n"); column += yyleng;}
+double                  {if(l) printf("DOUBLE\n"); column += yyleng;}
+return                  {if(l) printf("RETURN\n"); column += yyleng;}
+void                    {if(l) printf("VOID\n"); column += yyleng;}
+&                       {if(l) printf("BITWISEAND\n"); column += yyleng;}
+\|                      {if(l) printf("BITWISEOR\n"); column += yyleng;}
+\^                      {if(l) printf("BITWISEXOR\n"); column += yyleng;}
+&&                      {if(l) printf("AND\n"); column += yyleng;}
+=                       {if(l) printf("ASSIGN\n"); column += yyleng;}
+\*                      {if(l) printf("MUL\n"); column += yyleng;}
+,                       {if(l) printf("COMMA\n"); column += yyleng;}
+\/                      {if(l) printf("DIV\n"); column += yyleng;}
+==                      {if(l) printf("EQ\n"); column += yyleng;}
+>=                      {if(l) printf("GE\n"); column += yyleng;}
+>                       {if(l) printf("GT\n"); column += yyleng;}
+\{                      {if(l) printf("LBRACE\n"); column += yyleng;}
+\<=                     {if(l) printf("LE\n"); column += yyleng;}
+\(                      {if(l) printf("LPAR\n"); column += yyleng;}
+\<                      {if(l) printf("LT\n"); column += yyleng;}
+\-                      {if(l) printf("MINUS\n"); column += yyleng;}
+%                       {if(l) printf("MOD\n"); column += yyleng;}
+!=                      {if(l) printf("NE\n"); column += yyleng;}
+!                       {if(l) printf("NOT\n"); column += yyleng;}
+\|\|                    {if(l) printf("OR\n"); column += yyleng;}
+\+                      {if(l) printf("PLUS\n"); column += yyleng;}
+\}                      {if(l) printf("RBRACE\n"); column += yyleng;}
+\)                      {if(l) printf("RPAR\n"); column += yyleng;}
+\;                      {if(l) printf("SEMI\n"); column += yyleng;}
 
-auto|break|case|const|continue|default|do|long|register|signed|sizeof|static|struct|switch|typedef|union|unsigned|volatile|enum|extern|float|for|goto {if(l) printf("RESERVED(%s)\n", yytext);}
+auto|break|case|const|continue|default|do|long|register|signed|sizeof|static|struct|switch|typedef|union|unsigned|volatile|enum|extern|float|for|goto {if(l) printf("RESERVED(%s)\n", yytext); column += yyleng;}
 
-[\+\-]?{int}                                                            {if(l) printf("INTLIT(%s)\n", yytext);}
-([\+\-]?{int}?"."{int}?([Ee][\+\-]?{int})?)|{int}[Ee][\+\-]?{int}       {if(l) printf("REAL(%s)\n", yytext);}
-([a-z]|[A-Z]|"_")([a-z]|[A-Z]|[0-9]|"_")*		                        {if(l) printf("ID(%s)\n", yytext);}
-'([^(\n|')]|\\[0-7]{1,3}|\\n|\\t|\\\\|\\'|\\\")'	                    {if(l) printf("CHRLIT(%s)\n", yytext);}
+[\+\-]?{int}                                                            {if(l) printf("INTLIT(%s)\n", yytext); column += yyleng;}
+([\+\-]?{int}?"."{int}?([Ee][\+\-]?{int})?)|{int}[Ee][\+\-]?{int}       {if(l) printf("REAL(%s)\n", yytext); column += yyleng;}
+([a-z]|[A-Z]|"_")([a-z]|[A-Z]|[0-9]|"_")*		                        {if(l) printf("ID(%s)\n", yytext); column += yyleng;}
+'([^(\n|')]|\\[0-7]{1,3}|\\n|\\t|\\\\|\\'|\\\")'	                    {if(l) printf("CHRLIT(%s)\n", yytext); column += yyleng;}
 
-.	            ;
-\n	            ;
+'.*'                       {printf("Line %d, col %d: invalid char constant (<%s>)\n", line, column, yytext); column += yyleng;}
+'\n+'                      {printf("Line %d, col %d: invalid char constant (<\\n>)\n", line, column); line += yyleng; column = 1;}
+
+'                           {BEGIN CHAR; unterminated_char = true;}
+<CHAR>'                     {printf("Line %d, col %d: invalid char constant (<\\n>)\n", line, column);
+                            BEGIN 0; 
+                            unterminated_char = false;}
+<CHAR>.                     ;
+<CHAR>\n                    ;
+
+.	            {column += yyleng;}
+\n	            {line += 1; column = 1;};
 
 %%
 int main(int argc, char *argv[])
@@ -62,5 +73,8 @@ return 0;
 
 int yywrap()
 {
-return 1;
+    if(unterminated_char){
+        printf("Line %d, col %d: unterminated char constant\n", line, column);
+    }
+    return 1;
 }
