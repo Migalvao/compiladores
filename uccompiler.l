@@ -1,5 +1,5 @@
 /* AUTORES: */
-/* MIGUEL EDUARDO PINTO GALvÃO - 2018278986 */
+/* MIGUEL EDUARDO PINTO GALVÃO - 2018278986 */
 /* JOÃO BERNARDO DO NASCIMENTO DOMINGUES - 2018278415 */
 
 int				    [0-9]+
@@ -7,7 +7,8 @@ int				    [0-9]+
 %{
     #include <stdbool.h>
     bool l = false, unterminated_char = false, comment_error = false;
-    int line = 1, column = 1;
+    int line = 1, column = 1, unfinished_line, unfinished_column;
+    char string[999] = "";
 %}
 
 %%
@@ -46,33 +47,32 @@ void                    {if(l) printf("VOID\n"); column += yyleng;}
 \;                      {if(l) printf("SEMI\n"); column += yyleng;}
 
     /*RESERVED WORDS*/
-auto|break|case|const|continue|default|do|long|register|signed|sizeof|static|struct|switch|typedef|union|unsigned|volatile|enum|extern|float|for|goto {if(l) printf("RESERVED(%s)\n", yytext); column += yyleng;}
+auto|break|case|const|continue|default|do|long|register|restrict|signed|sizeof|static|struct|switch|typedef|union|unsigned|volatile|enum|extern|float|for|goto|_Packed|_Bool|_Complex|_Imaginary|"++"|"--"|\[|\]|"->"|~|"<<"|">>"|"*="|"/="|"%="|"+="|"-="|"&="|"^="|"|="|"<<="|">>="|"?:" {if(l) printf("RESERVED(%s)\n", yytext); column += yyleng;}
 
     /* INTLIT, REALIT, CHRLIT AND ID*/
 [\+\-]?{int}                                                            {if(l) printf("INTLIT(%s)\n", yytext); column += yyleng;}
 ([\+\-]?{int}?"."{int}?([Ee][\+\-]?{int})?)|{int}[Ee][\+\-]?{int}       {if(l) printf("REALIT(%s)\n", yytext); column += yyleng;}
 ([a-z]|[A-Z]|"_")([a-z]|[A-Z]|[0-9]|"_")*		                        {if(l) printf("ID(%s)\n", yytext); column += yyleng;}
-'([^(\n|')]|\\[0-7]{1,3}|\\n|\\t|\\\\|\\'|\\\")'	                    {if(l) printf("CHRLIT(%s)\n", yytext); column += yyleng;}
+'([^(\n')]|\\[0-7]{1,3}|\\n|\\t|\\\\|\\'|\\\")'	                    {if(l) printf("CHRLIT(%s)\n", yytext); column += yyleng;}
 
     /* INVALID CHAR CONSTANTS */
-'.*'                       {printf("Line %d, col %d: invalid char constant (<%s>)\n", line, column, yytext); column += yyleng;}
-'\n+'                      {printf("Line %d, col %d: invalid char constant (<\\n>)\n", line, column); line += yyleng; column = 1;}
+'.*'                       {printf("Line %d, col %d: invalid char constant (%s)\n", line, column, yytext); column += yyleng;}
+'\n+'                      {printf("Line %d, col %d: invalid char constant (%s)\n", line, column, yytext); line += yyleng; column = 1;}
 
     /* UNTERMINATED CHAR CONSTANTS */
-'                           {BEGIN CHAR; unterminated_char = true;}
-<CHAR>'                     {printf("Line %d, col %d: invalid char constant (<\\n>)\n", line, column); BEGIN 0; unterminated_char = false;}
-<CHAR>.                     ;
-<CHAR>\n                    ;
+'                           {BEGIN CHAR; unterminated_char = true; unfinished_line = line; unfinished_column = column; column += yyleng; }
+<CHAR>'                     {printf("Line %d, col %d: invalid char constant (%s)\n", unfinished_line, unfinished_column, string); BEGIN 0; unterminated_char = false; column += yyleng; sprintf(string, "");}
+<CHAR>.|\n                  {if(strcmp(yytext, "\n") == 0) line += 1; column += yyleng; strcat(string, yytext);};
 
     /* COMMENTS */
-"//".*                      ;
-"/*"                        {BEGIN COMMENT; comment_error = true;}
-<COMMENT>"*/"               {BEGIN 0; comment_error = false;}
-<COMMENT>.                  ;
-<COMMENT>\n                 ;
+"//".*                      {column += yyleng;}
+"/*"                        {BEGIN COMMENT; comment_error = true; unfinished_line = line; unfinished_column = column; column += yyleng;}
+<COMMENT>"*/"               {BEGIN 0; comment_error = false; column += yyleng;}
+<COMMENT>.                  {column += yyleng;}
+<COMMENT>\n                 {line += yyleng; column = 1;}
 
     /* ILLEGAL CHARACTERS */
-[^" ""\n""\r"]	            {printf("Line %d, col %d: illegal character\(<%s>)\n", line, column, yytext); column += yyleng;}
+[^" ""\n""\r"]	            {printf("Line %d, col %d: illegal character (%s)\n", line, column, yytext); column += yyleng;}
 
 .	                        {column += yyleng;}
 \n	                        {line += 1; column = 1;}
@@ -90,10 +90,10 @@ int main(int argc, char *argv[])
 int yywrap()
 {
     if(unterminated_char){
-        printf("Line %d, col %d: unterminated char constant\n", line, column);
+        printf("Line %d, col %d: unterminated char constant\n", unfinished_line, unfinished_column);
     }
     if(comment_error){
-        printf("Line %d, col %d: unterminated comment\n", line, column);
+        printf("Line %d, col %d: unterminated comment\n", unfinished_line, unfinished_column);
     } 
     return 1;
 }

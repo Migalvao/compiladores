@@ -1,17 +1,14 @@
 int main(void) {
-  char i = 'A';
-  /*cona*/
+  char i # = '
+  
+  A
+  
+  ';
   while (i <= 'Z')
   {
+    // return $ eofpsnvrp
+    $$## for
     putchar(i);
-    i = i + 1;  
-  }
-  //sgs5gw cona $
-
-
-  
-  $
-  /*
-  return 0;
+    i = i + 1;
 }
-*/
+
