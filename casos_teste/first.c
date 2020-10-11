@@ -1,13 +1,17 @@
 int main(void) {
-  char i = '\n';
+  char i = 'A';
+  /*cona*/
   while (i <= 'Z')
   {
     putchar(i);
-    i = i + 1;
+    i = i + 1;  
   }
-  return 0; '
+  //sgs5gw cona $
+
+
   
-
-
-  token
+  $
+  /*
+  return 0;
 }
+*/
