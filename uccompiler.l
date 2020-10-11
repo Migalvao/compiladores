@@ -72,7 +72,7 @@ auto|break|case|const|continue|default|do|long|register|restrict|signed|sizeof|s
 <COMMENT>\n                 {line += yyleng; column = 1;}
 
     /* ILLEGAL CHARACTERS */
-[^" ""\n""\r"]	            {printf("Line %d, col %d: illegal character (%s)\n", line, column, yytext); column += yyleng;}
+[^" ""\n""\r""\t"]	        {printf("Line %d, col %d: illegal character (%s)\n", line, column, yytext); column += yyleng;}
 
 .	                        {column += yyleng;}
 \n	                        {line += 1; column = 1;}
