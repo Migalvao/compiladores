@@ -1,5 +1,10 @@
 int				    [0-9]+
-%X                  LOG
+%X                  LOG COMMENT
+%{
+    int line = 1;
+    int column = 1;
+    int commenterror = 0;
+%}
 
 %%
 <LOG>.                  {printf("logstate");}
@@ -44,8 +49,16 @@ auto|break|case|const|continue|default|do|long|register|signed|sizeof|static|str
 ([a-z]|[A-Z]|"_")([a-z]|[A-Z]|[0-9]|"_")*		                        {printf("ID(%s)\n", yytext);}
 '([^(\n|')]|\\[0-7]{1,3}|\\n|\\t|\\\\|\\'|\\\")'	                    {printf("CHRLIT(%s)\n", yytext);}
 
-.	            ;
-\n	            ;
+
+"/*"                    {BEGIN COMMENT; commenterror = 1;}
+<COMMENT>"*/"           {BEGIN 0; commenterror = 0;}
+<COMMENT>.              ;
+<COMMENT>\n              ;
+
+
+[^" ""\n""\r"]	    {printf("illegal character\(<%s>)", yytext);}
+.                       ;
+\n                      ;
 
 %%
 int main(int argc, char *argv[])
@@ -53,12 +66,14 @@ int main(int argc, char *argv[])
     if(argc >= 2 && strcmp(argv[1], "-l") == 0){
         BEGIN LOG;
     }
-
-yylex();
-return 0;
+    yylex();
+    return 0;
 }
 
 int yywrap()
 {
-return 1;
+    if(commenterror == 1){
+        printf("unterminated error");
+    } 
+    return 1;
 }
