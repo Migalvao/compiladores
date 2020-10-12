@@ -1,11 +1,11 @@
-A - Total - 128/200
+A - Total - 153/200
 B - Empty/Blank files - 5/5
 C - Identifiers/Key words - 30/30
 D - Operators, brackets and punctuation marks - 6/10
 E - Text - 10/10
 F - Comments - 15/15
-G - Numeric, char and real literals - 12/30
+G - Numeric, char and real literals - 27/30
 H - Illegal characters - 0/20	
 I - Unterminated comments - 20/20
 J - Invalid/Unterminated char constant - 0/20
-K - Miscelaneous - 30/40
+K - Miscelaneous - 40/40
