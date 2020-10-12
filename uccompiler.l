@@ -46,19 +46,19 @@ void                    {if(l) printf("VOID\n"); column += yyleng;}
 \;                      {if(l) printf("SEMI\n"); column += yyleng;}
 
     /*RESERVED WORDS*/
-auto|break|case|const|continue|default|do|long|register|restrict|signed|sizeof|static|struct|switch|typedef|union|unsigned|volatile|enum|extern|float|for|goto|_Packed|_Bool|_Complex|_Imaginary|"++"|"--"|\[|\]|"->"|~|"<<"|">>"|"*="|"/="|"%="|"+="|"-="|"&="|"^="|"|="|"<<="|">>="|"?:" {if(l) printf("RESERVED(%s)\n", yytext); column += yyleng;}
+auto|break|case|const|continue|define|default|do|long|NULL|register|restrict|signed|sizeof|static|struct|switch|typedef|union|unsigned|volatile|enum|extern|float|for|goto|_Packed|_Bool|_Complex|_Imaginary|"++"|"--"|\[|\]|"->"|~|"<<"|">>"|"*="|"/="|"%="|"+="|"-="|"&="|"^="|"|="|"<<="|">>="|"?:" {if(l) printf("RESERVED(%s)\n", yytext); column += yyleng;}
 
     /* INTLIT, REALIT, CHRLIT AND ID*/
 {int}                                                                       {if(l) printf("INTLIT(%s)\n", yytext); column += yyleng;}
 ([a-z]|[A-Z]|"_")([a-z]|[A-Z]|[0-9]|"_")*		                            {if(l) printf("ID(%s)\n", yytext); column += yyleng;}
-'([^(\n\'\")]|\\[0-7]{1,3}|\\n|\\t|\\\\|\\'|\\\")'	                        {if(l) printf("CHRLIT(%s)\n", yytext); column += yyleng;}
+'([^(\n\'\\)]|\\[0-7]{1,3}|\\n|\\t|\\\\|\\'|\\\")'	                        {if(l) printf("CHRLIT(%s)\n", yytext); column += yyleng;}
 ({int}"."{int}([Ee][\+\-]?{int})?)|{int}[Ee][\+\-]?{int}|{int}"."|"."{int}([Ee][\+\-]?{int})?|{int}"."([Ee][\+\-]?{int})             {if(l) printf("REALLIT(%s)\n", yytext); column += yyleng;}
 
     /* INVALID CHAR CONSTANTS */
-'[^'\n]*'                       {printf("Line %d, col %d: invalid char constant (%s)\n", line, column, yytext); column += yyleng;}
+'[^'\n]*'                               {printf("Line %d, col %d: invalid char constant (%s)\n", line, column, yytext); column += yyleng;}
 
     /* UNTERMINATED CHAR CONSTANTS */
-'[^'\n]*\n                          {printf("Line %d, col %d: unterminated char constant\n", line, column); line += 1;}
+'[^'\n]*\n                              {printf("Line %d, col %d: unterminated char constant\n", line, column); line += 1; column=1;}
 
     /* COMMENTS */
 "//".*                      {column += yyleng;}
@@ -68,10 +68,10 @@ auto|break|case|const|continue|default|do|long|register|restrict|signed|sizeof|s
 <COMMENT>\n                 {line += yyleng; column = 1;}
 
     /* ILLEGAL CHARACTERS */
-[\t|\r| ]	        {column += yyleng;}
+[\t|\r| ]	                            {column += yyleng;}
 
-.	                        {printf("Line %d, col %d: illegal character (%s)\n", line, column, yytext); column += yyleng;}
-\n	                        {line += 1; column = 1;}
+.           	                        {printf("Line %d, col %d: illegal character (%s)\n", line, column, yytext); column += yyleng;}
+\n	                                    {line += 1; column = 1;}
 
 %%
 int main(int argc, char *argv[])
