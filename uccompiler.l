@@ -54,7 +54,7 @@ auto|break|case|const|continue|inline|define|default|do|long|NULL|register|restr
 \'([^(\n\'\\)]|\\[0-7]{1,3}|\\n|\\t|\\\\|\\'|\\\")\'	                        {if(l) printf("CHRLIT(%s)\n", yytext); column += yyleng;}
 ({int}"."{int}([Ee][\+\-]?{int})?)|{int}[Ee][\+\-]?{int}|{int}"."|"."{int}([Ee][\+\-]?{int})?|{int}"."([Ee][\+\-]?{int})             {if(l) printf("REALLIT(%s)\n", yytext); column += yyleng;}
 
-\'(\\')+                                 {printf("Line %d, col %d: unterminated char constant\n", line, column); column=1;}
+\'.*(\\')+.*                             {printf("Line %d, col %d: unterminated char constant\n", line, column); column=1;}
     /* INVALID CHAR CONSTANTS */
 \'[^'\n]*\'                               {printf("Line %d, col %d: invalid char constant (%s)\n", line, column, yytext); column += yyleng;}
 
