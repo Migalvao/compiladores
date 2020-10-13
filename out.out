@@ -2,7 +2,7 @@ CHRLIT('f')
 Line 2, col 1: invalid char constant ('')
 Line 3, col 1: unterminated char constant
 CHRLIT('\'')
-Line 5, col 1: invalid char constant ('\')
+Line 5, col 1: unterminated char constant
 Line 6, col 1: invalid char constant ('')
 Line 6, col 3: invalid char constant ('')
 CHRLIT('?')
