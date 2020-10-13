@@ -20,25 +20,25 @@ short                   {if(l) printf("SHORT\n"); column += yyleng;}
 double                  {if(l) printf("DOUBLE\n"); column += yyleng;}
 return                  {if(l) printf("RETURN\n"); column += yyleng;}
 void                    {if(l) printf("VOID\n"); column += yyleng;}
-&                       {if(l) printf("BITWISEAND\n"); column += yyleng;}
+\&                       {if(l) printf("BITWISEAND\n"); column += yyleng;}
 \|                      {if(l) printf("BITWISEOR\n"); column += yyleng;}
 \^                      {if(l) printf("BITWISEXOR\n"); column += yyleng;}
-&&                      {if(l) printf("AND\n"); column += yyleng;}
-=                       {if(l) printf("ASSIGN\n"); column += yyleng;}
+\&\&                      {if(l) printf("AND\n"); column += yyleng;}
+\=                       {if(l) printf("ASSIGN\n"); column += yyleng;}
 \*                      {if(l) printf("MUL\n"); column += yyleng;}
-,                       {if(l) printf("COMMA\n"); column += yyleng;}
+\,                       {if(l) printf("COMMA\n"); column += yyleng;}
 \/                      {if(l) printf("DIV\n"); column += yyleng;}
-==                      {if(l) printf("EQ\n"); column += yyleng;}
->=                      {if(l) printf("GE\n"); column += yyleng;}
->                       {if(l) printf("GT\n"); column += yyleng;}
+\=\=                      {if(l) printf("EQ\n"); column += yyleng;}
+\>\=                      {if(l) printf("GE\n"); column += yyleng;}
+\>                       {if(l) printf("GT\n"); column += yyleng;}
 \{                      {if(l) printf("LBRACE\n"); column += yyleng;}
 \<=                     {if(l) printf("LE\n"); column += yyleng;}
 \(                      {if(l) printf("LPAR\n"); column += yyleng;}
 \<                      {if(l) printf("LT\n"); column += yyleng;}
 \-                      {if(l) printf("MINUS\n"); column += yyleng;}
-%                       {if(l) printf("MOD\n"); column += yyleng;}
-!=                      {if(l) printf("NE\n"); column += yyleng;}
-!                       {if(l) printf("NOT\n"); column += yyleng;}
+\%                       {if(l) printf("MOD\n"); column += yyleng;}
+\!\=                      {if(l) printf("NE\n"); column += yyleng;}
+\!                       {if(l) printf("NOT\n"); column += yyleng;}
 \|\|                    {if(l) printf("OR\n"); column += yyleng;}
 \+                      {if(l) printf("PLUS\n"); column += yyleng;}
 \}                      {if(l) printf("RBRACE\n"); column += yyleng;}
@@ -51,12 +51,12 @@ auto|break|case|const|continue|inline|define|default|do|long|NULL|register|restr
     /* INTLIT, REALIT, CHRLIT AND ID*/
 {int}                                                                       {if(l) printf("INTLIT(%s)\n", yytext); column += yyleng;}
 ([a-z]|[A-Z]|"_")([a-z]|[A-Z]|[0-9]|"_")*		                            {if(l) printf("ID(%s)\n", yytext); column += yyleng;}
-\'([^(\n\'\\)]|\\[0-7]{1,3}|\\n|\\t|\\\\|\\'|\\\")\'	                        {if(l) printf("CHRLIT(%s)\n", yytext); column += yyleng;}
+\'([^\n\'\\]|\\[0-7]{1,3}|\\n|\\t|\\\\|\\'|\\\")\'	                        {if(l) printf("CHRLIT(%s)\n", yytext); column += yyleng;}
 ({int}"."{int}([Ee][\+\-]?{int})?)|{int}[Ee][\+\-]?{int}|{int}"."|"."{int}([Ee][\+\-]?{int})?|{int}"."([Ee][\+\-]?{int})             {if(l) printf("REALLIT(%s)\n", yytext); column += yyleng;}
 
-\'.*(\\')+.*                             {printf("Line %d, col %d: unterminated char constant\n", line, column); column=1;}
+\'[^'\n](\\')+[^'\n]                             {printf("Line %d, col %d: unterminated char constant\n", line, column); column=1;}
     /* INVALID CHAR CONSTANTS */
-\'[^'\n]*\'                               {printf("Line %d, col %d: invalid char constant (%s)\n", line, column, yytext); column += yyleng;}
+\'([^'\n]|\\')*\'                               {printf("Line %d, col %d: invalid char constant (%s)\n", line, column, yytext); column += yyleng;}
 
     /* UNTERMINATED CHAR CONSTANTS */
 \'[^'\n]*\n                              {printf("Line %d, col %d: unterminated char constant\n", line, column); line += 1; column=1;}
