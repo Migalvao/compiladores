@@ -46,7 +46,7 @@ void                    {if(l) printf("VOID\n"); column += yyleng;}
 \;                      {if(l) printf("SEMI\n"); column += yyleng;}
 
     /*RESERVED WORDS*/
-auto|break|case|const|continue|inline|define|default|do|long|NULL|register|restrict|signed|sizeof|static|struct|switch|typedef|union|unsigned|volatile|enum|extern|float|for|goto|_Packed|_Bool|_Complex|_Imaginary|"++"|"--"|\[|\]|"->"|"<<"|">>"|"*="|"%="|"+="|"-="|"&="|"^="|"|="|"<<="|">>="|"?:" {if(l) printf("RESERVED(%s)\n", yytext); column += yyleng;}
+auto|break|case|const|continue|inline|define|default|do|long|NULL|register|restrict|signed|sizeof|static|struct|switch|typedef|union|unsigned|volatile|enum|extern|float|for|goto|_Packed|_Bool|_Complex|_Imaginary|"++"|"--"|\[|\]|"->"|"<<"|">>" {if(l) printf("RESERVED(%s)\n", yytext); column += yyleng;}
 
     /* INTLIT, REALIT, CHRLIT AND ID*/
 {int}                                                                       {if(l) printf("INTLIT(%s)\n", yytext); column += yyleng;}
@@ -56,10 +56,10 @@ auto|break|case|const|continue|inline|define|default|do|long|NULL|register|restr
 
 
     /* INVALID CHAR CONSTANTS */
-\'([^'\n]|\\'|\\)*\'                              {printf("Line %d, col %d: invalid char constant (%s)\n", line, column, yytext); column += yyleng;}
+'([^'\n\\]|(\\')|(\\[^'\n]))*'                                      {printf("Line %d, col %d: invalid char constant (%s)\n", line, column, yytext); column += yyleng;}
 
     /* UNTERMINATED CHAR CONSTANTS */
-\'([^'\n]|\\')*\n                          {printf("Line %d, col %d: unterminated char constant\n", line, column); line += 1; column=1;}
+'([^'\n\\]|(\\')|(\\[^'\n]))*(\n|(\\\n))                       {printf("Line %d, col %d: unterminated char constant\n", line, column); line += 1; column=1;}
 
     /* COMMENTS */
 "//".*                      {column += yyleng;}

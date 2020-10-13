@@ -7,5 +7,5 @@ F - Comments - 15/15
 G - Numeric, char and real literals - 30/30
 H - Illegal characters - 10/20	
 I - Unterminated comments - 20/20
-J - Invalid/Unterminated char constant - 0/20
+J - Invalid/Unterminated char constant - 20/20
 K - Miscelaneous - 40/40
