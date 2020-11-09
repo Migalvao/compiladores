@@ -4,6 +4,7 @@
 #include "structures.h"
 #include "functions.c"
 
+program * myprogram;
 int yylex (void);
 void yyerror(char* s);
 
@@ -49,7 +50,7 @@ void yyerror(char* s);
 
 %type <nonterminal> functionsAndDeclarations functionDefinition functionDeclaration typeSpec functionDeclarator
 %type <nonterminal> parameterList parameterDeclaration functionBody declarationsAndStatements declaration
-%type <nonterminal> declaratorsList declarator statementList statement expr
+%type <nonterminal> declaratorsList declarator statementList statement expr program
  
 %union{
     char * terminal;
@@ -66,15 +67,15 @@ void yyerror(char* s);
 
 %%
 
-program: functionsAndDeclarations                                               {;}
+program: functionsAndDeclarations                                               {$$ = myprogram = insert_element("Program", $1);}
         ;
 
-functionsAndDeclarations: functionDefinition                                    {;}
-                        | functionDeclaration                                   {;}
-                        | declaration                                           {;}
-                        | functionsAndDeclarations functionDefinition           {;}
-                        | functionsAndDeclarations functionDeclaration          {;}
-                        | functionsAndDeclarations declaration                  {;}
+functionsAndDeclarations: functionDefinition                                    {$$ = insert_element("FuncDefinition", $1);}
+                        | functionDeclaration                                   {$$ = insert_element("FuncDeclaration", $1);}
+                        | declaration                                           {$$ = insert_element("Declaration", $1);}
+                        | functionsAndDeclarations functionDefinition           {$1 -> next = $2;}
+                        | functionsAndDeclarations functionDeclaration          {$1 -> next = $2;}
+                        | functionsAndDeclarations declaration                  {$1 -> next = $2;}
                         ;
 
 functionDefinition: typeSpec functionDeclarator functionBody                    {;}
@@ -139,7 +140,7 @@ statement: LBRACE statementList RBRACE                                          
         ;
 
 expr:   expr ASSIGN expr                                                        {;}
-    |   expr COMMA expr                                                         {;}
+    |                                                             {;}
     |   expr PLUS expr                                                          {;}
     |   expr MINUS expr                                                         {;}
     |   expr MUL expr                                                           {;}
