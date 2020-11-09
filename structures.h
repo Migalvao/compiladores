@@ -3,8 +3,8 @@
 
 typedef struct _s1 {
     char * type;
-    program * children;
-    program * next;
+    struct _s1 * children;
+    struct _s1 * next;
 } program;
 
 #endif

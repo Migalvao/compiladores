@@ -6,6 +6,7 @@ int				    [0-9]+
 %X                  COMMENT
 %{
     #include <stdbool.h>
+    #include "structures.h"
     #include "y.tab.h"
     bool l = false, comment_error = false;
     int line = 1, column = 1, unfinished_line, unfinished_column;

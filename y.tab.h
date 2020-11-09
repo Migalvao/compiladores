@@ -131,11 +131,12 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 48 "uccompiler.y"
+#line 54 "uccompiler.y"
 
-    char * token;
+    char * terminal;
+    program * nonterminal;
 
-#line 139 "y.tab.h"
+#line 140 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

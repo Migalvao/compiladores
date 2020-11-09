@@ -1,52 +1,59 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+#include "structures.h"
+#include "functions.c"
 
 int yylex (void);
 void yyerror(char* s);
 
 %}
 
-%token <token> CHAR
-%token <token> IF
-%token <token> ELSE
-%token <token> WHILE
-%token <token> INT
-%token <token> SHORT
-%token <token> DOUBLE
-%token <token> RETURN
-%token <token> VOID
-%token <token> BITWISEAND
-%token <token> BITWISEOR
-%token <token> BITWISEXOR
-%token <token> AND
-%token <token> ASSIGN
-%token <token> MUL
-%token <token> COMMA
-%token <token> DIV
-%token <token> EQ
-%token <token> GE
-%token <token> GT
-%token <token> LBRACE
-%token <token> LE
-%token <token> LPAR
-%token <token> LT
-%token <token> MINUS
-%token <token> MOD
-%token <token> NE
-%token <token> NOT
-%token <token> OR
-%token <token> PLUS
-%token <token> RBRACE
-%token <token> RPAR
-%token <token> SEMI
-%token <token> INTLIT
-%token <token> ID
-%token <token> CHRLIT
-%token <token> REALLIT
+%token <terminal> CHAR
+%token <terminal> IF
+%token <terminal> ELSE
+%token <terminal> WHILE
+%token <terminal> INT
+%token <terminal> SHORT
+%token <terminal> DOUBLE
+%token <terminal> RETURN
+%token <terminal> VOID
+%token <terminal> BITWISEAND
+%token <terminal> BITWISEOR
+%token <terminal> BITWISEXOR
+%token <terminal> AND
+%token <terminal> ASSIGN
+%token <terminal> MUL
+%token <terminal> COMMA
+%token <terminal> DIV
+%token <terminal> EQ
+%token <terminal> GE
+%token <terminal> GT
+%token <terminal> LBRACE
+%token <terminal> LE
+%token <terminal> LPAR
+%token <terminal> LT
+%token <terminal> MINUS
+%token <terminal> MOD
+%token <terminal> NE
+%token <terminal> NOT
+%token <terminal> OR
+%token <terminal> PLUS
+%token <terminal> RBRACE
+%token <terminal> RPAR
+%token <terminal> SEMI
+%token <terminal> INTLIT
+%token <terminal> ID
+%token <terminal> CHRLIT
+%token <terminal> REALLIT
 
+%type <nonterminal> functionsAndDeclarations functionDefinition functionDeclaration typeSpec functionDeclarator
+%type <nonterminal> parameterList parameterDeclaration functionBody declarationsAndStatements declaration
+%type <nonterminal> declaratorsList declarator statementList statement expr
+ 
 %union{
-    char * token;
+    char * terminal;
+    program * nonterminal;
 }
     // associatividades
 
@@ -59,12 +66,15 @@ void yyerror(char* s);
 
 %%
 
-functionsAndDeclarations: functionDefinition                                    {printf("func definition");}
-                        | functionDeclaration                                   {printf("func declaration added");}
-                        | declaration                                           {printf("declaration");}
-                        | functionsAndDeclarations functionDefinition           {printf("definition");}
-                        | functionsAndDeclarations functionDeclaration          {printf("definition");}
-                        | functionsAndDeclarations declaration                  {printf("definition");}
+program: functionsAndDeclarations                                               {;}
+        ;
+
+functionsAndDeclarations: functionDefinition                                    {;}
+                        | functionDeclaration                                   {;}
+                        | declaration                                           {;}
+                        | functionsAndDeclarations functionDefinition           {;}
+                        | functionsAndDeclarations functionDeclaration          {;}
+                        | functionsAndDeclarations declaration                  {;}
                         ;
 
 functionDefinition: typeSpec functionDeclarator functionBody                    {;}
@@ -73,11 +83,11 @@ functionDefinition: typeSpec functionDeclarator functionBody                    
 functionDeclaration: typeSpec functionDeclarator SEMI                           {;}
                     ;
 
-typeSpec: CHAR          {;}
-        | INT       {;}
-        | VOID      {;}
-        | SHORT     {;}
-        | DOUBLE    {;}
+typeSpec: CHAR                                                                  {;}
+        | INT                                                                   {;}
+        | VOID                                                                  {;}
+        | SHORT                                                                 {;}
+        | DOUBLE                                                                {;}
         ;
 
 functionDeclarator: ID LPAR parameterList RPAR                                  {;}
@@ -120,7 +130,7 @@ statementList: statement                                                        
 statement: LBRACE statementList RBRACE                                          {;}
         |  LBRACE RBRACE                                                        {;}
         |  IF LPAR expr RPAR statement ELSE statement                           {;}
-        |  IF LPAR expr RPAR statement                                          {$3->next = $5;     $$ = insert_element("IF", $3) ;}
+        |  IF LPAR expr RPAR statement                                          {$3-> next = $5; $$ = insert_element("IF", $3) ;}
         |  WHILE LPAR expr RPAR statement                                       {;}
         |  RETURN expr SEMI                                                     {;}
         |  RETURN SEMI                                                          {;}
@@ -156,7 +166,7 @@ expr:   expr ASSIGN expr                                                        
     |   INTLIT                                                                  {;}
     |   CHRLIT                                                                  {;}
     |   REALLIT                                                                 {;}
-    |   LPAR expr RPAR                                                         {;}
+    |   LPAR expr RPAR                                                          {;}
     ; 
 
 %%
