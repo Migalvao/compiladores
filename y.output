@@ -885,6 +885,10 @@ State 53
    60     | expr . GT expr
    62     | MINUS expr .
 
+    MUL  shift, and go to state 62
+    DIV  shift, and go to state 64
+    MOD  shift, and go to state 71
+
     $default  reduce using rule 62 (expr)
 
 
@@ -934,6 +938,10 @@ State 55
    59     | expr . LT expr
    60     | expr . GT expr
    61     | PLUS expr .
+
+    MUL  shift, and go to state 62
+    DIV  shift, and go to state 64
+    MOD  shift, and go to state 71
 
     $default  reduce using rule 61 (expr)
 
@@ -1502,6 +1510,18 @@ State 92
    59     | expr . LT expr
    60     | expr . GT expr
 
+    MUL    shift, and go to state 62
+    DIV    shift, and go to state 64
+    EQ     shift, and go to state 65
+    GE     shift, and go to state 66
+    GT     shift, and go to state 67
+    LE     shift, and go to state 68
+    LT     shift, and go to state 69
+    MINUS  shift, and go to state 70
+    MOD    shift, and go to state 71
+    NE     shift, and go to state 72
+    PLUS   shift, and go to state 74
+
     $default  reduce using rule 52 (expr)
 
 
@@ -1526,6 +1546,20 @@ State 93
    58     | expr . GE expr
    59     | expr . LT expr
    60     | expr . GT expr
+
+    BITWISEAND  shift, and go to state 57
+    BITWISEXOR  shift, and go to state 59
+    MUL         shift, and go to state 62
+    DIV         shift, and go to state 64
+    EQ          shift, and go to state 65
+    GE          shift, and go to state 66
+    GT          shift, and go to state 67
+    LE          shift, and go to state 68
+    LT          shift, and go to state 69
+    MINUS       shift, and go to state 70
+    MOD         shift, and go to state 71
+    NE          shift, and go to state 72
+    PLUS        shift, and go to state 74
 
     $default  reduce using rule 53 (expr)
 
@@ -1552,6 +1586,19 @@ State 94
    59     | expr . LT expr
    60     | expr . GT expr
 
+    BITWISEAND  shift, and go to state 57
+    MUL         shift, and go to state 62
+    DIV         shift, and go to state 64
+    EQ          shift, and go to state 65
+    GE          shift, and go to state 66
+    GT          shift, and go to state 67
+    LE          shift, and go to state 68
+    LT          shift, and go to state 69
+    MINUS       shift, and go to state 70
+    MOD         shift, and go to state 71
+    NE          shift, and go to state 72
+    PLUS        shift, and go to state 74
+
     $default  reduce using rule 54 (expr)
 
 
@@ -1576,6 +1623,21 @@ State 95
    58     | expr . GE expr
    59     | expr . LT expr
    60     | expr . GT expr
+
+    BITWISEAND  shift, and go to state 57
+    BITWISEOR   shift, and go to state 58
+    BITWISEXOR  shift, and go to state 59
+    MUL         shift, and go to state 62
+    DIV         shift, and go to state 64
+    EQ          shift, and go to state 65
+    GE          shift, and go to state 66
+    GT          shift, and go to state 67
+    LE          shift, and go to state 68
+    LT          shift, and go to state 69
+    MINUS       shift, and go to state 70
+    MOD         shift, and go to state 71
+    NE          shift, and go to state 72
+    PLUS        shift, and go to state 74
 
     $default  reduce using rule 51 (expr)
 
@@ -1738,6 +1800,16 @@ State 100
    59     | expr . LT expr
    60     | expr . GT expr
 
+    MUL    shift, and go to state 62
+    DIV    shift, and go to state 64
+    GE     shift, and go to state 66
+    GT     shift, and go to state 67
+    LE     shift, and go to state 68
+    LT     shift, and go to state 69
+    MINUS  shift, and go to state 70
+    MOD    shift, and go to state 71
+    PLUS   shift, and go to state 74
+
     $default  reduce using rule 55 (expr)
 
 
@@ -1762,6 +1834,12 @@ State 101
    58     | expr GE expr .
    59     | expr . LT expr
    60     | expr . GT expr
+
+    MUL    shift, and go to state 62
+    DIV    shift, and go to state 64
+    MINUS  shift, and go to state 70
+    MOD    shift, and go to state 71
+    PLUS   shift, and go to state 74
 
     $default  reduce using rule 58 (expr)
 
@@ -1788,6 +1866,12 @@ State 102
    60     | expr . GT expr
    60     | expr GT expr .
 
+    MUL    shift, and go to state 62
+    DIV    shift, and go to state 64
+    MINUS  shift, and go to state 70
+    MOD    shift, and go to state 71
+    PLUS   shift, and go to state 74
+
     $default  reduce using rule 60 (expr)
 
 
@@ -1812,6 +1896,12 @@ State 103
    58     | expr . GE expr
    59     | expr . LT expr
    60     | expr . GT expr
+
+    MUL    shift, and go to state 62
+    DIV    shift, and go to state 64
+    MINUS  shift, and go to state 70
+    MOD    shift, and go to state 71
+    PLUS   shift, and go to state 74
 
     $default  reduce using rule 57 (expr)
 
@@ -1838,6 +1928,12 @@ State 104
    59     | expr LT expr .
    60     | expr . GT expr
 
+    MUL    shift, and go to state 62
+    DIV    shift, and go to state 64
+    MINUS  shift, and go to state 70
+    MOD    shift, and go to state 71
+    PLUS   shift, and go to state 74
+
     $default  reduce using rule 59 (expr)
 
 
@@ -1862,6 +1958,10 @@ State 105
    58     | expr . GE expr
    59     | expr . LT expr
    60     | expr . GT expr
+
+    MUL  shift, and go to state 62
+    DIV  shift, and go to state 64
+    MOD  shift, and go to state 71
 
     $default  reduce using rule 46 (expr)
 
@@ -1913,6 +2013,16 @@ State 107
    59     | expr . LT expr
    60     | expr . GT expr
 
+    MUL    shift, and go to state 62
+    DIV    shift, and go to state 64
+    GE     shift, and go to state 66
+    GT     shift, and go to state 67
+    LE     shift, and go to state 68
+    LT     shift, and go to state 69
+    MINUS  shift, and go to state 70
+    MOD    shift, and go to state 71
+    PLUS   shift, and go to state 74
+
     $default  reduce using rule 56 (expr)
 
 
@@ -1938,6 +2048,22 @@ State 108
    59     | expr . LT expr
    60     | expr . GT expr
 
+    BITWISEAND  shift, and go to state 57
+    BITWISEOR   shift, and go to state 58
+    BITWISEXOR  shift, and go to state 59
+    AND         shift, and go to state 60
+    MUL         shift, and go to state 62
+    DIV         shift, and go to state 64
+    EQ          shift, and go to state 65
+    GE          shift, and go to state 66
+    GT          shift, and go to state 67
+    LE          shift, and go to state 68
+    LT          shift, and go to state 69
+    MINUS       shift, and go to state 70
+    MOD         shift, and go to state 71
+    NE          shift, and go to state 72
+    PLUS        shift, and go to state 74
+
     $default  reduce using rule 50 (expr)
 
 
@@ -1962,6 +2088,10 @@ State 109
    58     | expr . GE expr
    59     | expr . LT expr
    60     | expr . GT expr
+
+    MUL  shift, and go to state 62
+    DIV  shift, and go to state 64
+    MOD  shift, and go to state 71
 
     $default  reduce using rule 45 (expr)
 
