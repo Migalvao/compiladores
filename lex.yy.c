@@ -616,7 +616,7 @@ char *yytext;
     bool l = false, comment_error = false;
     int line = 1, column = 1, unfinished_line, unfinished_column;
     extern program * myprogram;
-    
+
 #line 621 "lex.yy.c"
 #line 622 "lex.yy.c"
 
@@ -1070,22 +1070,22 @@ YY_RULE_SETUP
 case 35:
 YY_RULE_SETUP
 #line 56 "uccompiler.l"
-{if(l) printf("INTLIT(%s)\n", yytext); column += yyleng; return INTLIT;}
+{if(l) printf("INTLIT(%s)\n", yytext); column += yyleng; yylval.terminal = strdup(yytext); return INTLIT;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
 #line 57 "uccompiler.l"
-{if(l) printf("ID(%s)\n", yytext); column += yyleng; return ID;}
+{if(l) printf("ID(%s)\n", yytext); column += yyleng; yylval.terminal = strdup(yytext); return ID;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
 #line 58 "uccompiler.l"
-{if(l) printf("CHRLIT(%s)\n", yytext); column += yyleng; return CHRLIT;}
+{if(l) printf("CHRLIT(%s)\n", yytext); column += yyleng; yylval.terminal = strdup(yytext); return CHRLIT;}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
 #line 59 "uccompiler.l"
-{if(l) printf("REALLIT(%s)\n", yytext); column += yyleng; return REALLIT;}
+{if(l) printf("REALLIT(%s)\n", yytext); column += yyleng; yylval.terminal = strdup(yytext); return REALLIT;}
 	YY_BREAK
 /* INVALID CHAR CONSTANTS */
 case 39:

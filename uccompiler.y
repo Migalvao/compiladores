@@ -4,7 +4,8 @@
 #include "structures.h"
 #include "functions.c"
 
-program * myprogram;
+char *string;
+program * myprogram, * aux;
 int yylex (void);
 void yyerror(char* s);
 
@@ -89,93 +90,94 @@ functionsAndDeclarations: functionDefinition                                    
 functionDefinition: typeSpec functionDeclarator functionBody                    {$2-> next = $3; $1-> next = $2; $$ = insert_element("FunctionDefinition", $1);}
                     ;
                     
-functionDeclaration: typeSpec functionDeclarator SEMI                           {;}
+functionDeclaration: typeSpec functionDeclarator SEMI                           {$1-> next = $2; $$ = insert_element("FunctionDeclaration", $1);}
                     ;
 
-typeSpec: CHAR                                                                  {;}
-        | INT                                                                   {;}
-        | VOID                                                                  {;}
-        | SHORT                                                                 {;}
-        | DOUBLE                                                                {;}
+typeSpec: CHAR                                                                  {$$ = insert_element("Char", NULL);}
+        | INT                                                                   {$$ = insert_element("Int", NULL);}
+        | VOID                                                                  {$$ = insert_element("Void", NULL);}
+        | SHORT                                                                 {$$ = insert_element("Short", NULL);}
+        | DOUBLE                                                                {$$ = insert_element("Double", NULL);}
         ;
 
-functionDeclarator: ID LPAR parameterList RPAR                                  {;}
+functionDeclarator: ID LPAR parameterList RPAR                                  {sprintf(string, "Id(%s)", yylval.terminal); $$ = insert_element(strdup(string), NULL); $$ -> next = $3;}
                     ;
                     
-parameterList: parameterDeclaration                                             {;}
-            | parameterList COMMA parameterDeclaration                          {;}
+parameterList: parameterDeclaration                                             {$$ = insert_element("ParamList", $1);}
+            | parameterList COMMA parameterDeclaration                          {$1 -> next = $3; $$ = $1;}
             ;
 
-parameterDeclaration: typeSpec                                                  {;}
-                    | typeSpec ID                                               {;}
+parameterDeclaration: typeSpec                                                  {$$ = insert_element("ParamDeclaration", $1);}
+                    | typeSpec ID                                               {sprintf(string, "Id(%s)", yylval.terminal); $1 ->next = insert_element(strdup(string), NULL); $$ = insert_element("ParamDeclaration", $1);}
                     ;
 
-functionBody: LBRACE RBRACE                                                     {;}
-            | LBRACE declarationsAndStatements RBRACE                           {;}
+functionBody: LBRACE RBRACE                                                     {$$ = insert_element("FuncBody", NULL);}
+            | LBRACE declarationsAndStatements RBRACE                           {$$ = insert_element("FuncBody", $2);}
             ;
 
-declarationsAndStatements: statement                                            {;}
-                        |  declaration                                          {;}
-                        |  declarationsAndStatements statement                  {;}
-                        |  declarationsAndStatements declaration                {;}
+declarationsAndStatements: statement                                            {$$ = $1;}
+                        |  declaration                                          {$$ = $1;}
+                        |  declarationsAndStatements statement                  {$1 -> next = $2; $$ = $1;}
+                        |  declarationsAndStatements declaration                {$1 -> next = $2; $$ = $1;}
                         ;
 
-declaration: typeSpec declaratorsList SEMI                                       {;}
+declaration: typeSpec declaratorsList SEMI                                      {$1 -> next = $2; $$ = insert_element("Declaration", $1);}
             ;
 
-declaratorsList: declarator                                                     {;}   
-                | declaratorsList COMMA declarator                              {;}
-                |                                                               {;}
+declaratorsList: declarator                                                     {$$ = $1;}   
+                | declaratorsList COMMA declarator                              {$1 -> next = $3; $$ = $1;}
+                |                                                               {$$ = NULL;}
                 ;
 
-declarator: ID                                                                  {;}
-        |   ID ASSIGN expr                                                      {;}
+declarator: ID                                                                  {sprintf(string, "Id(%s)", yylval.terminal); $$ = insert_element(strdup(string), NULL);}
+        |   ID ASSIGN expr                                                      {sprintf(string, "Id(%s)", yylval.terminal); $$ = insert_element(strdup(string), NULL); $$ -> next = $3;}
         ;
 
-statementList: statement                                                        {;}
-            |  statementList statement                                          {$1-> next = $2; $$ = insert_element("Statementlist", $1);}   
+statementList: statement                                                        {$$ = $1;}
+            |  statementList statement                                          {$1-> next = $2; $$ = $1;}   
             ;
 
-statement: LBRACE statementList RBRACE                                          {;}
-        |  LBRACE RBRACE                                                        {;}
-        |  IF LPAR expr RPAR statement ELSE statement                           {;}
-        |  IF LPAR expr RPAR statement                                          {$3-> next = $5; $$ = insert_element("IF", $3) ;}
-        |  WHILE LPAR expr RPAR statement                                       {;}
-        |  RETURN expr SEMI                                                     {;}
-        |  RETURN SEMI                                                          {;}
-        |  expr SEMI                                                            {;}       
+statement: LBRACE statementList statement RBRACE                                {$$ = insert_element("StatList", $2);}
+        |  LBRACE statement RBRACE                                              {$$ = $2;}
+        |  LBRACE RBRACE                                                        {$$ = NULL;}
+        |  IF LPAR expr RPAR statement ELSE statement                           {$5 -> next = $7; $3-> next = $5; $$ = insert_element("IF", $3);}
+        |  IF LPAR expr RPAR statement                                          {$3 -> next = $5; $$ = insert_element("IF", $3);}
+        |  WHILE LPAR expr RPAR statement                                       {$3 -> next = $5; $$ = insert_element("While", $3);}
+        |  RETURN expr SEMI                                                     {$$ = insert_element("Return", $2);}
+        |  RETURN SEMI                                                          {$$ = insert_element("Return", NULL);}
+        |  expr SEMI                                                            {$$ = $1;}       
         |  SEMI                                                                 {;}                              
         ;
 
-expr:   expr ASSIGN expr                                                        {;}
-    |   expr COMMA expr                                                         {;}
-    |   expr PLUS expr                                                          {;}
-    |   expr MINUS expr                                                         {;}
-    |   expr MUL expr                                                           {;}
-    |   expr DIV expr                                                           {;}
-    |   expr MOD expr                                                           {;}
-    |   expr OR expr                                                            {;}
-    |   expr AND expr                                                           {;}
-    |   expr BITWISEAND expr                                                    {;}
-    |   expr BITWISEOR expr                                                     {;}
-    |   expr BITWISEXOR expr                                                    {;}
-    |   expr EQ expr                                                            {;}
-    |   expr NE expr                                                            {;}
-    |   expr LE expr                                                            {;}
-    |   expr GE expr                                                            {;}
-    |   expr LT expr                                                            {;}
-    |   expr GT expr                                                            {;}
-    |   PLUS expr                                                               {;}
-    |   MINUS expr                                                              {;}
-    |   NOT expr                                                                {;}
-    |   ID LPAR RPAR                                                            {;}
-    |   ID LPAR expr RPAR                                                       {;}
-    |   ID LPAR expr COMMA expr RPAR                                            {;}
-    |   ID                                                                      {;}
-    |   INTLIT                                                                  {;}
-    |   CHRLIT                                                                  {;}
-    |   REALLIT                                                                 {;}
-    |   LPAR expr RPAR                                                          {;}
+expr:   expr ASSIGN expr                                                        {$1->next = $3; $$ = insert_element("Store", $1);}
+    |   expr COMMA expr                                                         {$1->next = $3;}
+    |   expr PLUS expr                                                          {$1->next = $3; $$ = insert_element("Add", $1);}
+    |   expr MINUS expr                                                         {$1->next = $3; $$ = insert_element("Sub", $1);}
+    |   expr MUL expr                                                           {$1->next = $3; $$ = insert_element("Mul", $1);}
+    |   expr DIV expr                                                           {$1->next = $3; $$ = insert_element("Div", $1);}
+    |   expr MOD expr                                                           {$1->next = $3; $$ = insert_element("Mod", $1);}
+    |   expr OR expr                                                            {$1->next = $3; $$ = insert_element("Or", $1);}
+    |   expr AND expr                                                           {$1->next = $3; $$ = insert_element("And", $1);}
+    |   expr BITWISEAND expr                                                    {$1->next = $3; $$ = insert_element("BitWiseAnd", $1);}
+    |   expr BITWISEOR expr                                                     {$1->next = $3; $$ = insert_element("BitWiseOr", $1);}
+    |   expr BITWISEXOR expr                                                    {$1->next = $3; $$ = insert_element("BitWiseXor", $1);}
+    |   expr EQ expr                                                            {$1->next = $3; $$ = insert_element("Eq", $1);}
+    |   expr NE expr                                                            {$1->next = $3; $$ = insert_element("Ne", $1);}
+    |   expr LE expr                                                            {$1->next = $3; $$ = insert_element("Le", $1);}
+    |   expr GE expr                                                            {$1->next = $3; $$ = insert_element("Ge", $1);}
+    |   expr LT expr                                                            {$1->next = $3; $$ = insert_element("Lt", $1);}
+    |   expr GT expr                                                            {$1->next = $3; $$ = insert_element("Gt", $1);}
+    |   PLUS expr                                                               {$$ = $2;}
+    |   MINUS expr                                                              {$$ = $2;}
+    |   NOT expr                                                                {$$ = $2;}
+    |   ID LPAR RPAR                                                            {sprintf(string, "Id(%s)", yylval.terminal); aux = insert_element(strdup(string), NULL); $$ = insert_element("Call", aux);}
+    |   ID LPAR expr RPAR                                                       {sprintf(string, "Id(%s)", yylval.terminal); aux = insert_element(strdup(string), NULL); aux -> next = $3; $$ = insert_element("Call", aux);}
+    |   ID LPAR expr COMMA expr RPAR                                            {sprintf(string, "Id(%s)", yylval.terminal); aux = insert_element(strdup(string), NULL); aux -> next = $3; aux -> next ->next = $5; $$ = insert_element("Call", aux);}
+    |   ID                                                                      {sprintf(string, "Id(%s)", yylval.terminal); $$ = insert_element(strdup(string), NULL);}
+    |   INTLIT                                                                  {sprintf(string, "IntLit(%s)", yylval.terminal); $$ = insert_element(strdup(string), NULL);}
+    |   CHRLIT                                                                  {sprintf(string, "ChrLit(%s)", yylval.terminal); $$ = insert_element(strdup(string), NULL);}
+    |   REALLIT                                                                 {sprintf(string, "RealLit(%s)", yylval.terminal); $$ = insert_element(strdup(string), NULL);}
+    |   LPAR expr RPAR                                                          {$$ = $2;}
     ; 
 
 %%

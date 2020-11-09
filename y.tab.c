@@ -73,12 +73,13 @@
 #include "structures.h"
 #include "functions.c"
 
-program * myprogram;
+char *string;
+program * myprogram, * aux;
 int yylex (void);
 void yyerror(char* s);
 
 
-#line 82 "y.tab.c"
+#line 83 "y.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -208,12 +209,12 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 55 "uccompiler.y"
+#line 56 "uccompiler.y"
 
     char * terminal;
     program * nonterminal;
 
-#line 217 "y.tab.c"
+#line 218 "y.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -532,16 +533,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  12
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   522
+#define YYLAST   498
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  40
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  17
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  72
+#define YYNRULES  73
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  126
+#define YYNSTATES  127
 
 #define YYUNDEFTOK  2
 #define YYMAXUTOK   294
@@ -592,14 +593,14 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    78,    78,    81,    82,    83,    84,    85,    86,    89,
-      92,    95,    96,    97,    98,    99,   102,   105,   106,   109,
-     110,   113,   114,   117,   118,   119,   120,   123,   126,   127,
-     128,   131,   132,   135,   136,   139,   140,   141,   142,   143,
-     144,   145,   146,   147,   150,   151,   152,   153,   154,   155,
-     156,   157,   158,   159,   160,   161,   162,   163,   164,   165,
-     166,   167,   168,   169,   170,   171,   172,   173,   174,   175,
-     176,   177,   178
+       0,    79,    79,    82,    83,    84,    85,    86,    87,    90,
+      93,    96,    97,    98,    99,   100,   103,   106,   107,   110,
+     111,   114,   115,   118,   119,   120,   121,   124,   127,   128,
+     129,   132,   133,   136,   137,   140,   141,   142,   143,   144,
+     145,   146,   147,   148,   149,   152,   153,   154,   155,   156,
+     157,   158,   159,   160,   161,   162,   163,   164,   165,   166,
+     167,   168,   169,   170,   171,   172,   173,   174,   175,   176,
+     177,   178,   179,   180
 };
 #endif
 
@@ -633,7 +634,7 @@ static const yytype_int16 yytoknum[] =
 };
 # endif
 
-#define YYPACT_NINF (-28)
+#define YYPACT_NINF (-32)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -647,19 +648,19 @@ static const yytype_int16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-      21,   -28,   -28,   -28,   -28,   -28,     6,    21,   -28,   -28,
-     -25,   -28,   -28,   -28,   -28,   -28,    -2,   -18,   -17,   -28,
-     483,    21,    75,   -28,   -28,   -12,   -28,   483,   483,   483,
-     483,   -28,     1,   -28,   -28,   357,    -4,   -14,   -28,    10,
-      39,   453,   130,   -28,   -28,   -12,   112,   -28,   -28,   194,
-      18,   -28,   242,    -6,   -28,    -6,   468,   483,   483,   483,
-     483,   483,   483,   483,   483,   483,   483,   483,   483,   483,
-     483,   483,   483,   483,   483,   -28,    21,   -28,   483,   483,
-     -28,   218,   -28,   148,   -28,   -28,   -28,   -28,   -28,   -28,
-     -28,   265,   429,   397,   415,   378,   357,   -28,   357,   -28,
-     443,   449,   449,   449,   449,    -6,   -28,   443,    48,    -6,
-     -28,   288,   311,   -28,   -28,   -28,   483,   -28,   166,   166,
-     334,    61,   -28,   -28,   166,   -28
+     121,   -32,   -32,   -32,   -32,   -32,     1,   121,   -32,   -32,
+     -31,   -32,   -32,   -32,   -32,   -32,     0,    64,   -13,   -32,
+     459,   121,    75,   -32,   -32,   -26,   -32,   459,   459,   459,
+     459,   -32,    -6,   -32,   -32,   339,   -25,   -14,   -32,     4,
+       5,   429,   130,   -32,   -32,   -26,   112,   -32,   -32,   176,
+      15,   -32,   224,    76,   -32,    76,   444,   459,   459,   459,
+     459,   459,   459,   459,   459,   459,   459,   459,   459,   459,
+     459,   459,   459,   459,   459,   -32,   121,   -32,   459,   459,
+     -32,   200,   -32,   148,    -7,   -32,   -32,   -32,   -32,   -32,
+     -32,   247,   411,   379,   397,   360,   339,   -32,   339,   -32,
+     425,    -4,    -4,    -4,    -4,    76,   -32,   425,    48,    76,
+     -32,   270,   293,   -32,     2,   -32,   459,   -32,   148,   148,
+     -32,   316,    28,   -32,   -32,   148,   -32
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -670,23 +671,23 @@ static const yytype_int8 yydefact[] =
        0,    11,    12,    14,    15,    13,     0,     2,     3,     4,
       30,     5,     1,     6,     7,     8,    31,     0,     0,    28,
        0,     0,     0,    10,     9,     0,    27,     0,     0,     0,
-       0,    69,    68,    70,    71,    32,    19,     0,    17,     0,
-       0,     0,     0,    21,    43,    30,     0,    24,    23,     0,
-      31,    29,     0,    63,    64,    62,     0,     0,     0,     0,
+       0,    70,    69,    71,    72,    32,    19,     0,    17,     0,
+       0,     0,     0,    21,    44,    30,     0,    24,    23,     0,
+      31,    29,     0,    64,    65,    63,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,    20,     0,    16,     0,     0,
-      41,     0,    36,     0,    33,    22,    26,    25,    42,    72,
-      65,     0,    53,    54,    55,    52,    44,    48,    45,    49,
-      56,    59,    61,    58,    60,    47,    50,    57,    51,    46,
-      18,     0,     0,    40,    35,    34,     0,    66,     0,     0,
-      45,    38,    39,    67,     0,    37
+      42,     0,    37,     0,    33,    22,    26,    25,    43,    73,
+      66,     0,    54,    55,    56,    53,    45,    49,    46,    50,
+      57,    60,    62,    59,    61,    48,    51,    58,    52,    47,
+      18,     0,     0,    41,    34,    36,     0,    67,     0,     0,
+      35,    46,    39,    40,    68,     0,    38
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -28,   -28,   -28,    64,    66,   -19,   -28,   -28,    11,   -28,
-     -28,     9,   -28,    63,   -28,   -27,   -20
+     -32,   -32,   -32,    27,    57,   -19,   -32,   -32,   -10,   -32,
+     -32,    10,   -32,    46,   -32,   -28,   -20
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
@@ -701,116 +702,110 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      35,    25,    36,    45,    76,    22,    12,    52,    53,    54,
-      55,    62,    16,    64,    20,    84,    15,    23,    26,    87,
-      77,    81,    71,    21,     1,    50,    56,    45,     2,     3,
-       4,    47,     5,    75,    20,    78,    91,    92,    93,    94,
+      35,    12,    36,    45,    76,    25,    16,    52,    53,    54,
+      55,    50,    75,    62,    84,    64,    20,    15,    87,    56,
+      77,    81,    26,    70,    71,    21,   115,    45,    74,    78,
+      79,    20,    47,   125,    13,   120,    91,    92,    93,    94,
       95,    96,    97,    98,    99,   100,   101,   102,   103,   104,
-     105,   106,   107,   108,   109,    86,   115,    36,   111,   112,
-      57,    58,    59,    60,    79,    62,   124,    64,    65,    66,
-      67,    13,    68,    14,    69,    70,    71,    72,     1,    39,
-      74,    40,     2,     3,     4,    41,     5,   110,    51,     0,
-       0,   121,   122,     0,     0,     0,   120,   125,    42,     0,
-      27,     0,    28,     0,     0,    29,     0,    30,    43,     0,
+     105,   106,   107,   108,   109,   114,    86,    36,   111,   112,
+      57,    58,    59,    60,    14,    62,   110,    64,    65,    66,
+      67,    51,    68,     0,    69,    70,    71,    72,     1,    39,
+      74,    40,     2,     3,     4,    41,     5,    22,     0,     0,
+     122,   123,     0,    62,     0,    64,   121,   126,    42,    23,
+      27,     0,    28,     0,    71,    29,     0,    30,    43,     0,
       44,    31,    32,    33,    34,     1,    39,     0,    40,     2,
-       3,     4,    41,     5,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,    39,    42,    40,    27,     0,    28,
+       3,     4,    41,     5,     1,     0,     0,     0,     2,     3,
+       4,     0,     5,     0,    39,    42,    40,    27,     0,    28,
       41,     0,    29,     0,    30,    85,     0,    44,    31,    32,
       33,    34,    39,    42,    40,    27,     0,    28,    41,     0,
       29,     0,    30,    82,     0,    44,    31,    32,    33,    34,
-      39,    42,    40,    27,     0,    28,    41,     0,    29,     0,
-      30,   114,     0,    44,    31,    32,    33,    34,     0,    42,
-       0,    27,     0,    28,     0,     0,    29,     0,    30,     0,
-       0,    44,    31,    32,    33,    34,    57,    58,    59,    60,
+       0,    42,     0,    27,     0,    28,     0,     0,    29,     0,
+      30,     0,     0,    44,    31,    32,    33,    34,    57,    58,
+      59,    60,    61,    62,    63,    64,    65,    66,    67,     0,
+      68,     0,    69,    70,    71,    72,     0,    73,    74,     0,
+       0,    88,    57,    58,    59,    60,    61,    62,    63,    64,
+      65,    66,    67,     0,    68,     0,    69,    70,    71,    72,
+       0,    73,    74,     0,     0,   113,    57,    58,    59,    60,
       61,    62,    63,    64,    65,    66,    67,     0,    68,     0,
-      69,    70,    71,    72,     0,    73,    74,     0,     0,    88,
-      57,    58,    59,    60,    61,    62,    63,    64,    65,    66,
-      67,     0,    68,     0,    69,    70,    71,    72,     0,    73,
-      74,     0,     0,   113,    57,    58,    59,    60,    61,    62,
-      63,    64,    65,    66,    67,     0,    68,     0,    69,    70,
-      71,    72,     0,    73,    74,     0,    89,    57,    58,    59,
-      60,    61,    62,   116,    64,    65,    66,    67,     0,    68,
-       0,    69,    70,    71,    72,     0,    73,    74,     0,   117,
-      57,    58,    59,    60,    61,    62,    63,    64,    65,    66,
-      67,     0,    68,     0,    69,    70,    71,    72,     0,    73,
-      74,     0,   118,    57,    58,    59,    60,    61,    62,    63,
-      64,    65,    66,    67,     0,    68,     0,    69,    70,    71,
-      72,     0,    73,    74,     0,   119,    57,    58,    59,    60,
-      61,    62,     0,    64,    65,    66,    67,     0,    68,     0,
-      69,    70,    71,    72,     0,    73,    74,     0,   123,    57,
-      58,    59,    60,    61,    62,     0,    64,    65,    66,    67,
+      69,    70,    71,    72,     0,    73,    74,     0,    89,    57,
+      58,    59,    60,    61,    62,   116,    64,    65,    66,    67,
        0,    68,     0,    69,    70,    71,    72,     0,    73,    74,
-      57,    58,    59,     0,     0,    62,     0,    64,    65,    66,
-      67,     0,    68,     0,    69,    70,    71,    72,     0,    57,
-      74,    59,     0,     0,    62,     0,    64,    65,    66,    67,
-       0,    68,     0,    69,    70,    71,    72,    57,     0,    74,
-       0,     0,    62,     0,    64,    65,    66,    67,     0,    68,
-       0,    69,    70,    71,    72,     0,    62,    74,    64,    65,
+       0,   117,    57,    58,    59,    60,    61,    62,    63,    64,
+      65,    66,    67,     0,    68,     0,    69,    70,    71,    72,
+       0,    73,    74,     0,   118,    57,    58,    59,    60,    61,
+      62,    63,    64,    65,    66,    67,     0,    68,     0,    69,
+      70,    71,    72,     0,    73,    74,     0,   119,    57,    58,
+      59,    60,    61,    62,     0,    64,    65,    66,    67,     0,
+      68,     0,    69,    70,    71,    72,     0,    73,    74,     0,
+     124,    57,    58,    59,    60,    61,    62,     0,    64,    65,
       66,    67,     0,    68,     0,    69,    70,    71,    72,     0,
-      62,    74,    64,     0,    66,    67,    62,    68,    64,    69,
-      70,    71,     0,     0,     0,    74,    70,    71,    27,     0,
-      28,    74,     0,    29,     0,    30,     0,     0,    80,    31,
-      32,    33,    34,    27,     0,    28,     0,     0,    29,     0,
-      30,     0,    90,     0,    31,    32,    33,    34,    27,     0,
-      28,     0,     0,    29,     0,    30,     0,     0,     0,    31,
-      32,    33,    34
+      73,    74,    57,    58,    59,     0,     0,    62,     0,    64,
+      65,    66,    67,     0,    68,     0,    69,    70,    71,    72,
+       0,    57,    74,    59,     0,     0,    62,     0,    64,    65,
+      66,    67,     0,    68,     0,    69,    70,    71,    72,    57,
+       0,    74,     0,     0,    62,     0,    64,    65,    66,    67,
+       0,    68,     0,    69,    70,    71,    72,     0,    62,    74,
+      64,    65,    66,    67,     0,    68,     0,    69,    70,    71,
+      72,     0,    62,    74,    64,     0,    66,    67,     0,    68,
+       0,    69,    70,    71,    27,     0,    28,    74,     0,    29,
+       0,    30,     0,     0,    80,    31,    32,    33,    34,    27,
+       0,    28,     0,     0,    29,     0,    30,     0,    90,     0,
+      31,    32,    33,    34,    27,     0,    28,     0,     0,    29,
+       0,    30,     0,     0,     0,    31,    32,    33,    34
 };
 
 static const yytype_int8 yycheck[] =
 {
-      20,    18,    21,    22,    18,    23,     0,    27,    28,    29,
-      30,    17,    37,    19,    16,    42,     7,    35,    35,    46,
-      34,    41,    28,    25,     3,    37,    25,    46,     7,     8,
-       9,    22,    11,    37,    16,    25,    56,    57,    58,    59,
+      20,     0,    21,    22,    18,    18,    37,    27,    28,    29,
+      30,    37,    37,    17,    42,    19,    16,     7,    46,    25,
+      34,    41,    35,    27,    28,    25,    33,    46,    32,    25,
+      25,    16,    22,     5,     7,    33,    56,    57,    58,    59,
       60,    61,    62,    63,    64,    65,    66,    67,    68,    69,
-      70,    71,    72,    73,    74,    46,    83,    76,    78,    79,
-      12,    13,    14,    15,    25,    17,     5,    19,    20,    21,
-      22,     7,    24,     7,    26,    27,    28,    29,     3,     4,
-      32,     6,     7,     8,     9,    10,    11,    76,    25,    -1,
-      -1,   118,   119,    -1,    -1,    -1,   116,   124,    23,    -1,
-      25,    -1,    27,    -1,    -1,    30,    -1,    32,    33,    -1,
+      70,    71,    72,    73,    74,    83,    46,    76,    78,    79,
+      12,    13,    14,    15,     7,    17,    76,    19,    20,    21,
+      22,    25,    24,    -1,    26,    27,    28,    29,     3,     4,
+      32,     6,     7,     8,     9,    10,    11,    23,    -1,    -1,
+     118,   119,    -1,    17,    -1,    19,   116,   125,    23,    35,
+      25,    -1,    27,    -1,    28,    30,    -1,    32,    33,    -1,
       35,    36,    37,    38,    39,     3,     4,    -1,     6,     7,
-       8,     9,    10,    11,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,    -1,    -1,    -1,     4,    23,     6,    25,    -1,    27,
+       8,     9,    10,    11,     3,    -1,    -1,    -1,     7,     8,
+       9,    -1,    11,    -1,     4,    23,     6,    25,    -1,    27,
       10,    -1,    30,    -1,    32,    33,    -1,    35,    36,    37,
       38,    39,     4,    23,     6,    25,    -1,    27,    10,    -1,
       30,    -1,    32,    33,    -1,    35,    36,    37,    38,    39,
-       4,    23,     6,    25,    -1,    27,    10,    -1,    30,    -1,
-      32,    33,    -1,    35,    36,    37,    38,    39,    -1,    23,
-      -1,    25,    -1,    27,    -1,    -1,    30,    -1,    32,    -1,
-      -1,    35,    36,    37,    38,    39,    12,    13,    14,    15,
+      -1,    23,    -1,    25,    -1,    27,    -1,    -1,    30,    -1,
+      32,    -1,    -1,    35,    36,    37,    38,    39,    12,    13,
+      14,    15,    16,    17,    18,    19,    20,    21,    22,    -1,
+      24,    -1,    26,    27,    28,    29,    -1,    31,    32,    -1,
+      -1,    35,    12,    13,    14,    15,    16,    17,    18,    19,
+      20,    21,    22,    -1,    24,    -1,    26,    27,    28,    29,
+      -1,    31,    32,    -1,    -1,    35,    12,    13,    14,    15,
       16,    17,    18,    19,    20,    21,    22,    -1,    24,    -1,
-      26,    27,    28,    29,    -1,    31,    32,    -1,    -1,    35,
-      12,    13,    14,    15,    16,    17,    18,    19,    20,    21,
-      22,    -1,    24,    -1,    26,    27,    28,    29,    -1,    31,
-      32,    -1,    -1,    35,    12,    13,    14,    15,    16,    17,
-      18,    19,    20,    21,    22,    -1,    24,    -1,    26,    27,
-      28,    29,    -1,    31,    32,    -1,    34,    12,    13,    14,
-      15,    16,    17,    18,    19,    20,    21,    22,    -1,    24,
-      -1,    26,    27,    28,    29,    -1,    31,    32,    -1,    34,
-      12,    13,    14,    15,    16,    17,    18,    19,    20,    21,
-      22,    -1,    24,    -1,    26,    27,    28,    29,    -1,    31,
-      32,    -1,    34,    12,    13,    14,    15,    16,    17,    18,
-      19,    20,    21,    22,    -1,    24,    -1,    26,    27,    28,
-      29,    -1,    31,    32,    -1,    34,    12,    13,    14,    15,
-      16,    17,    -1,    19,    20,    21,    22,    -1,    24,    -1,
       26,    27,    28,    29,    -1,    31,    32,    -1,    34,    12,
-      13,    14,    15,    16,    17,    -1,    19,    20,    21,    22,
+      13,    14,    15,    16,    17,    18,    19,    20,    21,    22,
       -1,    24,    -1,    26,    27,    28,    29,    -1,    31,    32,
-      12,    13,    14,    -1,    -1,    17,    -1,    19,    20,    21,
-      22,    -1,    24,    -1,    26,    27,    28,    29,    -1,    12,
-      32,    14,    -1,    -1,    17,    -1,    19,    20,    21,    22,
-      -1,    24,    -1,    26,    27,    28,    29,    12,    -1,    32,
-      -1,    -1,    17,    -1,    19,    20,    21,    22,    -1,    24,
-      -1,    26,    27,    28,    29,    -1,    17,    32,    19,    20,
+      -1,    34,    12,    13,    14,    15,    16,    17,    18,    19,
+      20,    21,    22,    -1,    24,    -1,    26,    27,    28,    29,
+      -1,    31,    32,    -1,    34,    12,    13,    14,    15,    16,
+      17,    18,    19,    20,    21,    22,    -1,    24,    -1,    26,
+      27,    28,    29,    -1,    31,    32,    -1,    34,    12,    13,
+      14,    15,    16,    17,    -1,    19,    20,    21,    22,    -1,
+      24,    -1,    26,    27,    28,    29,    -1,    31,    32,    -1,
+      34,    12,    13,    14,    15,    16,    17,    -1,    19,    20,
       21,    22,    -1,    24,    -1,    26,    27,    28,    29,    -1,
-      17,    32,    19,    -1,    21,    22,    17,    24,    19,    26,
-      27,    28,    -1,    -1,    -1,    32,    27,    28,    25,    -1,
-      27,    32,    -1,    30,    -1,    32,    -1,    -1,    35,    36,
-      37,    38,    39,    25,    -1,    27,    -1,    -1,    30,    -1,
-      32,    -1,    34,    -1,    36,    37,    38,    39,    25,    -1,
-      27,    -1,    -1,    30,    -1,    32,    -1,    -1,    -1,    36,
-      37,    38,    39
+      31,    32,    12,    13,    14,    -1,    -1,    17,    -1,    19,
+      20,    21,    22,    -1,    24,    -1,    26,    27,    28,    29,
+      -1,    12,    32,    14,    -1,    -1,    17,    -1,    19,    20,
+      21,    22,    -1,    24,    -1,    26,    27,    28,    29,    12,
+      -1,    32,    -1,    -1,    17,    -1,    19,    20,    21,    22,
+      -1,    24,    -1,    26,    27,    28,    29,    -1,    17,    32,
+      19,    20,    21,    22,    -1,    24,    -1,    26,    27,    28,
+      29,    -1,    17,    32,    19,    -1,    21,    22,    -1,    24,
+      -1,    26,    27,    28,    25,    -1,    27,    32,    -1,    30,
+      -1,    32,    -1,    -1,    35,    36,    37,    38,    39,    25,
+      -1,    27,    -1,    -1,    30,    -1,    32,    -1,    34,    -1,
+      36,    37,    38,    39,    25,    -1,    27,    -1,    -1,    30,
+      -1,    32,    -1,    -1,    -1,    36,    37,    38,    39
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -828,8 +823,8 @@ static const yytype_int8 yystos[] =
       35,    56,    33,    54,    55,    33,    51,    55,    35,    34,
       34,    56,    56,    56,    56,    56,    56,    56,    56,    56,
       56,    56,    56,    56,    56,    56,    56,    56,    56,    56,
-      48,    56,    56,    35,    33,    55,    18,    34,    34,    34,
-      56,    55,    55,    34,     5,    55
+      48,    56,    56,    35,    55,    33,    18,    34,    34,    34,
+      33,    56,    55,    55,    34,     5,    55
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
@@ -839,10 +834,10 @@ static const yytype_int8 yyr1[] =
       44,    45,    45,    45,    45,    45,    46,    47,    47,    48,
       48,    49,    49,    50,    50,    50,    50,    51,    52,    52,
       52,    53,    53,    54,    54,    55,    55,    55,    55,    55,
-      55,    55,    55,    55,    56,    56,    56,    56,    56,    56,
+      55,    55,    55,    55,    55,    56,    56,    56,    56,    56,
       56,    56,    56,    56,    56,    56,    56,    56,    56,    56,
       56,    56,    56,    56,    56,    56,    56,    56,    56,    56,
-      56,    56,    56
+      56,    56,    56,    56
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
@@ -851,11 +846,11 @@ static const yytype_int8 yyr2[] =
        0,     2,     1,     1,     1,     1,     2,     2,     2,     3,
        3,     1,     1,     1,     1,     1,     4,     1,     3,     1,
        2,     2,     3,     1,     1,     2,     2,     3,     1,     3,
-       0,     1,     3,     1,     2,     3,     2,     7,     5,     5,
-       3,     2,     2,     1,     3,     3,     3,     3,     3,     3,
+       0,     1,     3,     1,     2,     4,     3,     2,     7,     5,
+       5,     3,     2,     2,     1,     3,     3,     3,     3,     3,
        3,     3,     3,     3,     3,     3,     3,     3,     3,     3,
-       3,     3,     2,     2,     2,     3,     4,     6,     1,     1,
-       1,     1,     3
+       3,     3,     3,     2,     2,     2,     3,     4,     6,     1,
+       1,     1,     1,     3
 };
 
 
@@ -1551,433 +1546,439 @@ yyreduce:
   switch (yyn)
     {
   case 2:
-#line 78 "uccompiler.y"
+#line 79 "uccompiler.y"
                                                                                 {(yyval.nonterminal) = myprogram = insert_element("Program", (yyvsp[0].nonterminal));}
-#line 1557 "y.tab.c"
+#line 1552 "y.tab.c"
     break;
 
   case 3:
-#line 81 "uccompiler.y"
+#line 82 "uccompiler.y"
                                                                                 {(yyval.nonterminal) = insert_element("FunctionsAndDeclarations", (yyvsp[0].nonterminal));}
-#line 1563 "y.tab.c"
+#line 1558 "y.tab.c"
     break;
 
   case 4:
-#line 82 "uccompiler.y"
+#line 83 "uccompiler.y"
                                                                                 {(yyval.nonterminal) = insert_element("FunctionsAndDeclarations", (yyvsp[0].nonterminal));}
-#line 1569 "y.tab.c"
+#line 1564 "y.tab.c"
     break;
 
   case 5:
-#line 83 "uccompiler.y"
+#line 84 "uccompiler.y"
                                                                                 {(yyval.nonterminal) = insert_element("FunctionsAndDeclarations", (yyvsp[0].nonterminal));}
-#line 1575 "y.tab.c"
+#line 1570 "y.tab.c"
     break;
 
   case 6:
-#line 84 "uccompiler.y"
+#line 85 "uccompiler.y"
                                                                                 {(yyvsp[-1].nonterminal) -> next = (yyvsp[0].nonterminal);}
-#line 1581 "y.tab.c"
+#line 1576 "y.tab.c"
     break;
 
   case 7:
-#line 85 "uccompiler.y"
+#line 86 "uccompiler.y"
                                                                                 {(yyvsp[-1].nonterminal) -> next = (yyvsp[0].nonterminal);}
-#line 1587 "y.tab.c"
+#line 1582 "y.tab.c"
     break;
 
   case 8:
-#line 86 "uccompiler.y"
+#line 87 "uccompiler.y"
                                                                                 {(yyvsp[-1].nonterminal) -> next = (yyvsp[0].nonterminal);}
-#line 1593 "y.tab.c"
+#line 1588 "y.tab.c"
     break;
 
   case 9:
-#line 89 "uccompiler.y"
+#line 90 "uccompiler.y"
                                                                                 {(yyvsp[-1].nonterminal)-> next = (yyvsp[0].nonterminal); (yyvsp[-2].nonterminal)-> next = (yyvsp[-1].nonterminal); (yyval.nonterminal) = insert_element("FunctionDefinition", (yyvsp[-2].nonterminal));}
-#line 1599 "y.tab.c"
+#line 1594 "y.tab.c"
     break;
 
   case 10:
-#line 92 "uccompiler.y"
-                                                                                {;}
-#line 1605 "y.tab.c"
+#line 93 "uccompiler.y"
+                                                                                {(yyvsp[-2].nonterminal)-> next = (yyvsp[-1].nonterminal); (yyval.nonterminal) = insert_element("FunctionDeclaration", (yyvsp[-2].nonterminal));}
+#line 1600 "y.tab.c"
     break;
 
   case 11:
-#line 95 "uccompiler.y"
-                                                                                {;}
-#line 1611 "y.tab.c"
+#line 96 "uccompiler.y"
+                                                                                {(yyval.nonterminal) = insert_element("Char", NULL);}
+#line 1606 "y.tab.c"
     break;
 
   case 12:
-#line 96 "uccompiler.y"
-                                                                                {;}
-#line 1617 "y.tab.c"
+#line 97 "uccompiler.y"
+                                                                                {(yyval.nonterminal) = insert_element("Int", NULL);}
+#line 1612 "y.tab.c"
     break;
 
   case 13:
-#line 97 "uccompiler.y"
-                                                                                {;}
-#line 1623 "y.tab.c"
+#line 98 "uccompiler.y"
+                                                                                {(yyval.nonterminal) = insert_element("Void", NULL);}
+#line 1618 "y.tab.c"
     break;
 
   case 14:
-#line 98 "uccompiler.y"
-                                                                                {;}
-#line 1629 "y.tab.c"
+#line 99 "uccompiler.y"
+                                                                                {(yyval.nonterminal) = insert_element("Short", NULL);}
+#line 1624 "y.tab.c"
     break;
 
   case 15:
-#line 99 "uccompiler.y"
-                                                                                {;}
-#line 1635 "y.tab.c"
+#line 100 "uccompiler.y"
+                                                                                {(yyval.nonterminal) = insert_element("Double", NULL);}
+#line 1630 "y.tab.c"
     break;
 
   case 16:
-#line 102 "uccompiler.y"
-                                                                                {;}
-#line 1641 "y.tab.c"
+#line 103 "uccompiler.y"
+                                                                                {sprintf(string, "Id(%s)", yylval.terminal); (yyval.nonterminal) = insert_element(strdup(string), NULL); (yyval.nonterminal) -> next = (yyvsp[-1].nonterminal);}
+#line 1636 "y.tab.c"
     break;
 
   case 17:
-#line 105 "uccompiler.y"
-                                                                                {;}
-#line 1647 "y.tab.c"
+#line 106 "uccompiler.y"
+                                                                                {(yyval.nonterminal) = insert_element("ParamList", (yyvsp[0].nonterminal));}
+#line 1642 "y.tab.c"
     break;
 
   case 18:
-#line 106 "uccompiler.y"
-                                                                                {;}
-#line 1653 "y.tab.c"
+#line 107 "uccompiler.y"
+                                                                                {(yyvsp[-2].nonterminal) -> next = (yyvsp[0].nonterminal); (yyval.nonterminal) = (yyvsp[-2].nonterminal);}
+#line 1648 "y.tab.c"
     break;
 
   case 19:
-#line 109 "uccompiler.y"
-                                                                                {;}
-#line 1659 "y.tab.c"
+#line 110 "uccompiler.y"
+                                                                                {(yyval.nonterminal) = insert_element("ParamDeclaration", (yyvsp[0].nonterminal));}
+#line 1654 "y.tab.c"
     break;
 
   case 20:
-#line 110 "uccompiler.y"
-                                                                                {;}
-#line 1665 "y.tab.c"
+#line 111 "uccompiler.y"
+                                                                                {sprintf(string, "Id(%s)", yylval.terminal); (yyvsp[-1].nonterminal) ->next = insert_element(strdup(string), NULL); (yyval.nonterminal) = insert_element("ParamDeclaration", (yyvsp[-1].nonterminal));}
+#line 1660 "y.tab.c"
     break;
 
   case 21:
-#line 113 "uccompiler.y"
-                                                                                {;}
-#line 1671 "y.tab.c"
+#line 114 "uccompiler.y"
+                                                                                {(yyval.nonterminal) = insert_element("FuncBody", NULL);}
+#line 1666 "y.tab.c"
     break;
 
   case 22:
-#line 114 "uccompiler.y"
-                                                                                {;}
-#line 1677 "y.tab.c"
+#line 115 "uccompiler.y"
+                                                                                {(yyval.nonterminal) = insert_element("FuncBody", (yyvsp[-1].nonterminal));}
+#line 1672 "y.tab.c"
     break;
 
   case 23:
-#line 117 "uccompiler.y"
-                                                                                {;}
-#line 1683 "y.tab.c"
+#line 118 "uccompiler.y"
+                                                                                {(yyval.nonterminal) = (yyvsp[0].nonterminal);}
+#line 1678 "y.tab.c"
     break;
 
   case 24:
-#line 118 "uccompiler.y"
-                                                                                {;}
-#line 1689 "y.tab.c"
+#line 119 "uccompiler.y"
+                                                                                {(yyval.nonterminal) = (yyvsp[0].nonterminal);}
+#line 1684 "y.tab.c"
     break;
 
   case 25:
-#line 119 "uccompiler.y"
-                                                                                {;}
-#line 1695 "y.tab.c"
+#line 120 "uccompiler.y"
+                                                                                {(yyvsp[-1].nonterminal) -> next = (yyvsp[0].nonterminal); (yyval.nonterminal) = (yyvsp[-1].nonterminal);}
+#line 1690 "y.tab.c"
     break;
 
   case 26:
-#line 120 "uccompiler.y"
-                                                                                {;}
-#line 1701 "y.tab.c"
+#line 121 "uccompiler.y"
+                                                                                {(yyvsp[-1].nonterminal) -> next = (yyvsp[0].nonterminal); (yyval.nonterminal) = (yyvsp[-1].nonterminal);}
+#line 1696 "y.tab.c"
     break;
 
   case 27:
-#line 123 "uccompiler.y"
-                                                                                 {;}
-#line 1707 "y.tab.c"
+#line 124 "uccompiler.y"
+                                                                                {(yyvsp[-2].nonterminal) -> next = (yyvsp[-1].nonterminal); (yyval.nonterminal) = insert_element("Declaration", (yyvsp[-2].nonterminal));}
+#line 1702 "y.tab.c"
     break;
 
   case 28:
-#line 126 "uccompiler.y"
-                                                                                {;}
-#line 1713 "y.tab.c"
+#line 127 "uccompiler.y"
+                                                                                {(yyval.nonterminal) = (yyvsp[0].nonterminal);}
+#line 1708 "y.tab.c"
     break;
 
   case 29:
-#line 127 "uccompiler.y"
-                                                                                {;}
-#line 1719 "y.tab.c"
+#line 128 "uccompiler.y"
+                                                                                {(yyvsp[-2].nonterminal) -> next = (yyvsp[0].nonterminal); (yyval.nonterminal) = (yyvsp[-2].nonterminal);}
+#line 1714 "y.tab.c"
     break;
 
   case 30:
-#line 128 "uccompiler.y"
-                                                                                {;}
-#line 1725 "y.tab.c"
+#line 129 "uccompiler.y"
+                                                                                {(yyval.nonterminal) = NULL;}
+#line 1720 "y.tab.c"
     break;
 
   case 31:
-#line 131 "uccompiler.y"
-                                                                                {;}
-#line 1731 "y.tab.c"
+#line 132 "uccompiler.y"
+                                                                                {sprintf(string, "Id(%s)", yylval.terminal); (yyval.nonterminal) = insert_element(strdup(string), NULL);}
+#line 1726 "y.tab.c"
     break;
 
   case 32:
-#line 132 "uccompiler.y"
-                                                                                {;}
-#line 1737 "y.tab.c"
+#line 133 "uccompiler.y"
+                                                                                {sprintf(string, "Id(%s)", yylval.terminal); (yyval.nonterminal) = insert_element(strdup(string), NULL); (yyval.nonterminal) -> next = (yyvsp[0].nonterminal);}
+#line 1732 "y.tab.c"
     break;
 
   case 33:
-#line 135 "uccompiler.y"
-                                                                                {;}
-#line 1743 "y.tab.c"
+#line 136 "uccompiler.y"
+                                                                                {(yyval.nonterminal) = (yyvsp[0].nonterminal);}
+#line 1738 "y.tab.c"
     break;
 
   case 34:
-#line 136 "uccompiler.y"
-                                                                                {(yyvsp[-1].nonterminal)-> next = (yyvsp[0].nonterminal); (yyval.nonterminal) = insert_element("Statementlist", (yyvsp[-1].nonterminal));}
-#line 1749 "y.tab.c"
+#line 137 "uccompiler.y"
+                                                                                {(yyvsp[-1].nonterminal)-> next = (yyvsp[0].nonterminal); (yyval.nonterminal) = (yyvsp[-1].nonterminal);}
+#line 1744 "y.tab.c"
     break;
 
   case 35:
-#line 139 "uccompiler.y"
-                                                                                {;}
-#line 1755 "y.tab.c"
+#line 140 "uccompiler.y"
+                                                                                {(yyval.nonterminal) = insert_element("StatList", (yyvsp[-2].nonterminal));}
+#line 1750 "y.tab.c"
     break;
 
   case 36:
-#line 140 "uccompiler.y"
-                                                                                {;}
-#line 1761 "y.tab.c"
+#line 141 "uccompiler.y"
+                                                                                {(yyval.nonterminal) = (yyvsp[-1].nonterminal);}
+#line 1756 "y.tab.c"
     break;
 
   case 37:
-#line 141 "uccompiler.y"
-                                                                                {;}
-#line 1767 "y.tab.c"
+#line 142 "uccompiler.y"
+                                                                                {(yyval.nonterminal) = NULL;}
+#line 1762 "y.tab.c"
     break;
 
   case 38:
-#line 142 "uccompiler.y"
-                                                                                {(yyvsp[-2].nonterminal)-> next = (yyvsp[0].nonterminal); (yyval.nonterminal) = insert_element("IF", (yyvsp[-2].nonterminal)) ;}
-#line 1773 "y.tab.c"
+#line 143 "uccompiler.y"
+                                                                                {(yyvsp[-2].nonterminal) -> next = (yyvsp[0].nonterminal); (yyvsp[-4].nonterminal)-> next = (yyvsp[-2].nonterminal); (yyval.nonterminal) = insert_element("IF", (yyvsp[-4].nonterminal));}
+#line 1768 "y.tab.c"
     break;
 
   case 39:
-#line 143 "uccompiler.y"
-                                                                                {;}
-#line 1779 "y.tab.c"
+#line 144 "uccompiler.y"
+                                                                                {(yyvsp[-2].nonterminal) -> next = (yyvsp[0].nonterminal); (yyval.nonterminal) = insert_element("IF", (yyvsp[-2].nonterminal));}
+#line 1774 "y.tab.c"
     break;
 
   case 40:
-#line 144 "uccompiler.y"
-                                                                                {;}
-#line 1785 "y.tab.c"
+#line 145 "uccompiler.y"
+                                                                                {(yyvsp[-2].nonterminal) -> next = (yyvsp[0].nonterminal); (yyval.nonterminal) = insert_element("While", (yyvsp[-2].nonterminal));}
+#line 1780 "y.tab.c"
     break;
 
   case 41:
-#line 145 "uccompiler.y"
-                                                                                {;}
-#line 1791 "y.tab.c"
+#line 146 "uccompiler.y"
+                                                                                {(yyval.nonterminal) = insert_element("Return", (yyvsp[-1].nonterminal));}
+#line 1786 "y.tab.c"
     break;
 
   case 42:
-#line 146 "uccompiler.y"
-                                                                                {;}
-#line 1797 "y.tab.c"
+#line 147 "uccompiler.y"
+                                                                                {(yyval.nonterminal) = insert_element("Return", NULL);}
+#line 1792 "y.tab.c"
     break;
 
   case 43:
-#line 147 "uccompiler.y"
-                                                                                {;}
-#line 1803 "y.tab.c"
+#line 148 "uccompiler.y"
+                                                                                {(yyval.nonterminal) = (yyvsp[-1].nonterminal);}
+#line 1798 "y.tab.c"
     break;
 
   case 44:
-#line 150 "uccompiler.y"
+#line 149 "uccompiler.y"
                                                                                 {;}
-#line 1809 "y.tab.c"
+#line 1804 "y.tab.c"
     break;
 
   case 45:
-#line 151 "uccompiler.y"
-                                                                                {;}
-#line 1815 "y.tab.c"
+#line 152 "uccompiler.y"
+                                                                                {(yyvsp[-2].nonterminal)->next = (yyvsp[0].nonterminal); (yyval.nonterminal) = insert_element("Store", (yyvsp[-2].nonterminal));}
+#line 1810 "y.tab.c"
     break;
 
   case 46:
-#line 152 "uccompiler.y"
-                                                                                {;}
-#line 1821 "y.tab.c"
+#line 153 "uccompiler.y"
+                                                                                {(yyvsp[-2].nonterminal)->next = (yyvsp[0].nonterminal);}
+#line 1816 "y.tab.c"
     break;
 
   case 47:
-#line 153 "uccompiler.y"
-                                                                                {;}
-#line 1827 "y.tab.c"
+#line 154 "uccompiler.y"
+                                                                                {(yyvsp[-2].nonterminal)->next = (yyvsp[0].nonterminal); (yyval.nonterminal) = insert_element("Add", (yyvsp[-2].nonterminal));}
+#line 1822 "y.tab.c"
     break;
 
   case 48:
-#line 154 "uccompiler.y"
-                                                                                {;}
-#line 1833 "y.tab.c"
+#line 155 "uccompiler.y"
+                                                                                {(yyvsp[-2].nonterminal)->next = (yyvsp[0].nonterminal); (yyval.nonterminal) = insert_element("Sub", (yyvsp[-2].nonterminal));}
+#line 1828 "y.tab.c"
     break;
 
   case 49:
-#line 155 "uccompiler.y"
-                                                                                {;}
-#line 1839 "y.tab.c"
+#line 156 "uccompiler.y"
+                                                                                {(yyvsp[-2].nonterminal)->next = (yyvsp[0].nonterminal); (yyval.nonterminal) = insert_element("Mul", (yyvsp[-2].nonterminal));}
+#line 1834 "y.tab.c"
     break;
 
   case 50:
-#line 156 "uccompiler.y"
-                                                                                {;}
-#line 1845 "y.tab.c"
+#line 157 "uccompiler.y"
+                                                                                {(yyvsp[-2].nonterminal)->next = (yyvsp[0].nonterminal); (yyval.nonterminal) = insert_element("Div", (yyvsp[-2].nonterminal));}
+#line 1840 "y.tab.c"
     break;
 
   case 51:
-#line 157 "uccompiler.y"
-                                                                                {;}
-#line 1851 "y.tab.c"
+#line 158 "uccompiler.y"
+                                                                                {(yyvsp[-2].nonterminal)->next = (yyvsp[0].nonterminal); (yyval.nonterminal) = insert_element("Mod", (yyvsp[-2].nonterminal));}
+#line 1846 "y.tab.c"
     break;
 
   case 52:
-#line 158 "uccompiler.y"
-                                                                                {;}
-#line 1857 "y.tab.c"
+#line 159 "uccompiler.y"
+                                                                                {(yyvsp[-2].nonterminal)->next = (yyvsp[0].nonterminal); (yyval.nonterminal) = insert_element("Or", (yyvsp[-2].nonterminal));}
+#line 1852 "y.tab.c"
     break;
 
   case 53:
-#line 159 "uccompiler.y"
-                                                                                {;}
-#line 1863 "y.tab.c"
+#line 160 "uccompiler.y"
+                                                                                {(yyvsp[-2].nonterminal)->next = (yyvsp[0].nonterminal); (yyval.nonterminal) = insert_element("And", (yyvsp[-2].nonterminal));}
+#line 1858 "y.tab.c"
     break;
 
   case 54:
-#line 160 "uccompiler.y"
-                                                                                {;}
-#line 1869 "y.tab.c"
+#line 161 "uccompiler.y"
+                                                                                {(yyvsp[-2].nonterminal)->next = (yyvsp[0].nonterminal); (yyval.nonterminal) = insert_element("BitWiseAnd", (yyvsp[-2].nonterminal));}
+#line 1864 "y.tab.c"
     break;
 
   case 55:
-#line 161 "uccompiler.y"
-                                                                                {;}
-#line 1875 "y.tab.c"
+#line 162 "uccompiler.y"
+                                                                                {(yyvsp[-2].nonterminal)->next = (yyvsp[0].nonterminal); (yyval.nonterminal) = insert_element("BitWiseOr", (yyvsp[-2].nonterminal));}
+#line 1870 "y.tab.c"
     break;
 
   case 56:
-#line 162 "uccompiler.y"
-                                                                                {;}
-#line 1881 "y.tab.c"
+#line 163 "uccompiler.y"
+                                                                                {(yyvsp[-2].nonterminal)->next = (yyvsp[0].nonterminal); (yyval.nonterminal) = insert_element("BitWiseXor", (yyvsp[-2].nonterminal));}
+#line 1876 "y.tab.c"
     break;
 
   case 57:
-#line 163 "uccompiler.y"
-                                                                                {;}
-#line 1887 "y.tab.c"
+#line 164 "uccompiler.y"
+                                                                                {(yyvsp[-2].nonterminal)->next = (yyvsp[0].nonterminal); (yyval.nonterminal) = insert_element("Eq", (yyvsp[-2].nonterminal));}
+#line 1882 "y.tab.c"
     break;
 
   case 58:
-#line 164 "uccompiler.y"
-                                                                                {;}
-#line 1893 "y.tab.c"
+#line 165 "uccompiler.y"
+                                                                                {(yyvsp[-2].nonterminal)->next = (yyvsp[0].nonterminal); (yyval.nonterminal) = insert_element("Ne", (yyvsp[-2].nonterminal));}
+#line 1888 "y.tab.c"
     break;
 
   case 59:
-#line 165 "uccompiler.y"
-                                                                                {;}
-#line 1899 "y.tab.c"
+#line 166 "uccompiler.y"
+                                                                                {(yyvsp[-2].nonterminal)->next = (yyvsp[0].nonterminal); (yyval.nonterminal) = insert_element("Le", (yyvsp[-2].nonterminal));}
+#line 1894 "y.tab.c"
     break;
 
   case 60:
-#line 166 "uccompiler.y"
-                                                                                {;}
-#line 1905 "y.tab.c"
+#line 167 "uccompiler.y"
+                                                                                {(yyvsp[-2].nonterminal)->next = (yyvsp[0].nonterminal); (yyval.nonterminal) = insert_element("Ge", (yyvsp[-2].nonterminal));}
+#line 1900 "y.tab.c"
     break;
 
   case 61:
-#line 167 "uccompiler.y"
-                                                                                {;}
-#line 1911 "y.tab.c"
+#line 168 "uccompiler.y"
+                                                                                {(yyvsp[-2].nonterminal)->next = (yyvsp[0].nonterminal); (yyval.nonterminal) = insert_element("Lt", (yyvsp[-2].nonterminal));}
+#line 1906 "y.tab.c"
     break;
 
   case 62:
-#line 168 "uccompiler.y"
-                                                                                {;}
-#line 1917 "y.tab.c"
+#line 169 "uccompiler.y"
+                                                                                {(yyvsp[-2].nonterminal)->next = (yyvsp[0].nonterminal); (yyval.nonterminal) = insert_element("Gt", (yyvsp[-2].nonterminal));}
+#line 1912 "y.tab.c"
     break;
 
   case 63:
-#line 169 "uccompiler.y"
-                                                                                {;}
-#line 1923 "y.tab.c"
+#line 170 "uccompiler.y"
+                                                                                {(yyval.nonterminal) = (yyvsp[0].nonterminal);}
+#line 1918 "y.tab.c"
     break;
 
   case 64:
-#line 170 "uccompiler.y"
-                                                                                {;}
-#line 1929 "y.tab.c"
+#line 171 "uccompiler.y"
+                                                                                {(yyval.nonterminal) = (yyvsp[0].nonterminal);}
+#line 1924 "y.tab.c"
     break;
 
   case 65:
-#line 171 "uccompiler.y"
-                                                                                {;}
-#line 1935 "y.tab.c"
+#line 172 "uccompiler.y"
+                                                                                {(yyval.nonterminal) = (yyvsp[0].nonterminal);}
+#line 1930 "y.tab.c"
     break;
 
   case 66:
-#line 172 "uccompiler.y"
-                                                                                {;}
-#line 1941 "y.tab.c"
+#line 173 "uccompiler.y"
+                                                                                {sprintf(string, "Id(%s)", yylval.terminal); aux = insert_element(strdup(string), NULL); (yyval.nonterminal) = insert_element("Call", aux);}
+#line 1936 "y.tab.c"
     break;
 
   case 67:
-#line 173 "uccompiler.y"
-                                                                                {;}
-#line 1947 "y.tab.c"
+#line 174 "uccompiler.y"
+                                                                                {sprintf(string, "Id(%s)", yylval.terminal); aux = insert_element(strdup(string), NULL); aux -> next = (yyvsp[-1].nonterminal); (yyval.nonterminal) = insert_element("Call", aux);}
+#line 1942 "y.tab.c"
     break;
 
   case 68:
-#line 174 "uccompiler.y"
-                                                                                {;}
-#line 1953 "y.tab.c"
+#line 175 "uccompiler.y"
+                                                                                {sprintf(string, "Id(%s)", yylval.terminal); aux = insert_element(strdup(string), NULL); aux -> next = (yyvsp[-3].nonterminal); aux -> next ->next = (yyvsp[-1].nonterminal); (yyval.nonterminal) = insert_element("Call", aux);}
+#line 1948 "y.tab.c"
     break;
 
   case 69:
-#line 175 "uccompiler.y"
-                                                                                {;}
-#line 1959 "y.tab.c"
+#line 176 "uccompiler.y"
+                                                                                {sprintf(string, "Id(%s)", yylval.terminal); (yyval.nonterminal) = insert_element(strdup(string), NULL);}
+#line 1954 "y.tab.c"
     break;
 
   case 70:
-#line 176 "uccompiler.y"
-                                                                                {;}
-#line 1965 "y.tab.c"
+#line 177 "uccompiler.y"
+                                                                                {sprintf(string, "IntLit(%s)", yylval.terminal); (yyval.nonterminal) = insert_element(strdup(string), NULL);}
+#line 1960 "y.tab.c"
     break;
 
   case 71:
-#line 177 "uccompiler.y"
-                                                                                {;}
-#line 1971 "y.tab.c"
+#line 178 "uccompiler.y"
+                                                                                {sprintf(string, "ChrLit(%s)", yylval.terminal); (yyval.nonterminal) = insert_element(strdup(string), NULL);}
+#line 1966 "y.tab.c"
     break;
 
   case 72:
-#line 178 "uccompiler.y"
-                                                                                {;}
-#line 1977 "y.tab.c"
+#line 179 "uccompiler.y"
+                                                                                {sprintf(string, "RealLit(%s)", yylval.terminal); (yyval.nonterminal) = insert_element(strdup(string), NULL);}
+#line 1972 "y.tab.c"
+    break;
+
+  case 73:
+#line 180 "uccompiler.y"
+                                                                                {(yyval.nonterminal) = (yyvsp[-1].nonterminal);}
+#line 1978 "y.tab.c"
     break;
 
 
-#line 1981 "y.tab.c"
+#line 1982 "y.tab.c"
 
       default: break;
     }
@@ -2209,7 +2210,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 181 "uccompiler.y"
+#line 183 "uccompiler.y"
 
 
 void yyerror(char *msg) {
