@@ -49,7 +49,13 @@ void yyerror(char* s);
     char * token;
 }
     // associatividades
-%left PLUS
+
+%left COMMA
+%right ASSIGN
+%left OR AND BITWISEOR BITWISEXOR BITWISEAND EQ NE GE GT LE LT PLUS MINUS MUL DIV MOD
+%right NOT
+%left LPAR RPAR
+%right ELSE
 
 %%
 
@@ -108,11 +114,11 @@ declarator: ID                                                                  
         ;
 
 statementList: statement                                                        {;}
-            |  statementList statement                                          {;}
-            |                                                                   {;}
+            |  statementList statement                                          {;}   
             ;
 
 statement: LBRACE statementList RBRACE                                          {;}
+        |  LBRACE RBRACE                                                        {;}
         |  IF LPAR expr RPAR statement ELSE statement                            {;}
         |  IF LPAR expr RPAR statement                                           {;}
         |  WHILE LPAR expr RPAR statement                                       {;}
