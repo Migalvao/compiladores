@@ -8,6 +8,30 @@ void yyerror(char* s);
 
 %}
 
+
+%token <token> GE
+%token <token> GT
+%token <token> LBRACE
+%token <token> LE
+%token <token> LPAR
+%token <token> LT
+%token <token> MINUS
+%token <token> MOD
+%token <token> NE
+%token <token> NOT
+%token <token> OR
+%token <token> PLUS
+%token <token> RBRACE
+%token <token> RPAR
+%token <token> SEMI
+%token <token> INTLIT
+%token <token> ID
+%token <token> CHRLIT
+%token <token> REALLIT
+
+%union{
+    char * token;
+}
 %%
 
 functionsAndDeclarations: functionDefinition                                    {printf("func definition");}
