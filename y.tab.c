@@ -1558,19 +1558,19 @@ yyreduce:
 
   case 3:
 #line 81 "uccompiler.y"
-                                                                                {(yyval.nonterminal) = insert_element("FuncDefinition", (yyvsp[0].nonterminal));}
+                                                                                {(yyval.nonterminal) = insert_element("FunctionsAndDeclarations", (yyvsp[0].nonterminal));}
 #line 1563 "y.tab.c"
     break;
 
   case 4:
 #line 82 "uccompiler.y"
-                                                                                {(yyval.nonterminal) = insert_element("FuncDeclaration", (yyvsp[0].nonterminal));}
+                                                                                {(yyval.nonterminal) = insert_element("FunctionsAndDeclarations", (yyvsp[0].nonterminal));}
 #line 1569 "y.tab.c"
     break;
 
   case 5:
 #line 83 "uccompiler.y"
-                                                                                {(yyval.nonterminal) = insert_element("Declaration", (yyvsp[0].nonterminal));}
+                                                                                {(yyval.nonterminal) = insert_element("FunctionsAndDeclarations", (yyvsp[0].nonterminal));}
 #line 1575 "y.tab.c"
     break;
 
@@ -1594,7 +1594,7 @@ yyreduce:
 
   case 9:
 #line 89 "uccompiler.y"
-                                                                                {;}
+                                                                                {(yyvsp[-1].nonterminal)-> next = (yyvsp[0].nonterminal); (yyvsp[-2].nonterminal)-> next = (yyvsp[-1].nonterminal); (yyval.nonterminal) = insert_element("FunctionDefinition", (yyvsp[-2].nonterminal));}
 #line 1599 "y.tab.c"
     break;
 

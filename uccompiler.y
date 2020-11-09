@@ -78,15 +78,15 @@ void yyerror(char* s);
 program: functionsAndDeclarations                                               {$$ = myprogram = insert_element("Program", $1);}
         ;
 
-functionsAndDeclarations: functionDefinition                                    {$$ = insert_element("FuncDefinition", $1);}
-                        | functionDeclaration                                   {$$ = insert_element("FuncDeclaration", $1);}
-                        | declaration                                           {$$ = insert_element("Declaration", $1);}
+functionsAndDeclarations: functionDefinition                                    {$$ = insert_element("FunctionsAndDeclarations", $1);}
+                        | functionDeclaration                                   {$$ = insert_element("FunctionsAndDeclarations", $1);}
+                        | declaration                                           {$$ = insert_element("FunctionsAndDeclarations", $1);}
                         | functionsAndDeclarations functionDefinition           {$1 -> next = $2;}
                         | functionsAndDeclarations functionDeclaration          {$1 -> next = $2;}
                         | functionsAndDeclarations declaration                  {$1 -> next = $2;}
                         ;
 
-functionDefinition: typeSpec functionDeclarator functionBody                    {;}
+functionDefinition: typeSpec functionDeclarator functionBody                    {$2-> next = $3; $1-> next = $2; $$ = insert_element("FunctionDefinition", $1);}
                     ;
                     
 functionDeclaration: typeSpec functionDeclarator SEMI                           {;}
