@@ -114,13 +114,13 @@ declarator: ID                                                                  
         ;
 
 statementList: statement                                                        {;}
-            |  statementList statement                                          {;}   
+            |  statementList statement                                          {$1-> next = $2; $$ = insert_element("Statementlist", $1);}   
             ;
 
 statement: LBRACE statementList RBRACE                                          {;}
         |  LBRACE RBRACE                                                        {;}
-        |  IF LPAR expr RPAR statement ELSE statement                            {;}
-        |  IF LPAR expr RPAR statement                                           {;}
+        |  IF LPAR expr RPAR statement ELSE statement                           {;}
+        |  IF LPAR expr RPAR statement                                          {$3->next = $5;     $$ = insert_element("IF", $3) ;}
         |  WHILE LPAR expr RPAR statement                                       {;}
         |  RETURN expr SEMI                                                     {;}
         |  RETURN SEMI                                                          {;}
