@@ -7,6 +7,7 @@
 program * myprogram;
 int yylex (void);
 void yyerror(char* s);
+char *string;
 
 %}
 
@@ -147,35 +148,35 @@ statement: LBRACE statementList RBRACE                                          
         |  SEMI                                                                 {;}                              
         ;
 
-expr:   expr ASSIGN expr                                                        {;}
-    |   expr COMMA expr                                                         {;}
-    |   expr PLUS expr                                                          {;}
-    |   expr MINUS expr                                                         {;}
-    |   expr MUL expr                                                           {;}
-    |   expr DIV expr                                                           {;}
-    |   expr MOD expr                                                           {;}
-    |   expr OR expr                                                            {;}
-    |   expr AND expr                                                           {;}
-    |   expr BITWISEAND expr                                                    {;}
-    |   expr BITWISEOR expr                                                     {;}
-    |   expr BITWISEXOR expr                                                    {;}
-    |   expr EQ expr                                                            {;}
-    |   expr NE expr                                                            {;}
-    |   expr LE expr                                                            {;}
-    |   expr GE expr                                                            {;}
-    |   expr LT expr                                                            {;}
-    |   expr GT expr                                                            {;}
-    |   PLUS expr                                                               {;}
-    |   MINUS expr                                                              {;}
-    |   NOT expr                                                                {;}
-    |   ID LPAR RPAR                                                            {;}
-    |   ID LPAR expr RPAR                                                       {;}
-    |   ID LPAR expr COMMA expr RPAR                                            {;}
-    |   ID                                                                      {;}
-    |   INTLIT                                                                  {;}
-    |   CHRLIT                                                                  {;}
-    |   REALLIT                                                                 {;}
-    |   LPAR expr RPAR                                                          {;}
+expr:   expr ASSIGN expr                                                        {$1->next = $3; $$ = insert_element("Store", $1);}
+    |   expr COMMA expr                                                         {$1->next = $3;}
+    |   expr PLUS expr                                                          {$1->next = $3; $$ = insert_element("Add", $1);}
+    |   expr MINUS expr                                                         {$1->next = $3; $$ = insert_element("Sub", $1);}
+    |   expr MUL expr                                                           {$1->next = $3; $$ = insert_element("Mul", $1);}
+    |   expr DIV expr                                                           {$1->next = $3; $$ = insert_element("Div", $1);}
+    |   expr MOD expr                                                           {$1->next = $3; $$ = insert_element("Mod", $1);}
+    |   expr OR expr                                                            {$1->next = $3; $$ = insert_element("Or", $1);}
+    |   expr AND expr                                                           {$1->next = $3; $$ = insert_element("And", $1);}
+    |   expr BITWISEAND expr                                                    {$1->next = $3; $$ = insert_element("BitWiseAnd", $1);}
+    |   expr BITWISEOR expr                                                     {$1->next = $3; $$ = insert_element("BitWiseOr", $1);}
+    |   expr BITWISEXOR expr                                                    {$1->next = $3; $$ = insert_element("BitWiseXor", $1);}
+    |   expr EQ expr                                                            {$1->next = $3; $$ = insert_element("Eq", $1);}
+    |   expr NE expr                                                            {$1->next = $3; $$ = insert_element("Ne", $1);}
+    |   expr LE expr                                                            {$1->next = $3; $$ = insert_element("Le", $1);}
+    |   expr GE expr                                                            {$1->next = $3; $$ = insert_element("Ge", $1);}
+    |   expr LT expr                                                            {$1->next = $3; $$ = insert_element("Lt", $1);}
+    |   expr GT expr                                                            {$1->next = $3; $$ = insert_element("Gt", $1);}
+    |   PLUS expr                                                               {$$ = $2;}
+    |   MINUS expr                                                              {$$ = $2;}
+    |   NOT expr                                                                {$$ = $2;}
+    |   ID LPAR RPAR                                                            {$$ = insert_element("Call", $1);}
+    |   ID LPAR expr RPAR                                                       {$1->next = $3; $$ = insert_element("Call", $1);}
+    |   ID LPAR expr COMMA expr RPAR                                            {$1->next = $3; $3->next = $5; $$ = insert_element("Call", $1);}
+    |   ID                                                                      {sprintf(string, "Id(%s)", yylval); $$ = insert_element(strdup(string), NULL);}
+    |   INTLIT                                                                  {sprintf(string, "IntLit(%s)", yylval); $$ = insert_element(strdup(string), NULL);}
+    |   CHRLIT                                                                  {sprintf(string, "ChrLit(%s)", yylval); $$ = insert_element(strdup(string), NULL);}
+    |   REALLIT                                                                 {sprintf(string, "RealLit(%s)", yylval); $$ = insert_element(strdup(string), NULL);}
+    |   LPAR expr RPAR                                                          {$$ = $2;}
     ; 
 
 %%
