@@ -15,6 +15,64 @@ void yyerror(char* s);
 %%
 
 
+functionsAndDeclarations:   functionDefinition                                  {printf("definition");}
+                        |   functionDeclaration                                 {printf("func declaration");}
+                        |   declaration                                         {printf("declaration");}
+                        |   functionsAndDeclarations functionDefinition         {printf("");}
+                        |   functionsAndDeclarations functionDeclaration        {printf("");}
+                        |   functionsAndDeclarations declaration                {printf("");}
+                        ;
+
+
+declaration:    typeSec declarator declaration                              {;}
+            |   COMMA declarator declaration                                {;}
+            |   SEMI                                                        {;}
+            ;
+
+
+typeSec:    CHAR                                                                {;}
+        |   INT                                                                 {;}
+        |   VOID                                                                {;}
+        |   SHORT                                                               {;}
+        |   DOUBLE                                                              {;}
+        ;
+
+declarator: ID                                                                  {;}
+        |   ID ASSIGN expr                                                      {;}
+        ;
+
+expr:   expr ASSIGN expr
+    |   expr COMMA expr
+    |   expr PLUS expr
+    |   expr MINUS expr
+    |   expr MUL expr
+    |   expr DIV expr
+    |   expr MOD expr
+    |   expr OR expr
+    |   expr AND expr
+    |   expr BITWISEAND expr
+    |   expr BITWISEOR expr
+    |   expr BITWISEXOR expr
+    |   expr EQ expr
+    |   expr NE expr
+    |   expr LE expr
+    |   expr GE expr
+    |   expr LT expr
+    |   expr GT expr
+    |   PLUS expr
+    |   MINUS expr
+    |   NOT expr
+    |   ID LPAR RPAR
+    |   ID LPAR expr RPAR
+    |   ID LPAR expr COMMA expr RPAR
+    |   ID
+    |   INTLIT
+    |   CHRLIT
+    |   REALLIT
+    |   LPART expr RPAR
+    ;
+
+
 FunctionsAndDeclarations −→ (FunctionDefinition | FunctionDeclaration | Declaration) {FunctionDefinition | FunctionDeclaration | Declaration}
 FunctionDefinition −→ TypeSpec FunctionDeclarator FunctionBody
 FunctionBody −→ LBRACE [DeclarationsAndStatements] RBRACE
