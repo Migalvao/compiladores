@@ -73,19 +73,19 @@ extern int yydebug;
     LE = 279,
     LPAR = 280,
     LT = 281,
-    MINUS = 282,
-    MOD = 283,
-    NE = 284,
-    NOT = 285,
-    OR = 286,
-    PLUS = 287,
-    RBRACE = 288,
-    RPAR = 289,
-    SEMI = 290,
-    INTLIT = 291,
-    ID = 292,
-    CHRLIT = 293,
-    REALLIT = 294
+    MOD = 282,
+    NE = 283,
+    NOT = 284,
+    OR = 285,
+    RBRACE = 286,
+    SEMI = 287,
+    INTLIT = 288,
+    ID = 289,
+    CHRLIT = 290,
+    REALLIT = 291,
+    PLUS = 292,
+    MINUS = 293,
+    RPAR = 294
   };
 #endif
 /* Tokens.  */
@@ -113,25 +113,25 @@ extern int yydebug;
 #define LE 279
 #define LPAR 280
 #define LT 281
-#define MINUS 282
-#define MOD 283
-#define NE 284
-#define NOT 285
-#define OR 286
-#define PLUS 287
-#define RBRACE 288
-#define RPAR 289
-#define SEMI 290
-#define INTLIT 291
-#define ID 292
-#define CHRLIT 293
-#define REALLIT 294
+#define MOD 282
+#define NE 283
+#define NOT 284
+#define OR 285
+#define RBRACE 286
+#define SEMI 287
+#define INTLIT 288
+#define ID 289
+#define CHRLIT 290
+#define REALLIT 291
+#define PLUS 292
+#define MINUS 293
+#define RPAR 294
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 48 "uccompiler.y"
+#line 45 "uccompiler.y"
 
     char * token;
 
