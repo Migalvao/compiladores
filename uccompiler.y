@@ -60,7 +60,15 @@ void yyerror(char* s);
 
 %left COMMA
 %right ASSIGN
-%left OR AND BITWISEOR BITWISEXOR BITWISEAND EQ NE GE GT LE LT PLUS MINUS MUL DIV MOD
+%left OR
+%left AND 
+%left BITWISEOR 
+%left BITWISEXOR 
+%left BITWISEAND 
+%left EQ NE 
+%left GE GT LE LT 
+%left PLUS MINUS
+%left MUL DIV MOD
 %right NOT
 %left LPAR RPAR
 %right ELSE
@@ -140,7 +148,7 @@ statement: LBRACE statementList RBRACE                                          
         ;
 
 expr:   expr ASSIGN expr                                                        {;}
-    |                                                             {;}
+    |   expr COMMA expr                                                         {;}
     |   expr PLUS expr                                                          {;}
     |   expr MINUS expr                                                         {;}
     |   expr MUL expr                                                           {;}
