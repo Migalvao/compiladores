@@ -5,12 +5,31 @@
 int yylex (void);
 void yyerror(char* s);
 
+%token <token> CHAR
+%token <token> IF
+%token <token> ELSE
+%token <token> WHILE
+%token <token> INT
+%token <token> SHORT
+%token <token> DOUBLE
+%token <token> RETURN
+%token <token> VOID
+%token <token> BITWISEAND
+%token <token> BITWISEOR
+%token <token> BITWISEXOR
+%token <token> AND
+%token <token> ASSIGN
+%token <token> MUL
+%token <token> COMMA
+%token <token> DIV
+%token <token> EQ
 
 %}
 
 
 
 %union{
+    char* token;
 }
 %%
 
