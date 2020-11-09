@@ -49,8 +49,8 @@ void yyerror(char* s);
     char * token;
 }
     // associatividades
+%left PLUS
 
-    
 %%
 
 functionsAndDeclarations: functionDefinition                                    {printf("func definition");}
@@ -95,7 +95,7 @@ declarationsAndStatements: statement                                            
                         |  declarationsAndStatements declaration                {;}
                         ;
 
-declaration: typeSec declaratorsList SEMI                                       {;}
+declaration: typeSpec declaratorsList SEMI                                       {;}
             ;
 
 declaratorsList: declarator                                                     {;}   
@@ -113,9 +113,9 @@ statementList: statement                                                        
             ;
 
 statement: LBRACE statementList RBRACE                                          {;}
-        |  IF LPAR xpr RPAR statement ELSE statement                            {;}
-        |  IF LPAR xpr RPAR statement                                           {;}
-        |  WHILE LPAR xxpr RPAR statement                                       {;}
+        |  IF LPAR expr RPAR statement ELSE statement                            {;}
+        |  IF LPAR expr RPAR statement                                           {;}
+        |  WHILE LPAR expr RPAR statement                                       {;}
         |  RETURN expr SEMI                                                     {;}
         |  RETURN SEMI                                                          {;}
         |  expr SEMI                                                            {;}       
@@ -150,7 +150,7 @@ expr:   expr ASSIGN expr                                                        
     |   INTLIT                                                                  {;}
     |   CHRLIT                                                                  {;}
     |   REALLIT                                                                 {;}
-    |   LPART expr RPAR                                                         {;}
+    |   LPAR expr RPAR                                                         {;}
     ; 
 
 %%

@@ -1,1 +1,1 @@
-lex uccompiler.l && yacc -d uccompiler.y && cc -o uccompiler lex.yy.c y.tab.c
+lex uccompiler.l && yacc -d -v uccompiler.y && cc -o uccompiler lex.yy.c y.tab.c

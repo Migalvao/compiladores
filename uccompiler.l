@@ -3,9 +3,10 @@
 /* JOÃO BERNARDO DO NASCIMENTO DOMINGUES - 2018278415 */
 
 int				    [0-9]+
-%X                  CHAR COMMENT
+%X                  COMMENT
 %{
     #include <stdbool.h>
+    #include "y.tab.h"
     bool l = false, comment_error = false;
     int line = 1, column = 1, unfinished_line, unfinished_column;
 %}
