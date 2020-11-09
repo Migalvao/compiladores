@@ -8,39 +8,107 @@ void yyerror(char* s);
 
 %}
 
-
-
-%union{
-}
 %%
 
+functionsAndDeclarations: functionDefinition                                    {printf("func definition");}
+                        | functionDeclaration                                   {printf("func declaration added");}
+                        | declaration                                           {printf("declaration");}
+                        | functionsAndDeclarations functionDefinition           {printf("definition");}
+                        | functionsAndDeclarations functionDeclaration          {printf("definition");}
+                        | functionsAndDeclarations declaration                  {printf("definition");}
+                        ;
 
-FunctionsAndDeclarations −→ (FunctionDefinition | FunctionDeclaration | Declaration) {FunctionDefinition | FunctionDeclaration | Declaration}
-FunctionDefinition −→ TypeSpec FunctionDeclarator FunctionBody
-FunctionBody −→ LBRACE [DeclarationsAndStatements] RBRACE
-DeclarationsAndStatements −→ Statement DeclarationsAndStatements | Declaration DeclarationsAndStatements | Statement | Declaration
-FunctionDeclaration −→ TypeSpec FunctionDeclarator SEMI
-FunctionDeclarator −→ ID LPAR ParameterList RPAR
-ParameterList −→ ParameterDeclaration {COMMA ParameterDeclaration}
-ParameterDeclaration −→ TypeSpec [ID]
-Declaration −→ TypeSpec Declarator {COMMA Declarator} SEMI
-TypeSpec −→ CHAR | INT | VOID | SHORT | DOUBLE
-Declarator −→ ID [ASSIGN Expr]
-Statement −→ [Expr] SEMI
-Statement −→ LBRACE {Statement} RBRACE
-Statement −→ IF LPAR Expr RPAR Statement [ELSE Statement]
-Statement −→ WHILE LPAR Expr RPAR Statement
-Statement −→ RETURN [Expr] SEMI
-Expr −→ Expr (ASSIGN | COMMA) Expr
-Expr −→ Expr (PLUS | MINUS | MUL | DIV | MOD) Expr
-Expr −→ Expr (OR | AND | BITWISEAND | BITWISEOR | BITWISEXOR) Expr
-Expr −→ Expr (EQ | NE | LE | GE | LT | GT) Expr
-Expr −→ (PLUS | MINUS | NOT) Expr
-Expr −→ ID LPAR [Expr {COMMA Expr}] RPAR
-Expr −→ ID | INTLIT | CHRLIT | REALLIT | LPAR Expr RPAR
+functionDefinition: typeSpec functionDeclarator functionBody                    {;}
+                    ;
+                    
+functionDeclaration: typeSpec functionDeclarator SEMI                           {;}
+                    ;
 
+typeSpec: CHAR          {;}
+        | INT       {;}
+        | VOID      {;}
+        | SHORT     {;}
+        | DOUBLE    {;}
+        ;
 
+functionDeclarator: ID LPAR parameterList RPAR                                  {;}
+                    ;
+                    
+parameterList: parameterDeclaration                                             {;}
+            | parameterList COMMA parameterDeclaration                          {;}
+            ;
 
+parameterDeclaration: typeSpec                                                  {;}
+                    | typeSpec ID                                               {;}
+                    ;
+
+functionBody: LBRACE RBRACE                                                     {;}
+            | LBRACE declarationsAndStatements RBRACE                           {;}
+            ;
+
+declarationsAndStatements: statement                                            {;}
+                        |  declaration                                          {;}
+                        |  declarationsAndStatements statement                  {;}
+                        |  declarationsAndStatements declaration                {;}
+                        ;
+
+declaration: typeSec declaratorsList SEMI                                       {;}
+            ;
+
+declaratorsList: declarator                                                     {;}   
+                | declaratorsList COMMA declarator                              {;}
+                |                                                               {;}
+                ;
+
+declarator: ID                                                                  {;}
+        |   ID ASSIGN expr                                                      {;}
+        ;
+
+statementList: statement                                                        {;}
+            |  statementList statement                                          {;}
+            |                                                                   {;}
+            ;
+
+statement: LBRACE statementList RBRACE                                          {;}
+        |  IF LPAR xpr RPAR statement ELSE statement                            {;}
+        |  IF LPAR xpr RPAR statement                                           {;}
+        |  WHILE LPAR xxpr RPAR statement                                       {;}
+        |  RETURN expr SEMI                                                     {;}
+        |  RETURN SEMI                                                          {;}
+        |  expr SEMI                                                            {;}       
+        |  SEMI                                                                 {;}                              
+        ;
+
+expr:   expr ASSIGN expr                                                        {;}
+    |   expr COMMA expr                                                         {;}
+    |   expr PLUS expr                                                          {;}
+    |   expr MINUS expr                                                         {;}
+    |   expr MUL expr                                                           {;}
+    |   expr DIV expr                                                           {;}
+    |   expr MOD expr                                                           {;}
+    |   expr OR expr                                                            {;}
+    |   expr AND expr                                                           {;}
+    |   expr BITWISEAND expr                                                    {;}
+    |   expr BITWISEOR expr                                                     {;}
+    |   expr BITWISEXOR expr                                                    {;}
+    |   expr EQ expr                                                            {;}
+    |   expr NE expr                                                            {;}
+    |   expr LE expr                                                            {;}
+    |   expr GE expr                                                            {;}
+    |   expr LT expr                                                            {;}
+    |   expr GT expr                                                            {;}
+    |   PLUS expr                                                               {;}
+    |   MINUS expr                                                              {;}
+    |   NOT expr                                                                {;}
+    |   ID LPAR RPAR                                                            {;}
+    |   ID LPAR expr RPAR                                                       {;}
+    |   ID LPAR expr COMMA expr RPAR                                            {;}
+    |   ID                                                                      {;}
+    |   INTLIT                                                                  {;}
+    |   CHRLIT                                                                  {;}
+    |   REALLIT                                                                 {;}
+    |   LPART expr RPAR                                                         {;}
+    ; 
 
 %%
 
