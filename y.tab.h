@@ -131,7 +131,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 56 "uccompiler.y"
+#line 57 "uccompiler.y"
 
     char * terminal;
     program * nonterminal;

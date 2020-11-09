@@ -8,6 +8,7 @@ char *string;
 program * myprogram, * aux;
 int yylex (void);
 void yyerror(char* s);
+char *string;
 
 %}
 
