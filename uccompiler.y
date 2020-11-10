@@ -136,11 +136,13 @@ declarationsAndStatements: statement                                            
                         |  declarationsAndStatements declaration                {if(! $1 -> next) {$1 -> next = $2;} else {aux =$1 -> next; while(aux->next)aux=aux->next; aux-> next = $2;  } $$ = $1;}
                         ;
 
-declaration: typeSpec declaratorsList SEMI                                      {$1 -> next = $2; $$ = insert_element("Declaration", $1);}
+declaration: typeSpec declaratorsList SEMI                                      {$$ = $2;}
             | error SEMI                                                        {; /*FAZER ERRO*/}
             ;
 
-declaratorsList: declarator                                                     {$$ = $1;}   
+declaratorsList: declarator                                                     {aux2 = insert_element(strdup(type_string), NULL);
+                                                                                    aux2 -> next = $1;
+                                                                                    $$ = insert_element("Declaration", aux2);}   
                 | declaratorsList COMMA declarator                              {
                                                                                     /*INSERIR TIPO*/
                                                                                     aux2 = insert_element(strdup(type_string), NULL);
@@ -176,10 +178,10 @@ statement: LBRACE statementList statement_error RBRACE                          
         |  LBRACE statement_error RBRACE                                              {$$ = $2;}
         |  LBRACE RBRACE                                                        {$$ = NULL;}
         |  IF LPAR expr RPAR statement_error ELSE statement_error               {$5 -> next = $7; $3 -> next = $5; $$ = insert_element("If", $3);}
-        |  IF LPAR expr RPAR statement_error                                    {$3 -> next = $5; $$ = insert_element("If", $3);}
+        |  IF LPAR expr RPAR statement_error                                    {$5 -> next = insert_element("Null", NULL); $3 -> next = $5; $$ = insert_element("If", $3);}
         |  WHILE LPAR expr RPAR statement_error                                 {$3 -> next = $5; $$ = insert_element("While", $3);}
         |  RETURN expr SEMI                                                     {$$ = insert_element("Return", $2);}
-        |  RETURN SEMI                                                          {$$ = insert_element("Return", NULL);}
+        |  RETURN SEMI                                                          {$$ = insert_element("Return", insert_element("Null", NULL));}
         |  expr SEMI                                                            {$$ = $1;}       
         |  SEMI                                                                 {$$ = NULL;}
         ;
@@ -190,7 +192,7 @@ statement_error:  error SEMI                                                    
         |  LBRACE statement_error RBRACE                                        {$$ = $2;}
         |  LBRACE RBRACE                                                        {$$ = NULL;}
         |  IF LPAR expr RPAR statement_error ELSE statement_error               {$5 -> next = $7; $3 -> next = $5; $$ = insert_element("If", $3);}
-        |  IF LPAR expr RPAR statement_error                                    {$3 -> next = $5; $$ = insert_element("If", $3);}
+        |  IF LPAR expr RPAR statement_error                                    {$5 -> next = insert_element("Null", NULL); $3 -> next = $5; $$ = insert_element("If", $3);}
         |  WHILE LPAR expr RPAR statement_error                                 {$3 -> next = $5; $$ = insert_element("While", $3);}
         |  RETURN expr SEMI                                                     {$$ = insert_element("Return", $2);}
         |  RETURN SEMI                                                          {$$ = insert_element("Return", NULL);}
