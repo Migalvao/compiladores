@@ -57,6 +57,7 @@ char string[999];
  
 %union{
     char * terminal;
+    char * idTerminal;
     program * nonterminal;
 }
     // associatividades
@@ -102,7 +103,7 @@ typeSpec: CHAR                                                                  
         | DOUBLE                                                                {$$ = insert_element("Double", NULL);}
         ;
 
-functionDeclarator: ID LPAR parameterList RPAR                                  {sprintf(string, "Id(%s)", yylval.terminal); $$ = insert_element(strdup(string), NULL); $$ -> next = $3;}
+functionDeclarator: ID LPAR parameterList RPAR                                  {sprintf(string, "Id(%s)", yylval.idTerminal); $$ = insert_element(strdup(string), NULL); $$ -> next = $3;}
                     ;
                     
 parameterList: parameterDeclaration                                             {$$ = insert_element("ParamList", $1); }
@@ -119,7 +120,7 @@ parameterList: parameterDeclaration                                             
             ;
 
 parameterDeclaration: typeSpec                                                  {$$ = insert_element("ParamDeclaration", $1);}
-                    | typeSpec ID                                               {sprintf(string, "Id(%s)", yylval.terminal); $1 ->next = insert_element(strdup(string), NULL); $$ = insert_element("ParamDeclaration", $1);}
+                    | typeSpec ID                                               {sprintf(string, "Id(%s)", yylval.idTerminal); $1 ->next = insert_element(strdup(string), NULL); $$ = insert_element("ParamDeclaration", $1);}
                     ;
 
 functionBody: LBRACE RBRACE                                                     {$$ = insert_element("FuncBody", NULL);}
@@ -140,8 +141,8 @@ declaratorsList: declarator                                                     
                 |                                                               {$$ = NULL;}
                 ;
 
-declarator: ID                                                                  {sprintf(string, "Id(%s)", yylval.terminal); $$ = insert_element(strdup(string), NULL);}
-        |   ID ASSIGN expr                                                      {printf("ID - %s\tExpr - %s\n", yylval.terminal, $3->type); sprintf(string, "Id(%s)", yylval.terminal); $$ = insert_element(strdup(string), NULL); $$ -> next = $3;}
+declarator: ID                                                                  {sprintf(string, "Id(%s)", yylval.idTerminal); $$ = insert_element(strdup(string), NULL);}
+        |   ID ASSIGN expr                                                      {printf("ID - %s\tExpr - %s\n", yylval.idTerminal, $3->type); sprintf(string, "Id(%s)", yylval.idTerminal); $$ = insert_element(strdup(string), NULL); $$ -> next = $3;}
         ;
 
 statementList: statement                                                        {$$ = $1;}
@@ -181,10 +182,10 @@ expr:   expr ASSIGN expr                                                        
     |   PLUS expr                                                               {$$ = $2;}
     |   MINUS expr                                                              {$$ = $2;}
     |   NOT expr                                                                {$$ = $2;}
-    |   ID LPAR RPAR                                                            {sprintf(string, "Id(%s)", yylval.terminal); aux = insert_element(strdup(string), NULL); $$ = insert_element("Call", aux);}
-    |   ID LPAR expr RPAR                                                       {sprintf(string, "Id(%s)", yylval.terminal); aux = insert_element(strdup(string), NULL); aux -> next = $3; $$ = insert_element("Call", aux);}
-    |   ID LPAR expr COMMA expr RPAR                                            {sprintf(string, "Id(%s)", yylval.terminal); aux = insert_element(strdup(string), NULL); aux -> next = $3; aux -> next ->next = $5; $$ = insert_element("Call", aux);}
-    |   ID                                                                      {sprintf(string, "Id(%s)", yylval.terminal); $$ = insert_element(strdup(string), NULL);}
+    |   ID LPAR RPAR                                                            {sprintf(string, "Id(%s)", yylval.idTerminal); aux = insert_element(strdup(string), NULL); $$ = insert_element("Call", aux);}
+    |   ID LPAR expr RPAR                                                       {sprintf(string, "Id(%s)", yylval.idTerminal); aux = insert_element(strdup(string), NULL); aux -> next = $3; $$ = insert_element("Call", aux);}
+    |   ID LPAR expr COMMA expr RPAR                                            {sprintf(string, "Id(%s)", yylval.idTerminal); aux = insert_element(strdup(string), NULL); aux -> next = $3; aux -> next ->next = $5; $$ = insert_element("Call", aux);}
+    |   ID                                                                      {sprintf(string, "Id(%s)", yylval.idTerminal); $$ = insert_element(strdup(string), NULL);}
     |   INTLIT                                                                  {sprintf(string, "IntLit(%s)", yylval.terminal); $$ = insert_element(strdup(string), NULL);}
     |   CHRLIT                                                                  {sprintf(string, "ChrLit(%s)", yylval.terminal); $$ = insert_element(strdup(string), NULL);}
     |   REALLIT                                                                 {sprintf(string, "RealLit(%s)", yylval.terminal); $$ = insert_element(strdup(string), NULL);}

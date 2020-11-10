@@ -56,7 +56,7 @@ auto|break|case|const|continue|inline|define|default|do|long|NULL|register|restr
 
     /* INTLIT, REALIT, CHRLIT AND ID*/
 {int}                                                                       {if(l) printf("INTLIT(%s)\n", yytext); column += yyleng;  yylval.terminal = strdup(yytext); return INTLIT;}
-([a-z]|[A-Z]|"_")([a-z]|[A-Z]|[0-9]|"_")*		                            {if(l) printf("ID(%s)\n", yytext); column += yyleng; yylval.terminal = strdup(yytext); return ID;}
+([a-z]|[A-Z]|"_")([a-z]|[A-Z]|[0-9]|"_")*		                            {if(l) printf("ID(%s)\n", yytext); column += yyleng; yylval.idTerminal = strdup(yytext); return ID;}
 \'([^\n\'\\]|\\[0-7]{1,3}|\\n|\\t|\\\\|\\'|\\\")\'	                        {if(l) printf("CHRLIT(%s)\n", yytext); column += yyleng; yylval.terminal = strdup(yytext); return CHRLIT;}
 ({int}"."{int}([Ee][\+\-]?{int})?)|{int}[Ee][\+\-]?{int}|{int}"."|"."{int}([Ee][\+\-]?{int})?|{int}"."([Ee][\+\-]?{int})             {if(l) printf("REALLIT(%s)\n", yytext); column += yyleng; yylval.terminal = strdup(yytext); return REALLIT;}
 
