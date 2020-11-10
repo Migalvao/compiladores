@@ -211,7 +211,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 58 "uccompiler.y"
+#line 59 "uccompiler.y"
 
     char * terminal;
     char * idTerminal;
@@ -604,7 +604,7 @@ static const yytype_uint8 yyrline[] =
      190,   191,   192,   193,   194,   195,   196,   197,   200,   201,
      202,   203,   204,   205,   206,   207,   208,   209,   210,   211,
      212,   213,   214,   215,   216,   217,   218,   219,   220,   221,
-     222,   223,   224,   225,   226,   227,   228,   229,   230
+     222,   223,   227,   228,   229,   230,   231,   232,   233
 };
 #endif
 
@@ -2018,7 +2018,7 @@ yyreduce:
 
   case 59:
 #line 201 "uccompiler.y"
-                                                                                {(yyvsp[-2].nonterminal)->next = (yyvsp[0].nonterminal); (yyval.nonterminal) = (yyvsp[-2].nonterminal);}
+                                                                                {aux = (yyvsp[-2].nonterminal); while(aux->next) aux=aux->next; aux->next = (yyvsp[0].nonterminal); (yyval.nonterminal) = (yyvsp[-2].nonterminal);}
 #line 2023 "y.tab.c"
     break;
 
@@ -2150,54 +2150,57 @@ yyreduce:
 
   case 81:
 #line 223 "uccompiler.y"
-                                                                                {(yyvsp[-5].nonterminal) -> next = (yyvsp[-3].nonterminal); (yyvsp[-5].nonterminal) -> next ->next = (yyvsp[-1].nonterminal); (yyval.nonterminal) = insert_element("Call", (yyvsp[-5].nonterminal));}
-#line 2155 "y.tab.c"
+                                                                                {
+                                                                                aux = (yyvsp[-3].nonterminal); while(aux->next) aux = aux ->next; aux ->next = (yyvsp[-1].nonterminal); 
+                                                                                (yyvsp[-5].nonterminal) -> next = (yyvsp[-3].nonterminal); 
+                                                                                (yyval.nonterminal) = insert_element("Call", (yyvsp[-5].nonterminal));}
+#line 2158 "y.tab.c"
     break;
 
   case 82:
-#line 224 "uccompiler.y"
+#line 227 "uccompiler.y"
                                                                                 {(yyval.nonterminal) = (yyvsp[0].nonterminal);}
-#line 2161 "y.tab.c"
+#line 2164 "y.tab.c"
     break;
 
   case 83:
-#line 225 "uccompiler.y"
+#line 228 "uccompiler.y"
                                                                                 {sprintf(string, "IntLit(%s)", yylval.terminal); (yyval.nonterminal) = insert_element(strdup(string), NULL);}
-#line 2167 "y.tab.c"
+#line 2170 "y.tab.c"
     break;
 
   case 84:
-#line 226 "uccompiler.y"
+#line 229 "uccompiler.y"
                                                                                 {sprintf(string, "ChrLit(%s)", yylval.terminal); (yyval.nonterminal) = insert_element(strdup(string), NULL);}
-#line 2173 "y.tab.c"
+#line 2176 "y.tab.c"
     break;
 
   case 85:
-#line 227 "uccompiler.y"
+#line 230 "uccompiler.y"
                                                                                 {sprintf(string, "RealLit(%s)", yylval.terminal); (yyval.nonterminal) = insert_element(strdup(string), NULL);}
-#line 2179 "y.tab.c"
+#line 2182 "y.tab.c"
     break;
 
   case 86:
-#line 228 "uccompiler.y"
+#line 231 "uccompiler.y"
                                                                                 {(yyval.nonterminal) = (yyvsp[-1].nonterminal);}
-#line 2185 "y.tab.c"
+#line 2188 "y.tab.c"
     break;
 
   case 87:
-#line 229 "uccompiler.y"
+#line 232 "uccompiler.y"
                                                                                 {(yyval.nonterminal) = insert_element("Erro", NULL); /* ERRO */}
-#line 2191 "y.tab.c"
+#line 2194 "y.tab.c"
     break;
 
   case 88:
-#line 230 "uccompiler.y"
+#line 233 "uccompiler.y"
                                                                                 {(yyval.nonterminal) = insert_element("Erro", NULL); /* ERRO */ }
-#line 2197 "y.tab.c"
+#line 2200 "y.tab.c"
     break;
 
 
-#line 2201 "y.tab.c"
+#line 2204 "y.tab.c"
 
       default: break;
     }
@@ -2429,7 +2432,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 233 "uccompiler.y"
+#line 236 "uccompiler.y"
 
 
 

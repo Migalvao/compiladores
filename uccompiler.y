@@ -53,7 +53,8 @@ char string[999], type_string[10];
 
 %type <nonterminal> functionsAndDeclarations functionDefinition functionDeclaration typeSpec functionDeclarator
 %type <nonterminal> parameterList parameterDeclaration functionBody declarationsAndStatements declaration
-%type <nonterminal> declaratorsList declarator statementList statement expr program id_token statement_error error
+%type <nonterminal> declaratorsList declarator statementList statement expr program id_token statement_error 
+%type <terminal> error
  
 %union{
     char * terminal;
@@ -62,7 +63,6 @@ char string[999], type_string[10];
 }
     // associatividades
 
-%right ID
 %left COMMA
 %right ASSIGN
 %left OR
@@ -198,7 +198,7 @@ statement_error:  error SEMI                                                    
         ;
 
 expr:   expr ASSIGN expr                                                        {$1->next = $3; $$ = insert_element("Store", $1);}
-    |   expr COMMA expr                                                         {$1->next = $3; $$ = $1;}
+    |   expr COMMA expr                                                         {aux = $1; while(aux->next) aux=aux->next; aux->next = $3; $$ = $1;}
     |   expr PLUS expr                                                          {$1->next = $3; $$ = insert_element("Add", $1);}
     |   expr MINUS expr                                                         {$1->next = $3; $$ = insert_element("Sub", $1);}
     |   expr MUL expr                                                           {$1->next = $3; $$ = insert_element("Mul", $1);}
@@ -220,7 +220,10 @@ expr:   expr ASSIGN expr                                                        
     |   NOT expr                                                                {$$ = $2;}
     |   id_token LPAR RPAR                                                      {$$ = insert_element("Call", $1);}
     |   id_token LPAR expr RPAR                                                 {$1 -> next = $3; $$ = insert_element("Call", $1);}
-    |   id_token LPAR expr COMMA expr RPAR                                      {$1 -> next = $3; $1 -> next ->next = $5; $$ = insert_element("Call", $1);}
+    |   id_token LPAR expr COMMA expr RPAR                                      {
+                                                                                aux = $3; while(aux->next) aux = aux ->next; aux ->next = $5; 
+                                                                                $1 -> next = $3; 
+                                                                                $$ = insert_element("Call", $1);}
     |   id_token                                                                {$$ = $1;}
     |   INTLIT                                                                  {sprintf(string, "IntLit(%s)", yylval.terminal); $$ = insert_element(strdup(string), NULL);}
     |   CHRLIT                                                                  {sprintf(string, "ChrLit(%s)", yylval.terminal); $$ = insert_element(strdup(string), NULL);}
