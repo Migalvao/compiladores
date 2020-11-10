@@ -53,15 +53,13 @@ char string[999], type_string[10];
 
 %type <nonterminal> functionsAndDeclarations functionDefinition functionDeclaration typeSpec functionDeclarator
 %type <nonterminal> parameterList parameterDeclaration functionBody declarationsAndStatements declaration
-%type <nonterminal> declaratorsList declarator statementList statement expr program id_token statement_error
+%type <nonterminal> declaratorsList declarator statementList statement expr program id_token statement_error error
  
 %union{
     char * terminal;
     char * idTerminal;
     program * nonterminal;
 }
-
-%define parse.error verbose
     // associatividades
 
 %right ID
@@ -137,7 +135,7 @@ declarationsAndStatements: statement                                            
                         ;
 
 declaration: typeSpec declaratorsList SEMI                                      {$$ = $2;}
-            | error SEMI                                                        {; /*FAZER ERRO*/}
+            | error SEMI                                                        {$$ = insert_element("Erro", NULL); /*FAZER ERRO*/}
             ;
 
 declaratorsList: declarator                                                     {aux2 = insert_element(strdup(type_string), NULL);
@@ -186,8 +184,8 @@ statement: LBRACE statementList statement_error RBRACE                          
         |  SEMI                                                                 {$$ = NULL;}
         ;
 
-statement_error:  error SEMI                                                    {printf("Erro geral!\n"); /* FAZER ERRO*/ } 
-        |  LBRACE error RBRACE                                                  {printf("Erro brackets!\n"); /*FAZER ERRO*/ }   
+statement_error:  error SEMI                                                    {$$ = insert_element("Erro", NULL); /*ERRO*/ } 
+        |  LBRACE error RBRACE                                                  {$$ = insert_element("Erro", NULL); /* ERRO*/ }   
         |  LBRACE statementList statement_error RBRACE                          {if(! $2 -> next) {$2 -> next = $3;} else {aux =$2 -> next; while(aux->next)aux=aux->next; aux-> next = $3;}  $$ = insert_element("StatList", $2);}
         |  LBRACE statement_error RBRACE                                        {$$ = $2;}
         |  LBRACE RBRACE                                                        {$$ = NULL;}
@@ -228,8 +226,8 @@ expr:   expr ASSIGN expr                                                        
     |   CHRLIT                                                                  {sprintf(string, "ChrLit(%s)", yylval.terminal); $$ = insert_element(strdup(string), NULL);}
     |   REALLIT                                                                 {sprintf(string, "RealLit(%s)", yylval.terminal); $$ = insert_element(strdup(string), NULL);}
     |   LPAR expr RPAR                                                          {$$ = $2;}
-    |   id_token LPAR error RPAR                                                {printf("Erro na call!\n"); /* FAZER ERRO */}
-    |   LPAR error RPAR                                                         {printf("Erro nos parentesis!\n"); /* FAZER ERRO */ }   
+    |   id_token LPAR error RPAR                                                {$$ = insert_element("Erro", NULL); /* ERRO */}
+    |   LPAR error RPAR                                                         {$$ = insert_element("Erro", NULL); /* ERRO */ }   
     ; 
 
 %%

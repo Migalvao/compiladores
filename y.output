@@ -111,7 +111,7 @@ Grammar
 Terminals, with rules where they appear
 
     $end (0) 0
-    error (256) 27 46 47 86 87
+    error <nonterminal> (256) 27 46 47 86 87
     CHAR <terminal> (258) 10
     IF <terminal> (259) 39 40 51 52
     ELSE <terminal> (260) 39 51
