@@ -2181,6 +2181,10 @@ int main(int argc, char *argv[])
     return 0;
 }
 
+void yyerror(char *s) {
+  printf("Line %d, col %d: %s: %s\n", line,(int)(column - strlen(yytext)), s, yytext);
+}
+
 int yywrap()
 {
     if(comment_error){

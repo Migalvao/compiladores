@@ -107,11 +107,11 @@ functionDeclarator: ID LPAR parameterList RPAR                                  
                     
 parameterList: parameterDeclaration                                             {$$ = insert_element("ParamList", $1); }
             | parameterList COMMA parameterDeclaration                          {
-                                                                                    /*aux = $1->children;
+                                                                                    aux = $1->children;
                                                                                     while(aux->next){
                                                                                         aux=aux->next;
                                                                                     } 
-                                                                                    aux -> next = $3; */
+                                                                                    aux -> next = $3; 
 
                                                                                     $$ = $1;
 
@@ -136,12 +136,12 @@ declaration: typeSpec declaratorsList SEMI                                      
             ;
 
 declaratorsList: declarator                                                     {$$ = $1;}   
-                | declaratorsList COMMA declarator                              {$1 -> next = $3; $$ = $1;}
+                | declaratorsList COMMA declarator                              {if($1 -> next) {$1 -> next -> next = $3;} else { $1 -> next = $3; }$$ = $1;}
                 |                                                               {$$ = NULL;}
                 ;
 
 declarator: ID                                                                  {sprintf(string, "Id(%s)", yylval.terminal); $$ = insert_element(strdup(string), NULL);}
-        |   ID ASSIGN expr                                                      {sprintf(string, "Id(%s)", yylval.terminal); $$ = insert_element(strdup(string), NULL); $$ -> next = $3;}
+        |   ID ASSIGN expr                                                      {printf("ID - %s\tExpr - %s\n", yylval.terminal, $3->type); sprintf(string, "Id(%s)", yylval.terminal); $$ = insert_element(strdup(string), NULL); $$ -> next = $3;}
         ;
 
 statementList: statement                                                        {$$ = $1;}
@@ -151,7 +151,7 @@ statementList: statement                                                        
 statement: LBRACE statementList statement RBRACE                                {$$ = insert_element("StatList", $2);}
         |  LBRACE statement RBRACE                                              {$$ = $2;}
         |  LBRACE RBRACE                                                        {$$ = NULL;}
-        |  IF LPAR expr RPAR statement ELSE statement                           {$5 -> next = $7; $3-> next = $5; $$ = insert_element("IF", $3);}
+        |  IF LPAR expr RPAR statement ELSE statement                           {$5 -> next = $7; $3 -> next = $5; $$ = insert_element("IF", $3);}
         |  IF LPAR expr RPAR statement                                          {$3 -> next = $5; $$ = insert_element("IF", $3);}
         |  WHILE LPAR expr RPAR statement                                       {$3 -> next = $5; $$ = insert_element("While", $3);}
         |  RETURN expr SEMI                                                     {$$ = insert_element("Return", $2);}
@@ -193,7 +193,4 @@ expr:   expr ASSIGN expr                                                        
 
 %%
 
-void yyerror(char *msg) {
-    printf("%s\n", msg);
-}
 

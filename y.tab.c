@@ -1646,11 +1646,11 @@ yyreduce:
   case 18:
 #line 109 "uccompiler.y"
                                                                                 {
-                                                                                    /*aux = $1->children;
+                                                                                    aux = (yyvsp[-2].nonterminal)->children;
                                                                                     while(aux->next){
                                                                                         aux=aux->next;
                                                                                     } 
-                                                                                    aux -> next = $3; */
+                                                                                    aux -> next = (yyvsp[0].nonterminal); 
 
                                                                                     (yyval.nonterminal) = (yyvsp[-2].nonterminal);
 
@@ -1720,7 +1720,7 @@ yyreduce:
 
   case 29:
 #line 139 "uccompiler.y"
-                                                                                {(yyvsp[-2].nonterminal) -> next = (yyvsp[0].nonterminal); (yyval.nonterminal) = (yyvsp[-2].nonterminal);}
+                                                                                {if((yyvsp[-2].nonterminal) -> next) {(yyvsp[-2].nonterminal) -> next -> next = (yyvsp[0].nonterminal);} else { (yyvsp[-2].nonterminal) -> next = (yyvsp[0].nonterminal); }(yyval.nonterminal) = (yyvsp[-2].nonterminal);}
 #line 1725 "y.tab.c"
     break;
 
@@ -1732,13 +1732,13 @@ yyreduce:
 
   case 31:
 #line 143 "uccompiler.y"
-                                                                                {printf("yytext - %s\n", yylval.terminal);  sprintf(string, "Id(%s)", yylval.terminal); (yyval.nonterminal) = insert_element(strdup(string), NULL);}
+                                                                                {sprintf(string, "Id(%s)", yylval.terminal); (yyval.nonterminal) = insert_element(strdup(string), NULL);}
 #line 1737 "y.tab.c"
     break;
 
   case 32:
 #line 144 "uccompiler.y"
-                                                                                {sprintf(string, "Id(%s)", yylval.terminal); (yyval.nonterminal) = insert_element(strdup(string), NULL); (yyval.nonterminal) -> next = (yyvsp[0].nonterminal);}
+                                                                                {printf("ID - %s\tExpr - %s\n", yylval.terminal, (yyvsp[0].nonterminal)->type); sprintf(string, "Id(%s)", yylval.terminal); (yyval.nonterminal) = insert_element(strdup(string), NULL); (yyval.nonterminal) -> next = (yyvsp[0].nonterminal);}
 #line 1743 "y.tab.c"
     break;
 
@@ -1774,7 +1774,7 @@ yyreduce:
 
   case 38:
 #line 154 "uccompiler.y"
-                                                                                {(yyvsp[-2].nonterminal) -> next = (yyvsp[0].nonterminal); (yyvsp[-4].nonterminal)-> next = (yyvsp[-2].nonterminal); (yyval.nonterminal) = insert_element("IF", (yyvsp[-4].nonterminal));}
+                                                                                {(yyvsp[-2].nonterminal) -> next = (yyvsp[0].nonterminal); (yyvsp[-4].nonterminal) -> next = (yyvsp[-2].nonterminal); (yyval.nonterminal) = insert_element("IF", (yyvsp[-4].nonterminal));}
 #line 1779 "y.tab.c"
     break;
 
@@ -2224,7 +2224,4 @@ yyreturn:
 #line 194 "uccompiler.y"
 
 
-void yyerror(char *msg) {
-    printf("%s\n", msg);
-}
 

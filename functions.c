@@ -41,9 +41,3 @@ void print_ast(program * my_program){
     if(my_program->next)
         print_ast(my_program->next);
 }
-
-void print_no(program * no){
-    program * aux = no;
-
-    printf("\nTipo");
-}
