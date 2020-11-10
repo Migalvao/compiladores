@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-void yyerror(char *s) {
+void yyerror(const char *s) {
   printf("Line %d, col %d: %s: %s\n", line,(int)(column - strlen(yytext)), s, yytext);
 }
 

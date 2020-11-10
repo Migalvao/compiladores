@@ -8,7 +8,7 @@
 program * myprogram, * aux;
 
 int yylex (void);
-void yyerror(char* s);
+void yyerror(const char* s);
 char string[999];
 
 %}
@@ -60,6 +60,8 @@ char string[999];
     char * idTerminal;
     program * nonterminal;
 }
+
+%define parse.error verbose
     // associatividades
 
 %left COMMA
@@ -146,14 +148,14 @@ declarator: ID                                                                  
         ;
 
 statementList: statement                                                        {$$ = $1;}
-            |  statementList statement                                          {$1-> next = $2; $$ = $1;}   
+            |  statementList statement                                          {if(! $1 -> next) {$1 -> next = $2;} else {aux =$1 -> next; while(aux->next)aux=aux->next; aux-> next = $2;  } $$ = $1;}   
             ;
 
-statement: LBRACE statementList statement RBRACE                                {$$ = insert_element("StatList", $2);}
+statement: LBRACE statementList statement RBRACE                                {if(! $2 -> next) {$2 -> next = $3;} else {aux =$2 -> next; while(aux->next)aux=aux->next; aux-> next = $3;}  $$ = insert_element("StatList", $2);}
         |  LBRACE statement RBRACE                                              {$$ = $2;}
         |  LBRACE RBRACE                                                        {$$ = NULL;}
-        |  IF LPAR expr RPAR statement ELSE statement                           {$5 -> next = $7; $3 -> next = $5; $$ = insert_element("IF", $3);}
-        |  IF LPAR expr RPAR statement                                          {$3 -> next = $5; $$ = insert_element("IF", $3);}
+        |  IF LPAR expr RPAR statement ELSE statement                           {$5 -> next = $7; $3 -> next = $5; $$ = insert_element("If", $3);}
+        |  IF LPAR expr RPAR statement                                          {$3 -> next = $5; $$ = insert_element("If", $3);}
         |  WHILE LPAR expr RPAR statement                                       {$3 -> next = $5; $$ = insert_element("While", $3);}
         |  RETURN expr SEMI                                                     {$$ = insert_element("Return", $2);}
         |  RETURN SEMI                                                          {$$ = insert_element("Return", NULL);}
