@@ -136,6 +136,7 @@ declarationsAndStatements: statement                                            
                         ;
 
 declaration: typeSpec declaratorsList SEMI                                      {$1 -> next = $2; $$ = insert_element("Declaration", $1);}
+            | aux_error                                                         {;}
             ;
 
 declaratorsList: declarator                                                     {$$ = $1;}   
@@ -163,7 +164,13 @@ statement: LBRACE statementList statement RBRACE                                
         |  RETURN expr SEMI                                                     {$$ = insert_element("Return", $2);}
         |  RETURN SEMI                                                          {$$ = insert_element("Return", NULL);}
         |  expr SEMI                                                            {$$ = $1;}       
-        |  SEMI                                                                 {;}                              
+        |  SEMI                                                                 {;}
+        |  aux_error                                                            {;}                        
+        ;
+
+
+
+aux_error: error SEMI                                                           {;}
         ;
 
 expr:   expr ASSIGN expr                                                        {$1->next = $3; $$ = insert_element("Store", $1);}
