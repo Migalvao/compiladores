@@ -87,9 +87,9 @@ program: functionsAndDeclarations                                               
 functionsAndDeclarations: functionDefinition                                    {$$ = $1;}
                         | functionDeclaration                                   {$$ = $1;}
                         | declaration                                           {$$ = $1;}
-                        | functionsAndDeclarations functionDefinition           {$1 -> next = $2;}
-                        | functionsAndDeclarations functionDeclaration          {$1 -> next = $2;}
-                        | functionsAndDeclarations declaration                  {$1 -> next = $2;}
+                        | functionsAndDeclarations functionDefinition           {if(! $1 -> next) {$1 -> next = $2;} else {aux =$1 -> next; while(aux->next)aux=aux->next; aux-> next = $2;  } $$ = $1;}
+                        | functionsAndDeclarations functionDeclaration          {if(! $1 -> next) {$1 -> next = $2;} else {aux =$1 -> next; while(aux->next)aux=aux->next; aux-> next = $2;  } $$ = $1;}
+                        | functionsAndDeclarations declaration                  {if(! $1 -> next) {$1 -> next = $2;} else {aux =$1 -> next; while(aux->next)aux=aux->next; aux-> next = $2;  } $$ = $1;}
                         ;
 
 functionDefinition: typeSpec functionDeclarator functionBody                    {$2-> next -> next = $3; $1-> next = $2; $$ = insert_element("FuncDefinition", $1);}
@@ -130,7 +130,7 @@ functionBody: LBRACE RBRACE                                                     
             ;
 
 declarationsAndStatements: statement                                            {$$ = $1;}
-                        |  declaration                                          {$$ = $1; aux = $1->children;}
+                        |  declaration                                          {$$ = $1;}
                         |  declarationsAndStatements statement                  {if(! $1 -> next) {$1 -> next = $2;} else {aux =$1 -> next; while(aux->next)aux=aux->next; aux-> next = $2;  } $$ = $1;}
                         |  declarationsAndStatements declaration                {if(! $1 -> next) {$1 -> next = $2;} else {aux =$1 -> next; while(aux->next)aux=aux->next; aux-> next = $2;  } $$ = $1;}
                         ;
@@ -163,11 +163,11 @@ statement: LBRACE statementList statement RBRACE                                
         |  RETURN expr SEMI                                                     {$$ = insert_element("Return", $2);}
         |  RETURN SEMI                                                          {$$ = insert_element("Return", NULL);}
         |  expr SEMI                                                            {$$ = $1;}       
-        |  SEMI                                                                 {;}                              
+        |  SEMI                                                                 {$$ = NULL;}                              
         ;
 
 expr:   expr ASSIGN expr                                                        {$1->next = $3; $$ = insert_element("Store", $1);}
-    |   expr COMMA expr                                                         {$1->next = $3;}
+    |   expr COMMA expr                                                         {$1->next = $3; $$ = $1;}
     |   expr PLUS expr                                                          {$1->next = $3; $$ = insert_element("Add", $1);}
     |   expr MINUS expr                                                         {$1->next = $3; $$ = insert_element("Sub", $1);}
     |   expr MUL expr                                                           {$1->next = $3; $$ = insert_element("Mul", $1);}

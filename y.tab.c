@@ -1578,19 +1578,19 @@ yyreduce:
 
   case 6:
 #line 90 "uccompiler.y"
-                                                                                {(yyvsp[-1].nonterminal) -> next = (yyvsp[0].nonterminal);}
+                                                                                {if(! (yyvsp[-1].nonterminal) -> next) {(yyvsp[-1].nonterminal) -> next = (yyvsp[0].nonterminal);} else {aux =(yyvsp[-1].nonterminal) -> next; while(aux->next)aux=aux->next; aux-> next = (yyvsp[0].nonterminal);  } (yyval.nonterminal) = (yyvsp[-1].nonterminal);}
 #line 1583 "y.tab.c"
     break;
 
   case 7:
 #line 91 "uccompiler.y"
-                                                                                {(yyvsp[-1].nonterminal) -> next = (yyvsp[0].nonterminal);}
+                                                                                {if(! (yyvsp[-1].nonterminal) -> next) {(yyvsp[-1].nonterminal) -> next = (yyvsp[0].nonterminal);} else {aux =(yyvsp[-1].nonterminal) -> next; while(aux->next)aux=aux->next; aux-> next = (yyvsp[0].nonterminal);  } (yyval.nonterminal) = (yyvsp[-1].nonterminal);}
 #line 1589 "y.tab.c"
     break;
 
   case 8:
 #line 92 "uccompiler.y"
-                                                                                {(yyvsp[-1].nonterminal) -> next = (yyvsp[0].nonterminal);}
+                                                                                {if(! (yyvsp[-1].nonterminal) -> next) {(yyvsp[-1].nonterminal) -> next = (yyvsp[0].nonterminal);} else {aux =(yyvsp[-1].nonterminal) -> next; while(aux->next)aux=aux->next; aux-> next = (yyvsp[0].nonterminal);  } (yyval.nonterminal) = (yyvsp[-1].nonterminal);}
 #line 1595 "y.tab.c"
     break;
 
@@ -1695,7 +1695,7 @@ yyreduce:
 
   case 24:
 #line 133 "uccompiler.y"
-                                                                                {(yyval.nonterminal) = (yyvsp[0].nonterminal); aux = (yyvsp[0].nonterminal)->children;}
+                                                                                {(yyval.nonterminal) = (yyvsp[0].nonterminal);}
 #line 1700 "y.tab.c"
     break;
 
@@ -1821,7 +1821,7 @@ yyreduce:
 
   case 45:
 #line 166 "uccompiler.y"
-                                                                                {;}
+                                                                                {(yyval.nonterminal) = NULL;}
 #line 1826 "y.tab.c"
     break;
 
@@ -1833,7 +1833,7 @@ yyreduce:
 
   case 47:
 #line 170 "uccompiler.y"
-                                                                                {(yyvsp[-2].nonterminal)->next = (yyvsp[0].nonterminal);}
+                                                                                {(yyvsp[-2].nonterminal)->next = (yyvsp[0].nonterminal); (yyval.nonterminal) = (yyvsp[-2].nonterminal);}
 #line 1838 "y.tab.c"
     break;
 
