@@ -7,8 +7,10 @@ int				    [0-9]+
 %{
     #include <stdbool.h>
     #include "structures.h"
+    #include "functions.h"
     #include "y.tab.h"
-    bool l = false, comment_error = false;
+
+    bool l = false, t = false, comment_error = false;
     int line = 1, column = 1, unfinished_line, unfinished_column;
     extern program * myprogram;
 
@@ -53,7 +55,7 @@ void                    {if(l) printf("VOID\n"); column += yyleng; return VOID;}
 auto|break|case|const|continue|inline|define|default|do|long|NULL|register|restrict|signed|sizeof|static|struct|switch|typedef|union|unsigned|volatile|enum|extern|float|for|goto|_Packed|_Bool|_Complex|_Imaginary|"++"|"--"|\[|\] {if(l) printf("RESERVED(%s)\n", yytext); column += yyleng;}
 
     /* INTLIT, REALIT, CHRLIT AND ID*/
-{int}                                                                       {if(l) printf("INTLIT(%s)\n", yytext); column += yyleng; yylval.terminal = strdup(yytext); return INTLIT;}
+{int}                                                                       {if(l) printf("INTLIT(%s)\n", yytext); column += yyleng;  yylval.terminal = strdup(yytext); return INTLIT;}
 ([a-z]|[A-Z]|"_")([a-z]|[A-Z]|[0-9]|"_")*		                            {if(l) printf("ID(%s)\n", yytext); column += yyleng; yylval.terminal = strdup(yytext); return ID;}
 \'([^\n\'\\]|\\[0-7]{1,3}|\\n|\\t|\\\\|\\'|\\\")\'	                        {if(l) printf("CHRLIT(%s)\n", yytext); column += yyleng; yylval.terminal = strdup(yytext); return CHRLIT;}
 ({int}"."{int}([Ee][\+\-]?{int})?)|{int}[Ee][\+\-]?{int}|{int}"."|"."{int}([Ee][\+\-]?{int})?|{int}"."([Ee][\+\-]?{int})             {if(l) printf("REALLIT(%s)\n", yytext); column += yyleng; yylval.terminal = strdup(yytext); return REALLIT;}
@@ -87,7 +89,17 @@ int main(int argc, char *argv[])
     else if(argc >= 2 && strcmp(argv[1], "-e1") == 0){
         l = false;
     }
-    yylex();
+
+    if(argc >= 2 && strcmp(argv[1], "-t") == 0){
+        t = true;
+    }
+
+    yyparse();
+
+    if(t){
+        print_ast(myprogram);
+    }
+
     return 0;
 }
 

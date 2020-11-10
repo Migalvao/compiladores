@@ -1,14 +1,15 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "structures.h"
-#include "functions.c"
+#include "functions.h"
 
-char *string;
 program * myprogram, * aux;
+
 int yylex (void);
 void yyerror(char* s);
-char *string;
+char string[999];
 
 %}
 
@@ -80,15 +81,15 @@ char *string;
 program: functionsAndDeclarations                                               {$$ = myprogram = insert_element("Program", $1);}
         ;
 
-functionsAndDeclarations: functionDefinition                                    {$$ = insert_element("FunctionsAndDeclarations", $1);}
-                        | functionDeclaration                                   {$$ = insert_element("FunctionsAndDeclarations", $1);}
-                        | declaration                                           {$$ = insert_element("FunctionsAndDeclarations", $1);}
+functionsAndDeclarations: functionDefinition                                    {$$ = $1;}
+                        | functionDeclaration                                   {$$ = $1;}
+                        | declaration                                           {$$ = $1;}
                         | functionsAndDeclarations functionDefinition           {$1 -> next = $2;}
                         | functionsAndDeclarations functionDeclaration          {$1 -> next = $2;}
                         | functionsAndDeclarations declaration                  {$1 -> next = $2;}
                         ;
 
-functionDefinition: typeSpec functionDeclarator functionBody                    {$2-> next = $3; $1-> next = $2; $$ = insert_element("FunctionDefinition", $1);}
+functionDefinition: typeSpec functionDeclarator functionBody                    {$2-> next -> next = $3; $1-> next = $2; $$ = insert_element("FunctionDefinition", $1);}
                     ;
                     
 functionDeclaration: typeSpec functionDeclarator SEMI                           {$1-> next = $2; $$ = insert_element("FunctionDeclaration", $1);}
@@ -104,8 +105,17 @@ typeSpec: CHAR                                                                  
 functionDeclarator: ID LPAR parameterList RPAR                                  {sprintf(string, "Id(%s)", yylval.terminal); $$ = insert_element(strdup(string), NULL); $$ -> next = $3;}
                     ;
                     
-parameterList: parameterDeclaration                                             {$$ = insert_element("ParamList", $1);}
-            | parameterList COMMA parameterDeclaration                          {$1 -> next = $3; $$ = $1;}
+parameterList: parameterDeclaration                                             {$$ = insert_element("ParamList", $1); }
+            | parameterList COMMA parameterDeclaration                          {
+                                                                                    /*aux = $1->children;
+                                                                                    while(aux->next){
+                                                                                        aux=aux->next;
+                                                                                    } 
+                                                                                    aux -> next = $3; */
+
+                                                                                    $$ = $1;
+
+                                                                                }
             ;
 
 parameterDeclaration: typeSpec                                                  {$$ = insert_element("ParamDeclaration", $1);}
