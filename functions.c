@@ -31,10 +31,8 @@ void print_ast(program * my_program){
 
     printf("%s\n", my_program->type);
 
-    while(children){
-        print_ast(children);
-        children = children -> next;
-    }
+    if(children)
+    print_ast(children);
 
     indent -= 2;
 

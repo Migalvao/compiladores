@@ -1077,7 +1077,7 @@ YY_RULE_SETUP
 case 36:
 YY_RULE_SETUP
 #line 59 "uccompiler.l"
-{if(l) printf("ID(%s)\n", yytext); column += yyleng; yylval.terminal = strdup(yytext); return ID;}
+{if(l) printf("ID(%s)\n", yytext); column += yyleng; yylval.idTerminal = strdup(yytext); return ID;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP

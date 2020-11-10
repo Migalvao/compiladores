@@ -134,9 +134,10 @@ union YYSTYPE
 #line 58 "uccompiler.y"
 
     char * terminal;
+    char * idTerminal;
     program * nonterminal;
 
-#line 140 "y.tab.h"
+#line 141 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
