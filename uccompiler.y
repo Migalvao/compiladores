@@ -5,11 +5,11 @@
 #include "structures.h"
 #include "functions.h"
 
-program * myprogram, * aux;
+program * myprogram, * aux, * aux2;
 
 int yylex (void);
 void yyerror(const char* s);
-char string[999];
+char string[999], type_string[10];
 
 %}
 
@@ -53,7 +53,7 @@ char string[999];
 
 %type <nonterminal> functionsAndDeclarations functionDefinition functionDeclaration typeSpec functionDeclarator
 %type <nonterminal> parameterList parameterDeclaration functionBody declarationsAndStatements declaration
-%type <nonterminal> declaratorsList declarator statementList statement expr program id_token
+%type <nonterminal> declaratorsList declarator statementList statement expr program id_token statement_error
  
 %union{
     char * terminal;
@@ -64,6 +64,7 @@ char string[999];
 %define parse.error verbose
     // associatividades
 
+%right ID
 %left COMMA
 %right ASSIGN
 %left OR
@@ -95,14 +96,14 @@ functionsAndDeclarations: functionDefinition                                    
 functionDefinition: typeSpec functionDeclarator functionBody                    {$2-> next -> next = $3; $1-> next = $2; $$ = insert_element("FuncDefinition", $1);}
                     ;
                     
-functionDeclaration: typeSpec functionDeclarator SEMI                           {$1-> next = $2; $$ = insert_element("FunctionDeclaration", $1);}
+functionDeclaration: typeSpec functionDeclarator SEMI                           {$1-> next = $2; $$ = insert_element("FuncDeclaration", $1);}
                     ;
 
-typeSpec: CHAR                                                                  {$$ = insert_element("Char", NULL);}
-        | INT                                                                   {$$ = insert_element("Int", NULL);}
-        | VOID                                                                  {$$ = insert_element("Void", NULL);}
-        | SHORT                                                                 {$$ = insert_element("Short", NULL);}
-        | DOUBLE                                                                {$$ = insert_element("Double", NULL);}
+typeSpec: CHAR                                                                  {$$ = insert_element("Char", NULL); sprintf(type_string,"Char" );}
+        | INT                                                                   {$$ = insert_element("Int", NULL); sprintf(type_string,"Int" );}
+        | VOID                                                                  {$$ = insert_element("Void", NULL); sprintf(type_string,"Void" );}
+        | SHORT                                                                 {$$ = insert_element("Short", NULL); sprintf(type_string,"Short" );}
+        | DOUBLE                                                                {$$ = insert_element("Double", NULL); sprintf(type_string,"Double" );}
         ;
 
 functionDeclarator: id_token LPAR parameterList RPAR                                  {$$ = $1; $$ -> next = $3;}
@@ -122,7 +123,7 @@ parameterList: parameterDeclaration                                             
             ;
 
 parameterDeclaration: typeSpec                                                  {$$ = insert_element("ParamDeclaration", $1);}
-                    | typeSpec id_token                                         {$1 -> next = $2; $$ = $1;}
+                    | typeSpec id_token                                         {$1 -> next = $2; $$ = insert_element("ParamDeclaration", $1);}
                     ;
 
 functionBody: LBRACE RBRACE                                                     {$$ = insert_element("FuncBody", NULL);}
@@ -136,10 +137,27 @@ declarationsAndStatements: statement                                            
                         ;
 
 declaration: typeSpec declaratorsList SEMI                                      {$1 -> next = $2; $$ = insert_element("Declaration", $1);}
+            | error SEMI                                                        {; /*FAZER ERRO*/}
             ;
 
 declaratorsList: declarator                                                     {$$ = $1;}   
-                | declaratorsList COMMA declarator                              {if(! $1 -> next) {$1 -> next = $3;} else {aux =$1 -> next; while(aux->next)aux=aux->next; aux-> next = $3;  } $$ = $1;}
+                | declaratorsList COMMA declarator                              {
+                                                                                    /*INSERIR TIPO*/
+                                                                                    aux2 = insert_element(strdup(type_string), NULL);
+                                                                                    aux2 -> next = $3;
+
+                                                                                    if(! $1 -> next) {
+                                                                                        $1 -> next = $3;
+                                                                                        $1-> next = insert_element("Declaration", aux2);
+                                                                                    } else {
+                                                                                        aux = $1 -> next; 
+                                                                                        while(aux->next)
+                                                                                            aux=aux->next; 
+                                                                                            
+                                                                                        aux-> next = insert_element("Declaration", aux2);
+                                                                                    } 
+                                                                                    $$ = $1;
+                                                                                    }
                 |                                                               {$$ = NULL;}
                 ;
 
@@ -154,16 +172,29 @@ statementList: statement                                                        
             |  statementList statement                                          {if(! $1 -> next) {$1 -> next = $2;} else {aux =$1 -> next; while(aux->next)aux=aux->next; aux-> next = $2;  } $$ = $1;}   
             ;
 
-statement: LBRACE statementList statement RBRACE                                {if(! $2 -> next) {$2 -> next = $3;} else {aux =$2 -> next; while(aux->next)aux=aux->next; aux-> next = $3;}  $$ = insert_element("StatList", $2);}
-        |  LBRACE statement RBRACE                                              {$$ = $2;}
+statement: LBRACE statementList statement_error RBRACE                                {if(! $2 -> next) {$2 -> next = $3;} else {aux =$2 -> next; while(aux->next)aux=aux->next; aux-> next = $3;}  $$ = insert_element("StatList", $2);}
+        |  LBRACE statement_error RBRACE                                              {$$ = $2;}
         |  LBRACE RBRACE                                                        {$$ = NULL;}
-        |  IF LPAR expr RPAR statement ELSE statement                           {$5 -> next = $7; $3 -> next = $5; $$ = insert_element("If", $3);}
-        |  IF LPAR expr RPAR statement                                          {$3 -> next = $5; $$ = insert_element("If", $3);}
-        |  WHILE LPAR expr RPAR statement                                       {$3 -> next = $5; $$ = insert_element("While", $3);}
+        |  IF LPAR expr RPAR statement_error ELSE statement_error               {$5 -> next = $7; $3 -> next = $5; $$ = insert_element("If", $3);}
+        |  IF LPAR expr RPAR statement_error                                    {$3 -> next = $5; $$ = insert_element("If", $3);}
+        |  WHILE LPAR expr RPAR statement_error                                 {$3 -> next = $5; $$ = insert_element("While", $3);}
         |  RETURN expr SEMI                                                     {$$ = insert_element("Return", $2);}
         |  RETURN SEMI                                                          {$$ = insert_element("Return", NULL);}
         |  expr SEMI                                                            {$$ = $1;}       
-        |  SEMI                                                                 {$$ = NULL;}                              
+        |  SEMI                                                                 {$$ = NULL;}
+        ;
+
+statement_error:  error SEMI                                                    {printf("Erro geral!\n"); /* FAZER ERRO*/ } 
+        |  LBRACE error RBRACE                                                  {printf("Erro brackets!\n"); /*FAZER ERRO*/ }   
+        |  LBRACE statementList statement_error RBRACE                          {if(! $2 -> next) {$2 -> next = $3;} else {aux =$2 -> next; while(aux->next)aux=aux->next; aux-> next = $3;}  $$ = insert_element("StatList", $2);}
+        |  LBRACE statement_error RBRACE                                        {$$ = $2;}
+        |  LBRACE RBRACE                                                        {$$ = NULL;}
+        |  IF LPAR expr RPAR statement_error ELSE statement_error               {$5 -> next = $7; $3 -> next = $5; $$ = insert_element("If", $3);}
+        |  IF LPAR expr RPAR statement_error                                    {$3 -> next = $5; $$ = insert_element("If", $3);}
+        |  WHILE LPAR expr RPAR statement_error                                 {$3 -> next = $5; $$ = insert_element("While", $3);}
+        |  RETURN expr SEMI                                                     {$$ = insert_element("Return", $2);}
+        |  RETURN SEMI                                                          {$$ = insert_element("Return", NULL);}
+        |  expr SEMI                                                            {$$ = $1;}                     
         ;
 
 expr:   expr ASSIGN expr                                                        {$1->next = $3; $$ = insert_element("Store", $1);}
@@ -195,6 +226,8 @@ expr:   expr ASSIGN expr                                                        
     |   CHRLIT                                                                  {sprintf(string, "ChrLit(%s)", yylval.terminal); $$ = insert_element(strdup(string), NULL);}
     |   REALLIT                                                                 {sprintf(string, "RealLit(%s)", yylval.terminal); $$ = insert_element(strdup(string), NULL);}
     |   LPAR expr RPAR                                                          {$$ = $2;}
+    |   id_token LPAR error RPAR                                                {printf("Erro na call!\n"); /* FAZER ERRO */}
+    |   LPAR error RPAR                                                         {printf("Erro nos parentesis!\n"); /* FAZER ERRO */ }   
     ; 
 
 %%

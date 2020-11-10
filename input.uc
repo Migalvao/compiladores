@@ -3,7 +3,9 @@ int i = 0;
 char a, b, c;
 char d, e = 'g', f;
 
-void funcao(int a, char c, int lala);
+void funcao1(int a, char c, int lala);
+void funcao2(int a, char c, int lala);
+void funcao3(int a, char c, int lala);
 
 int main(void) {
   if(5)

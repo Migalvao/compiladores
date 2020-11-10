@@ -102,7 +102,6 @@ int main(int argc, char *argv[])
     } else {
         yylex();
     }
-
     if(t && myprogram){
         print_ast(myprogram);
     }
