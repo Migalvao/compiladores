@@ -1139,7 +1139,7 @@ YY_RULE_SETUP
 case 47:
 YY_RULE_SETUP
 #line 81 "uccompiler.l"
-{printf("Line %d, col %d: illegal character (%s)\n", line, column, yytext); column += yyleng; if( !l && !e1 ){yylval.idTerminal = strdup(yytext); return ILLEGAL;}}
+{printf("Line %d, col %d: illegal character (%s)\n", line, column, yytext); column += yyleng;}
 	YY_BREAK
 case 48:
 /* rule 48 can match eol */

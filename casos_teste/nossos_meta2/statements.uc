@@ -8,7 +8,7 @@ int main(void){
     }
 
     {
-        return $;
+        return 7;
     }
 
     {{{}}}

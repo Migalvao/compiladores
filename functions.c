@@ -29,7 +29,10 @@ void print_ast(program * my_program){
         print_indent(indent);
         indent += 2;
 
-        printf("%s\n", my_program->type);
+        if(strcmp(my_program->type, "RealComma") == 0)
+            printf("Comma\n");
+        else
+            printf("%s\n", my_program->type);
 
         if(children)
         print_ast(children);
@@ -40,4 +43,34 @@ void print_ast(program * my_program){
     
     if(my_program->next)
         print_ast(my_program->next);
+}
+
+program * children_to_brother(program * no){
+    if(strcmp(no->type, "Comma") == 0){
+        program * aux, * next, * novos_irmaos;
+        if(no->children){
+            //temos de receber os irmaos desses filhos primeiro
+            novos_irmaos = children_to_brother(no->children);
+
+            aux = novos_irmaos;
+            while(aux->next)
+                aux = aux-> next;
+                //se houver mais do que um novo irmao, para poder adicionar no fim
+
+            //por os irmaos iniciais DEPOIS dos novos irmaos
+            aux->next = no->next;
+            //definir os novos irmaos como os iniciais
+            no->next = novos_irmaos;
+        }
+
+        //desfazer o no atual e devolver os irmaos para cima
+        next = no->next;
+        free(no);
+        return next;
+    } else {
+        if(strcmp(no->type, "RealComma") == 0)
+            strcpy(no->type, "Comma");
+        
+        return no;
+    }
 }

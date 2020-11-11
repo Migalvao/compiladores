@@ -1,2 +1,7 @@
-Line 11, col 16: illegal character ($)
-Line 18, col 6: syntax error: ,
+Line 1, col 1: syntax error: intttt
+Line 2, col 1: illegal character ($)
+Line 3, col 18: syntax error: ;
+Line 5, col 6: syntax error: char
+Line 8, col 8: syntax error: {
+Line 9, col 10: syntax error: )
+Line 16, col 19: syntax error: )

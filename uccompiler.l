@@ -78,7 +78,7 @@ auto|break|case|const|continue|inline|define|default|do|long|NULL|register|restr
     /* ILLEGAL CHARACTERS */
 [\t|\r| ]	                            {column += yyleng;}
 
-.           	                        {printf("Line %d, col %d: illegal character (%s)\n", line, column, yytext); column += yyleng; if( !l && !e1 ){yylval.idTerminal = strdup(yytext); return ILLEGAL;}}
+.           	                        {printf("Line %d, col %d: illegal character (%s)\n", line, column, yytext); column += yyleng;}
 \n	                                    {line += 1; column = 1;}
 
 %%

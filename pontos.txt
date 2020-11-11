@@ -1,8 +1,8 @@
-A - 297
+A - 525
 B - Syntax errors - Variable and function declarations/definitions: 30/50
 C - Syntax errors - Expressions: 90/90
-D - Syntax errors - Statements: 0
+D - Syntax errors - Statements: 15/60
 E - AST - Variable and function declarations/definitions: 80/80
-F - AST - Expressions: 20/140
-G - AST - Statements: 0/80
-H - AST - Full Programs: 77/100
+F - AST - Expressions: 140/140
+G - AST - Statements: 70/80
+H - AST - Full Programs: 100/100
