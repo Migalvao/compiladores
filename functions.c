@@ -18,7 +18,6 @@ program * insert_element(char * type,  program * children){
 }
 
 void print_indent(int local_indent){
-    
     for(int i = 0; i < local_indent; i++)
     printf(".");
 }
@@ -26,16 +25,19 @@ void print_indent(int local_indent){
 void print_ast(program * my_program){
     program * children = my_program->children;
     
-    print_indent(indent);
-    indent += 2;
+    if(strcmp(my_program->type, "Semi") != 0){    
+        print_indent(indent);
+        indent += 2;
 
-    printf("%s\n", my_program->type);
+        printf("%s\n", my_program->type);
 
-    if(children)
-    print_ast(children);
+        if(children)
+        print_ast(children);
 
-    indent -= 2;
+        indent -= 2;
 
+    }
+    
     if(my_program->next)
         print_ast(my_program->next);
 }

@@ -13,6 +13,7 @@ int				    [0-9]+
     bool l = false, e1 = false, t = false, e2 = false, comment_error = false;
     int line = 1, column = 1, unfinished_line, unfinished_column;
     extern program * myprogram;
+    extern bool is_error;
 
 %}
 
@@ -52,7 +53,7 @@ void                    {if(l) printf("VOID\n"); column += yyleng; if( !l && !e1
 \;                      {if(l) printf("SEMI\n"); column += yyleng; if( !l && !e1 ) return SEMI;}
 
     /*RESERVED WORDS*/
-auto|break|case|const|continue|inline|define|default|do|long|NULL|register|restrict|signed|sizeof|static|struct|switch|typedef|union|unsigned|volatile|enum|extern|float|for|goto|_Packed|_Bool|_Complex|_Imaginary|"++"|"--"|\[|\] {if(l) printf("RESERVED(%s)\n", yytext); column += yyleng;}
+auto|break|case|const|continue|inline|define|default|do|long|NULL|register|restrict|signed|sizeof|static|struct|switch|typedef|union|unsigned|volatile|enum|extern|float|for|goto|_Packed|_Bool|_Complex|_Imaginary|"++"|"--"|\[|\] {if(l) printf("RESERVED(%s)\n", yytext); column += yyleng; if( !l && !e1 ) return RESERVED;}
 
     /* INTLIT, REALIT, CHRLIT AND ID*/
 {int}                                                                       {if(l) printf("INTLIT(%s)\n", yytext); column += yyleng;  if( !l && !e1 ){ yylval.terminal = strdup(yytext); return INTLIT; } }
@@ -77,7 +78,7 @@ auto|break|case|const|continue|inline|define|default|do|long|NULL|register|restr
     /* ILLEGAL CHARACTERS */
 [\t|\r| ]	                            {column += yyleng;}
 
-.           	                        {printf("Line %d, col %d: illegal character (%s)\n", line, column, yytext); column += yyleng;}
+.           	                        {printf("Line %d, col %d: illegal character (%s)\n", line, column, yytext); column += yyleng; if( !l && !e1 ){yylval.idTerminal = strdup(yytext); return ILLEGAL;}}
 \n	                                    {line += 1; column = 1;}
 
 %%
@@ -102,7 +103,7 @@ int main(int argc, char *argv[])
     } else {
         yylex();
     }
-    if(t && myprogram){
+    if(t && myprogram && !is_error){
         print_ast(myprogram);
     }
 
