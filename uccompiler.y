@@ -161,7 +161,6 @@ declaratorsList: declarator                                                     
                                                                                     } 
                                                                                     $$ = $1;
                                                                                     }
-                |                                                               {$$ = NULL;}
                 ;
 
 declarator: id_token                                                                  {$$ = $1;}
@@ -178,7 +177,7 @@ statementList: statement                                                        
 
 statement: LBRACE statementList statement_error RBRACE                                {if(! $2 -> next) {$2 -> next = $3;} else {aux =$2 -> next; while(aux->next)aux=aux->next; aux-> next = $3;} i=0; aux = $2; while(aux){if(strcmp(aux->type, "Semi") != 0) i++; aux = aux->next;}   if(i>=2) $$ = insert_element("StatList", $2); else $$ = $2;}
         |  LBRACE statement_error RBRACE                                              {$$ = $2;}
-        |  LBRACE RBRACE                                                        {$$ = NULL; /*insert_element("Null", NULL);*/}
+        |  LBRACE RBRACE                                                        {$$ = insert_element("Semi", NULL); /*insert_element("Null", NULL);*/}
         |  IF LPAR expr RPAR statement_error ELSE statement_error               {if($5 && strcmp($5 -> type, "Semi") != 0){ $3 -> next = $5; } else { $3 -> next = insert_element("Null", NULL); free($5);} if($7 && strcmp($7 -> type, "Semi") != 0){ $3 -> next -> next = $7; } else { $3 -> next -> next = insert_element("Null", NULL); free($7);} $$ = insert_element("If", $3);}
         |  IF LPAR expr RPAR statement_error                                    {if($5 && strcmp($5 -> type, "Semi") != 0){ $3 -> next = $5; } else { $3 -> next = insert_element("Null", NULL); free($5);} $3 -> next -> next = insert_element("Null", NULL); $$ = insert_element("If", $3);}
         |  WHILE LPAR expr RPAR statement_error                                 {if($5 && strcmp($5 -> type, "Semi") != 0){ $3 -> next = $5; } else { $3 -> next = insert_element("Null", NULL); free($5);} $$ = insert_element("While", $3);}
@@ -192,14 +191,14 @@ statement_error:  error SEMI                                                    
         |  LBRACE error RBRACE                                                  {$$ = insert_element("Erro", NULL); is_error = true; /* ERRO*/ }   
         |  LBRACE statementList statement_error RBRACE                          {if(! $2 -> next) {$2 -> next = $3;} else {aux =$2 -> next; while(aux->next)aux=aux->next; aux-> next = $3;} i=0; aux = $2; while(aux){if(strcmp(aux->type, "Semi") != 0) i++; aux = aux->next;}   if(i>=2) $$ = insert_element("StatList", $2); else $$ = $2;}
         |  LBRACE statement_error RBRACE                                        {$$ = $2;}
-        |  LBRACE RBRACE                                                        {$$ = NULL; /*insert_element("Null", NULL);*/}
+        |  LBRACE RBRACE                                                        {$$ = insert_element("Semi", NULL); /*insert_element("Null", NULL);*/}
         |  IF LPAR expr RPAR statement_error ELSE statement_error               {if($5 && strcmp($5 -> type, "Semi") != 0){ $3 -> next = $5; } else { $3 -> next = insert_element("Null", NULL); free($5);} if($7 && strcmp($7 -> type, "Semi") != 0){ $3 -> next -> next = $7; } else { $3 -> next -> next = insert_element("Null", NULL); free($7);} $$ = insert_element("If", $3);}
         |  IF LPAR expr RPAR statement_error                                    {if($5 && strcmp($5 -> type, "Semi") != 0){ $3 -> next = $5; } else { $3 -> next = insert_element("Null", NULL); free($5);} $3 -> next -> next = insert_element("Null", NULL); $$ = insert_element("If", $3);}
         |  WHILE LPAR expr RPAR statement_error                                 {if($5 && strcmp($5 -> type, "Semi") != 0){ $3 -> next = $5; } else { $3 -> next = insert_element("Null", NULL); free($5);} $$ = insert_element("While", $3);}
         |  RETURN expr SEMI                                                     {$$ = insert_element("Return", $2);}
         |  RETURN SEMI                                                          {$$ = insert_element("Return", insert_element("Null", NULL));}
         |  expr SEMI                                                            {$$ = $1;}     
-        |  SEMI                                                                 {$$ =  insert_element("Semi", NULL);}      
+        |  SEMI                                                                 {$$ = insert_element("Semi", NULL);}      
         ;
 
 expr:   expr ASSIGN expr                                                        {$1->next = $3; $$ = insert_element("Store", $1);}
