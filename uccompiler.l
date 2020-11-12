@@ -100,12 +100,18 @@ int main(int argc, char *argv[])
 
     if(!l && !e1){
         yyparse();
+
     } else {
         yylex();
     }
+
     if(t && myprogram && !is_error){
         print_ast(myprogram);
     }
+
+    if(!l && !e1 && myprogram)
+        free_arvore(myprogram);
+        //libertar memoria
 
     return 0;
 }

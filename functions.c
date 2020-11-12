@@ -23,7 +23,6 @@ void print_indent(int local_indent){
 }
 
 void print_ast(program * my_program){
-    program * children = my_program->children;
     
     if(strcmp(my_program->type, "Semi") != 0){    
         print_indent(indent);
@@ -34,8 +33,8 @@ void print_ast(program * my_program){
         else
             printf("%s\n", my_program->type);
 
-        if(children)
-        print_ast(children);
+        if(my_program->children)
+            print_ast(my_program->children);
 
         indent -= 2;
 
@@ -73,4 +72,15 @@ program * children_to_brother(program * no){
         
         return no;
     }
+}
+
+void free_arvore(program * no){
+
+    if(no->children)
+        free_arvore(no->children);
+
+    if(no->next)
+        free_arvore(no->next);
+
+    free(no);
 }

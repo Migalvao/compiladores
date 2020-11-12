@@ -1,7 +1,7 @@
-A - 585
+A - 600
 B - Syntax errors - Variable and function declarations/definitions: 50/50
 C - Syntax errors - Expressions: 90/90
-D - Syntax errors - Statements: 45/60
+D - Syntax errors - Statements: 60/60
 E - AST - Variable and function declarations/definitions: 80/80
 F - AST - Expressions: 140/140
 G - AST - Statements: 80/80

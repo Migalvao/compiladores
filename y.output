@@ -109,43 +109,43 @@ Terminals, with rules where they appear
     $end (0) 0
     error <terminal> (256) 27 35 47 77 78
     CHAR <terminal> (258) 10
-    RESERVED <terminal> (259)
-    IF <terminal> (260) 39 40
-    ELSE <terminal> (261) 39
-    WHILE <terminal> (262) 41
-    INT <terminal> (263) 11
-    SHORT <terminal> (264) 13
-    DOUBLE <terminal> (265) 14
-    RETURN <terminal> (266) 42 43
-    VOID <terminal> (267) 12
-    BITWISEAND <terminal> (268) 58
-    BITWISEOR <terminal> (269) 59
-    BITWISEXOR <terminal> (270) 60
-    AND <terminal> (271) 57
-    ASSIGN <terminal> (272) 31 48
-    MUL <terminal> (273) 53
-    COMMA <terminal> (274) 17 29 49 50
-    DIV <terminal> (275) 54
-    EQ <terminal> (276) 61
-    GE <terminal> (277) 64
-    GT <terminal> (278) 66
-    LBRACE <terminal> (279) 20 21 35 36 37 38
-    LE <terminal> (280) 63
-    LPAR <terminal> (281) 15 39 40 41 50 70 71 76 77 78
-    LT <terminal> (282) 65
-    MINUS <terminal> (283) 52 68
-    MOD <terminal> (284) 55
-    NE <terminal> (285) 62
-    NOT <terminal> (286) 69
-    OR <terminal> (287) 56
-    PLUS <terminal> (288) 51 67
-    RBRACE <terminal> (289) 20 21 35 36 37 38
-    RPAR <terminal> (290) 15 39 40 41 50 70 71 76 77 78
-    SEMI <terminal> (291) 9 26 27 42 43 44 45 47
-    INTLIT <terminal> (292) 73
-    ID <idTerminal> (293) 32
-    CHRLIT <terminal> (294) 74
-    REALLIT <terminal> (295) 75
+    ELSE <terminal> (259) 39
+    WHILE <terminal> (260) 41
+    IF <terminal> (261) 39 40
+    INT <terminal> (262) 11
+    SHORT <terminal> (263) 13
+    DOUBLE <terminal> (264) 14
+    RETURN <terminal> (265) 42 43
+    VOID <terminal> (266) 12
+    BITWISEAND <terminal> (267) 58
+    BITWISEOR <terminal> (268) 59
+    BITWISEXOR <terminal> (269) 60
+    AND <terminal> (270) 57
+    ASSIGN <terminal> (271) 31 48
+    MUL <terminal> (272) 53
+    COMMA <terminal> (273) 17 29 49 50
+    DIV <terminal> (274) 54
+    EQ <terminal> (275) 61
+    GE <terminal> (276) 64
+    GT <terminal> (277) 66
+    LBRACE <terminal> (278) 20 21 35 36 37 38
+    LE <terminal> (279) 63
+    LPAR <terminal> (280) 15 39 40 41 50 70 71 76 77 78
+    LT <terminal> (281) 65
+    MINUS <terminal> (282) 52 68
+    MOD <terminal> (283) 55
+    NE <terminal> (284) 62
+    NOT <terminal> (285) 69
+    OR <terminal> (286) 56
+    PLUS <terminal> (287) 51 67
+    RBRACE <terminal> (288) 20 21 35 36 37 38
+    RPAR <terminal> (289) 15 39 40 41 50 70 71 76 77 78
+    SEMI <terminal> (290) 9 26 27 42 43 44 45 47
+    RESERVED <terminal> (291)
+    CHRLIT <terminal> (292) 74
+    REALLIT <terminal> (293) 75
+    INTLIT <terminal> (294) 73
+    ID <idTerminal> (295) 32
 
 
 Nonterminals, with rules where they appear
@@ -421,8 +421,8 @@ State 23
 
     error    shift, and go to state 1
     CHAR     shift, and go to state 2
-    IF       shift, and go to state 30
-    WHILE    shift, and go to state 31
+    WHILE    shift, and go to state 30
+    IF       shift, and go to state 31
     INT      shift, and go to state 3
     SHORT    shift, and go to state 4
     DOUBLE   shift, and go to state 5
@@ -435,10 +435,10 @@ State 23
     PLUS     shift, and go to state 37
     RBRACE   shift, and go to state 38
     SEMI     shift, and go to state 39
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     typeSpec                   go to state 43
     declarationsAndStatements  go to state 44
@@ -487,10 +487,10 @@ State 28
     MINUS    shift, and go to state 35
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token  go to state 46
     expr      go to state 51
@@ -513,15 +513,15 @@ State 29
 
 State 30
 
-   39 statement: IF . LPAR expr RPAR statement_error ELSE statement_error
-   40          | IF . LPAR expr RPAR statement_error
+   41 statement: WHILE . LPAR expr RPAR statement_error
 
     LPAR  shift, and go to state 55
 
 
 State 31
 
-   41 statement: WHILE . LPAR expr RPAR statement_error
+   39 statement: IF . LPAR expr RPAR statement_error ELSE statement_error
+   40          | IF . LPAR expr RPAR statement_error
 
     LPAR  shift, and go to state 56
 
@@ -536,10 +536,10 @@ State 32
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
     SEMI     shift, and go to state 57
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token  go to state 46
     expr      go to state 58
@@ -553,8 +553,8 @@ State 33
    38          | LBRACE . RBRACE
 
     error    shift, and go to state 59
-    IF       shift, and go to state 30
-    WHILE    shift, and go to state 31
+    WHILE    shift, and go to state 30
+    IF       shift, and go to state 31
     RETURN   shift, and go to state 32
     LBRACE   shift, and go to state 33
     LPAR     shift, and go to state 34
@@ -563,10 +563,10 @@ State 33
     PLUS     shift, and go to state 37
     RBRACE   shift, and go to state 60
     SEMI     shift, and go to state 39
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token         go to state 46
     statementList    go to state 61
@@ -586,10 +586,10 @@ State 34
     MINUS    shift, and go to state 35
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token  go to state 46
     expr      go to state 65
@@ -603,10 +603,10 @@ State 35
     MINUS    shift, and go to state 35
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token  go to state 46
     expr      go to state 66
@@ -620,10 +620,10 @@ State 36
     MINUS    shift, and go to state 35
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token  go to state 46
     expr      go to state 67
@@ -637,10 +637,10 @@ State 37
     MINUS    shift, and go to state 35
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token  go to state 46
     expr      go to state 68
@@ -662,23 +662,23 @@ State 39
 
 State 40
 
-   73 expr: INTLIT .
-
-    $default  reduce using rule 73 (expr)
-
-
-State 41
-
    74 expr: CHRLIT .
 
     $default  reduce using rule 74 (expr)
 
 
-State 42
+State 41
 
    75 expr: REALLIT .
 
     $default  reduce using rule 75 (expr)
+
+
+State 42
+
+   73 expr: INTLIT .
+
+    $default  reduce using rule 73 (expr)
 
 
 State 43
@@ -700,8 +700,8 @@ State 44
 
     error    shift, and go to state 1
     CHAR     shift, and go to state 2
-    IF       shift, and go to state 30
-    WHILE    shift, and go to state 31
+    WHILE    shift, and go to state 30
+    IF       shift, and go to state 31
     INT      shift, and go to state 3
     SHORT    shift, and go to state 4
     DOUBLE   shift, and go to state 5
@@ -714,10 +714,10 @@ State 44
     PLUS     shift, and go to state 37
     RBRACE   shift, and go to state 69
     SEMI     shift, and go to state 39
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     typeSpec     go to state 43
     declaration  go to state 70
@@ -885,17 +885,16 @@ State 54
 
 State 55
 
-   39 statement: IF LPAR . expr RPAR statement_error ELSE statement_error
-   40          | IF LPAR . expr RPAR statement_error
+   41 statement: WHILE LPAR . expr RPAR statement_error
 
     LPAR     shift, and go to state 34
     MINUS    shift, and go to state 35
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token  go to state 46
     expr      go to state 95
@@ -903,16 +902,17 @@ State 55
 
 State 56
 
-   41 statement: WHILE LPAR . expr RPAR statement_error
+   39 statement: IF LPAR . expr RPAR statement_error ELSE statement_error
+   40          | IF LPAR . expr RPAR statement_error
 
     LPAR     shift, and go to state 34
     MINUS    shift, and go to state 35
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token  go to state 46
     expr      go to state 96
@@ -990,8 +990,8 @@ State 61
    36 statement: LBRACE statementList . statement_error RBRACE
 
     error    shift, and go to state 100
-    IF       shift, and go to state 30
-    WHILE    shift, and go to state 31
+    WHILE    shift, and go to state 30
+    IF       shift, and go to state 31
     RETURN   shift, and go to state 32
     LBRACE   shift, and go to state 33
     LPAR     shift, and go to state 34
@@ -999,10 +999,10 @@ State 61
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
     SEMI     shift, and go to state 39
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token         go to state 46
     statement        go to state 62
@@ -1186,10 +1186,10 @@ State 72
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
     RPAR     shift, and go to state 107
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token  go to state 46
     expr      go to state 108
@@ -1203,10 +1203,10 @@ State 73
     MINUS    shift, and go to state 35
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token  go to state 46
     expr      go to state 109
@@ -1220,10 +1220,10 @@ State 74
     MINUS    shift, and go to state 35
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token  go to state 46
     expr      go to state 110
@@ -1237,10 +1237,10 @@ State 75
     MINUS    shift, and go to state 35
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token  go to state 46
     expr      go to state 111
@@ -1254,10 +1254,10 @@ State 76
     MINUS    shift, and go to state 35
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token  go to state 46
     expr      go to state 112
@@ -1271,10 +1271,10 @@ State 77
     MINUS    shift, and go to state 35
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token  go to state 46
     expr      go to state 113
@@ -1288,10 +1288,10 @@ State 78
     MINUS    shift, and go to state 35
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token  go to state 46
     expr      go to state 114
@@ -1305,10 +1305,10 @@ State 79
     MINUS    shift, and go to state 35
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token  go to state 46
     expr      go to state 115
@@ -1322,10 +1322,10 @@ State 80
     MINUS    shift, and go to state 35
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token  go to state 46
     expr      go to state 116
@@ -1339,10 +1339,10 @@ State 81
     MINUS    shift, and go to state 35
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token  go to state 46
     expr      go to state 117
@@ -1356,10 +1356,10 @@ State 82
     MINUS    shift, and go to state 35
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token  go to state 46
     expr      go to state 118
@@ -1373,10 +1373,10 @@ State 83
     MINUS    shift, and go to state 35
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token  go to state 46
     expr      go to state 119
@@ -1390,10 +1390,10 @@ State 84
     MINUS    shift, and go to state 35
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token  go to state 46
     expr      go to state 120
@@ -1407,10 +1407,10 @@ State 85
     MINUS    shift, and go to state 35
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token  go to state 46
     expr      go to state 121
@@ -1424,10 +1424,10 @@ State 86
     MINUS    shift, and go to state 35
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token  go to state 46
     expr      go to state 122
@@ -1441,10 +1441,10 @@ State 87
     MINUS    shift, and go to state 35
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token  go to state 46
     expr      go to state 123
@@ -1458,10 +1458,10 @@ State 88
     MINUS    shift, and go to state 35
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token  go to state 46
     expr      go to state 124
@@ -1475,10 +1475,10 @@ State 89
     MINUS    shift, and go to state 35
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token  go to state 46
     expr      go to state 125
@@ -1492,10 +1492,10 @@ State 90
     MINUS    shift, and go to state 35
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token  go to state 46
     expr      go to state 126
@@ -1538,8 +1538,7 @@ State 94
 
 State 95
 
-   39 statement: IF LPAR expr . RPAR statement_error ELSE statement_error
-   40          | IF LPAR expr . RPAR statement_error
+   41 statement: WHILE LPAR expr . RPAR statement_error
    48 expr: expr . ASSIGN expr
    49     | expr . COMMA expr
    51     | expr . PLUS expr
@@ -1582,7 +1581,8 @@ State 95
 
 State 96
 
-   41 statement: WHILE LPAR expr . RPAR statement_error
+   39 statement: IF LPAR expr . RPAR statement_error ELSE statement_error
+   40          | IF LPAR expr . RPAR statement_error
    48 expr: expr . ASSIGN expr
    49     | expr . COMMA expr
    51     | expr . PLUS expr
@@ -1684,10 +1684,10 @@ State 104
     MINUS    shift, and go to state 35
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token  go to state 46
     expr      go to state 131
@@ -2374,12 +2374,11 @@ State 127
 
 State 128
 
-   39 statement: IF LPAR expr RPAR . statement_error ELSE statement_error
-   40          | IF LPAR expr RPAR . statement_error
+   41 statement: WHILE LPAR expr RPAR . statement_error
 
     error    shift, and go to state 100
-    IF       shift, and go to state 30
-    WHILE    shift, and go to state 31
+    WHILE    shift, and go to state 30
+    IF       shift, and go to state 31
     RETURN   shift, and go to state 32
     LBRACE   shift, and go to state 33
     LPAR     shift, and go to state 34
@@ -2387,10 +2386,10 @@ State 128
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
     SEMI     shift, and go to state 39
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token         go to state 46
     statement        go to state 62
@@ -2400,11 +2399,12 @@ State 128
 
 State 129
 
-   41 statement: WHILE LPAR expr RPAR . statement_error
+   39 statement: IF LPAR expr RPAR . statement_error ELSE statement_error
+   40          | IF LPAR expr RPAR . statement_error
 
     error    shift, and go to state 100
-    IF       shift, and go to state 30
-    WHILE    shift, and go to state 31
+    WHILE    shift, and go to state 30
+    IF       shift, and go to state 31
     RETURN   shift, and go to state 32
     LBRACE   shift, and go to state 33
     LPAR     shift, and go to state 34
@@ -2412,10 +2412,10 @@ State 129
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
     SEMI     shift, and go to state 39
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token         go to state 46
     statement        go to state 62
@@ -2491,19 +2491,19 @@ State 133
 
 State 134
 
+   41 statement: WHILE LPAR expr RPAR statement_error .
+
+    $default  reduce using rule 41 (statement)
+
+
+State 135
+
    39 statement: IF LPAR expr RPAR statement_error . ELSE statement_error
    40          | IF LPAR expr RPAR statement_error .
 
     ELSE  shift, and go to state 137
 
     $default  reduce using rule 40 (statement)
-
-
-State 135
-
-   41 statement: WHILE LPAR expr RPAR statement_error .
-
-    $default  reduce using rule 41 (statement)
 
 
 State 136
@@ -2518,8 +2518,8 @@ State 137
    39 statement: IF LPAR expr RPAR statement_error ELSE . statement_error
 
     error    shift, and go to state 100
-    IF       shift, and go to state 30
-    WHILE    shift, and go to state 31
+    WHILE    shift, and go to state 30
+    IF       shift, and go to state 31
     RETURN   shift, and go to state 32
     LBRACE   shift, and go to state 33
     LPAR     shift, and go to state 34
@@ -2527,10 +2527,10 @@ State 137
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
     SEMI     shift, and go to state 39
-    INTLIT   shift, and go to state 40
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
-    CHRLIT   shift, and go to state 41
-    REALLIT  shift, and go to state 42
 
     id_token         go to state 46
     statement        go to state 62
