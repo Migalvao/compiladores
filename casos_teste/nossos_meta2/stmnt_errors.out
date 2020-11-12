@@ -1,1 +1,14 @@
-Line 2, col 12: syntax error: )
+Line 5, col 5: syntax error: a
+Line 11, col 16: syntax error: 1
+Line 15, col 14: syntax error: 0
+Line 21, col 5: syntax error: a
+Line 38, col 8: syntax error: )
+Line 42, col 5: syntax error: )
+Line 46, col 6: syntax error: ;
+Line 70, col 11: syntax error: )
+Line 74, col 8: syntax error: a
+Line 78, col 13: syntax error: return
+Line 82, col 8: syntax error: a
+Line 90, col 7: syntax error: )
+Line 94, col 7: syntax error: )
+Line 99, col 11: syntax error: )

@@ -85,9 +85,8 @@ extern int yydebug;
     SEMI = 291,
     INTLIT = 292,
     ID = 293,
-    ILLEGAL = 294,
-    CHRLIT = 295,
-    REALLIT = 296
+    CHRLIT = 294,
+    REALLIT = 295
   };
 #endif
 /* Tokens.  */
@@ -127,9 +126,8 @@ extern int yydebug;
 #define SEMI 291
 #define INTLIT 292
 #define ID 293
-#define ILLEGAL 294
-#define CHRLIT 295
-#define REALLIT 296
+#define CHRLIT 294
+#define REALLIT 295
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -141,7 +139,7 @@ union YYSTYPE
     char * idTerminal;
     program * nonterminal;
 
-#line 145 "y.tab.h"
+#line 143 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
