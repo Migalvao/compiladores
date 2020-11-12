@@ -1,5 +1,10 @@
 int main(void){
 
+    if(a)
+        return 8;
+    else{}
+
+
 
     {
         return 0;

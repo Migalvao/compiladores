@@ -1,0 +1,4 @@
+Line 2, col 8: syntax error: ;
+Line 4, col 9: syntax error: ;
+Line 8, col 10: syntax error: int
+Line 10, col 8: syntax error: char
