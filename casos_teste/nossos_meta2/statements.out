@@ -6,6 +6,11 @@ Program
 ......ParamDeclaration
 ........Void
 ....FuncBody
+......If
+........Id(a)
+........Return
+..........IntLit(8)
+........Null
 ......StatList
 ........Return
 ..........IntLit(0)

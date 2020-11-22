@@ -12,7 +12,7 @@ int i;
 
 int yylex (void);
 void yyerror(const char* s);
-char string[999], type_string[10];
+char type_string[10];
 
 %}
 
@@ -99,8 +99,8 @@ functionBody: LBRACE RBRACE                                                     
 
 declarationsAndStatements: statement                                            {$$ = $1;}
                         |  declaration                                          {$$ = $1;}
-                        |  declarationsAndStatements statement                  {if(! $1 -> next) {$1 -> next = $2;} else {aux =$1 -> next; while(aux->next)aux=aux->next; aux-> next = $2;  } $$ = $1;}
-                        |  declarationsAndStatements declaration                {if(! $1 -> next) {$1 -> next = $2;} else {aux =$1 -> next; while(aux->next)aux=aux->next; aux-> next = $2;  } $$ = $1;}
+                        |  declarationsAndStatements statement                  {if(!$1) $$ = $2; else { if(! $1 -> next) {$1 -> next = $2;} else {aux =$1 -> next; while(aux->next)aux=aux->next; aux-> next = $2;  } $$ = $1; }}
+                        |  declarationsAndStatements declaration                {if(!$1) $$ = $2; else { if(! $1 -> next) {$1 -> next = $2;} else {aux =$1 -> next; while(aux->next)aux=aux->next; aux-> next = $2;  } $$ = $1; }}
                         ;
 
 declaration: typeSpec declaratorsList SEMI                                      {$$ = $2;}
@@ -133,24 +133,52 @@ declarator: id_token                                                            
         |   id_token ASSIGN expr                                                {$$ = $1; $$ -> next = $3;}
         ;
 
-id_token: ID                                                                    {sprintf(string, "Id(%s)", yylval.idTerminal); $$ = insert_element(strdup(string), NULL);}
+id_token: ID                                                                    {$$ = insert_element(strdup("Id"), insert_element(strdup(yylval.idTerminal), NULL));}
         ;
 
 statementList: statement_error                                                  {$$ = $1;}
-            |  statementList statement_error                                    {if(! $1 -> next) {$1 -> next = $2;} else {aux =$1 -> next; while(aux->next)aux=aux->next; aux-> next = $2;  } $$ = $1;}   
+            |  statementList statement_error                                    {
+                                                                                    if(!$2){ 
+                                                                                        $$ = $1; 
+                                                                                    }  else { 
+                                                                                        if(!$1) {
+                                                                                            $$ = $2;
+                                                                                        } else {
+                                                                                            if(! $1 -> next) {$1 -> next = $2;} else {aux =$1 -> next; while(aux->next)aux=aux->next; aux-> next = $2;  } $$ = $1; 
+                                                                                        }
+                                                                                    }
+                                                                                }   
             ;
 
 statement:  LBRACE error RBRACE                                                 {$$ = insert_element("Erro", NULL); is_error = true; /* ERRO*/ }  
-        |  LBRACE statementList statement_error RBRACE                          {if(! $2 -> next) {$2 -> next = $3;} else {aux =$2 -> next; while(aux->next)aux=aux->next; aux-> next = $3;} i=0; aux = $2; while(aux){if(strcmp(aux->type, "Semi") != 0) i++; aux = aux->next;}   if(i>=2) $$ = insert_element("StatList", $2); else $$ = $2;}
+        |  LBRACE statementList statement_error RBRACE                          {
+                                                                                    if(!$2 && !$3){
+                                                                                        $$ =  NULL;
+                                                                                    } else if(!$2 && $3){
+                                                                                        $$ = $3;
+                                                                                    } else if($2 && !$3){
+                                                                                        if($2 -> next){
+                                                                                            $$ = insert_element("StatList", $2);
+                                                                                        } else {
+                                                                                            $$ = $2;
+                                                                                        }
+                                                                                    } else if($2 && $3){
+                                                                                        aux = $2;
+                                                                                        while(aux->next)
+                                                                                            aux = aux->next;
+                                                                                        aux -> next = $3;
+                                                                                        $$ = insert_element("StatList", $2);
+                                                                                    }
+                                                                                }
         |  LBRACE statement_error RBRACE                                        {$$ = $2;}
-        |  LBRACE RBRACE                                                        {$$ = insert_element("Semi", NULL); /*insert_element("Null", NULL);*/}
-        |  IF LPAR expr RPAR statement_error ELSE statement_error               {if($5 && strcmp($5 -> type, "Semi") != 0){ $3 -> next = $5; } else { $3 -> next = insert_element("Null", NULL); free($5);} if($7 && strcmp($7 -> type, "Semi") != 0){ $3 -> next -> next = $7; } else { $3 -> next -> next = insert_element("Null", NULL); free($7);} $$ = insert_element("If", $3);}
-        |  IF LPAR expr RPAR statement_error                                    {if($5 && strcmp($5 -> type, "Semi") != 0){ $3 -> next = $5; } else { $3 -> next = insert_element("Null", NULL); free($5);} $3 -> next -> next = insert_element("Null", NULL); $$ = insert_element("If", $3);}
-        |  WHILE LPAR expr RPAR statement_error                                 {if($5 && strcmp($5 -> type, "Semi") != 0){ $3 -> next = $5; } else { $3 -> next = insert_element("Null", NULL); free($5);} $$ = insert_element("While", $3);}
+        |  LBRACE RBRACE                                                        {$$ = NULL;}
+        |  IF LPAR expr RPAR statement_error ELSE statement_error               {if($5){ $3 -> next = $5; } else { $3 -> next = insert_element("Null", NULL);} if($7){ $3 -> next -> next = $7; } else { $3 -> next -> next = insert_element("Null", NULL);} $$ = insert_element("If", $3);}
+        |  IF LPAR expr RPAR statement_error                                    {if($5){ $3 -> next = $5; } else { $3 -> next = insert_element("Null", NULL);} $3 -> next -> next = insert_element("Null", NULL); $$ = insert_element("If", $3);}
+        |  WHILE LPAR expr RPAR statement_error                                 {if($5){ $3 -> next = $5; } else { $3 -> next = insert_element("Null", NULL);} $$ = insert_element("While", $3);}
         |  RETURN expr SEMI                                                     {$$ = insert_element("Return", $2);}
         |  RETURN SEMI                                                          {$$ = insert_element("Return", insert_element("Null", NULL));}
         |  expr SEMI                                                            {$$ = $1;}     
-        |  SEMI                                                                 {$$ = insert_element("Semi", NULL);}  
+        |  SEMI                                                                 {$$ = NULL;}  
         ;
 
 statement_error: statement                                                      {$$ = $1;}
@@ -182,9 +210,9 @@ expr:   expr ASSIGN expr                                                        
     |   id_token LPAR RPAR                                                      {$$ = insert_element("Call", $1);}
     |   id_token LPAR expr RPAR                                                 {$1 -> next = children_to_brother($3); $$ = insert_element("Call", $1);}
     |   id_token                                                                {$$ = $1;}
-    |   INTLIT                                                                  {sprintf(string, "IntLit(%s)", yylval.terminal); $$ = insert_element(strdup(string), NULL);}
-    |   CHRLIT                                                                  {sprintf(string, "ChrLit(%s)", yylval.terminal); $$ = insert_element(strdup(string), NULL);}
-    |   REALLIT                                                                 {sprintf(string, "RealLit(%s)", yylval.terminal); $$ = insert_element(strdup(string), NULL);}
+    |   INTLIT                                                                  {$$ = insert_element(strdup("IntLit"), insert_element(strdup(yylval.terminal), NULL));}
+    |   CHRLIT                                                                  {$$ = insert_element(strdup("ChrLit"), insert_element(strdup(yylval.terminal), NULL));}
+    |   REALLIT                                                                 {$$ = insert_element(strdup("RealLit"), insert_element(strdup(yylval.terminal), NULL));}
     |   LPAR expr RPAR                                                          {$$ = $2;}
     |   id_token LPAR error RPAR                                                {$$ = insert_element("Erro", NULL); is_error = true; /* ERRO */}
     |   LPAR error RPAR                                                         {$$ = insert_element("Erro", NULL); is_error = true;  /* ERRO */ }   

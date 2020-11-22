@@ -10,7 +10,7 @@ int				    [0-9]+
     #include "functions.h"
     #include "y.tab.h"
 
-    bool l = false, e1 = false, t = false, e2 = false, comment_error = false;
+    bool l = false, e1 = false, t = false, e2 = false, s = false, comment_error = false;
     int line = 1, column = 1, unfinished_line, unfinished_column;
     extern program * myprogram;
     extern bool is_error;
@@ -90,12 +90,13 @@ int main(int argc, char *argv[])
     else if(argc >= 2 && strcmp(argv[1], "-e1") == 0){
         e1 = true;
     }
-
-    if(argc >= 2 && strcmp(argv[1], "-t") == 0){
+    else if(argc >= 2 && strcmp(argv[1], "-t") == 0){
         t = true;
 
     } else if(argc >= 2 && strcmp(argv[1], "-e2") == 0){
         e2 = true;
+    } else if(argc >= 2 && strcmp(argv[1], "-s") == 0){
+        s = true;
     }
 
     if(!l && !e1){
@@ -105,8 +106,17 @@ int main(int argc, char *argv[])
         yylex();
     }
 
+
     if(t && myprogram && !is_error){
         print_ast(myprogram);
+    }
+
+    if(s || (!l && !e1 && !t && !e2)){
+        //fazer analise sintatica
+
+        if(s){
+            //imprimir tabelas de simbolos e nova AST 
+        }
     }
 
     if(!l && !e1 && myprogram)

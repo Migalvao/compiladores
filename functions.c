@@ -23,23 +23,33 @@ void print_indent(int local_indent){
 }
 
 void print_ast(program * my_program){
-    
-    if(strcmp(my_program->type, "Semi") != 0){    
-        print_indent(indent);
-        indent += 2;
+     
+    print_indent(indent);
+    indent += 2;
 
-        if(strcmp(my_program->type, "RealComma") == 0)
-            printf("Comma\n");
-        else
-            printf("%s\n", my_program->type);
+    if(strcmp(my_program->type, "IntLit") == 0)
+        printf("IntLit(%s)\n", my_program->children->type);
+    else if(strcmp(my_program->type, "ChrLit") == 0)
+        printf("ChrLit(%s)\n", my_program->children->type);
+    else if(strcmp(my_program->type, "RealLit") == 0)
+        printf("RealLit(%s)\n", my_program->children->type);
+    else if(strcmp(my_program->type, "Id") == 0)
+        printf("Id(%s)\n", my_program->children->type);
 
+    else if(strcmp(my_program->type, "RealComma") == 0){
+        printf("Comma\n");
         if(my_program->children)
             print_ast(my_program->children);
-
-        indent -= 2;
-
     }
-    
+    else{
+        printf("%s\n", my_program->type);
+        if(my_program->children)
+            print_ast(my_program->children);
+    }   
+
+
+    indent -= 2;
+
     if(my_program->next)
         print_ast(my_program->next);
 }
