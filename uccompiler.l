@@ -8,11 +8,13 @@ int				    [0-9]+
     #include <stdbool.h>
     #include "structures.h"
     #include "functions.h"
+    #include "symbol_table.h"
     #include "y.tab.h"
 
     bool l = false, e1 = false, t = false, e2 = false, s = false, comment_error = false;
     int line = 1, column = 1, unfinished_line, unfinished_column;
     extern program * myprogram;
+    table * symtab = NULL;
     extern bool is_error;
 
 %}

@@ -1,10 +1,16 @@
 #ifndef SYMBOL_TABLE_H
 #define SYMBOL_TABLE_H
 
+typedef struct _t4 {
+    char * id;
+    char * type;        //int, double ou char
+    struct _t4 * next;
+} func_parameter;
+
 typedef struct _t3 {
     char * id;
     char * type;        //int, double ou char
-    char * parameters;  //"int, int, int"
+    func_parameter * parameters;
 } func_declaration;
 
 typedef struct _t2 {
