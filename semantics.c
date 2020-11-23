@@ -237,9 +237,9 @@ data_type check_expression(table * tab, program * node){
         return undefined_t;
 
     } else if(strcmp(node->type, "Not") == 0){
-        //check_not() que vai retornar o tipo
+        return check_not(tab, node);
     } else if(strcmp(node->type, "Plus") == 0 || strcmp(node->type, "Minus") == 0){
-        //check_not() que vai retornar o tipo
+        return check_not(tab, node);
     } else if(strcmp(node->type, "Gt") == 0 ||
             strcmp(node->type, "Lt") == 0 ||
             strcmp(node->type, "Ge") == 0 ||
@@ -257,12 +257,81 @@ data_type check_expression(table * tab, program * node){
             strcmp(node->type, "Sub") == 0 ||
             strcmp(node->type, "Add") == 0 ||
             strcmp(node->type, "Store") == 0){
-                //check_operation e retornar o tipo
+                return check_operation(tab, node);
             }
     else{
-        //commas e afins
-        //check_expression nos filhos, so isso
-        
+        return check_commas(tab, node);
+    }
+}
+
+data_type check_not(table * tab, program * node){
+    //FALTAM VERIFICAÇOES!
+
+    program *expr = node->children;
+
+    data_type type = check_expression(tab, expr);
+
+    char help[100];
+    sprintf(help, "%s - %s\n", node->type, data_type_to_string(type));
+    node->type = strdup(help);
+
+    return type;
+}
+
+data_type check_operation(table * tab, program * node){
+    program * child1 = node->children;
+    program * child2 = node->children->next;
+
+    data_type type_child1 = check_expression(tab, child1);
+    data_type type_child2 = check_expression(tab, child2);
+
+    char help[100];
+
+    // FALTAM VERIFICAÇÕES
+    if(type_child1 == type_child2){
+        sprintf(help, "%s - %s\n", node->type, data_type_to_string(type_child1));
+        node->type = strdup(help);
+
+        return type_child1;
+    }
+    else{
+        sprintf(help, "%s - %s\n", node->type, data_type_to_string(undefined_t));
+        node->type = strdup(help);
+    
+        return undefined_t;
+    }
+}
+
+data_type check_commas(table * tab, program * node){
+    //PODE ESTAR INCOMPLETO OU INCORRETO!
+
+
+    program * child1 = node->children;
+    program * child2 = node->children->next;
+
+    data_type type_child1 = check_expression(tab, child1);
+    data_type type_child2 = check_expression(tab, child2);
+
+    return undefined_t;
+}
+
+
+char * data_type_to_string(data_type type){
+    if(type == int_t){
+        return strdup("int");
+    } else if(type == char_t){
+        return strdup("char");
+    } else if(type == short_t){
+        return strdup("short");
+    } else if(type == double_t){
+        return strdup("double");
+    } else if(type == void_t){
+        return strdup("void");
+    } else if(type == undefined_t){
+        return strdup("undefined");
+    } else{
+        printf("\n\nERRO, N DEVIA ACONTECER\n\n");
+        return NULL;
     }
 }
 
@@ -315,25 +384,8 @@ data_type string_to_data_type(char * type){
         return char_t;
     else if(strcmp(type, "void") == 0)
         return void_t;
-    else
+    else{
         printf("\n\nERRO, N DEVIA ACONTECER\n\n");
-}
-
-char * data_type_to_string(data_type type){
-    if(type == int_t){
-        return strdup("int");
-    } else if(type == char_t){
-        return strdup("char");
-    } else if(type == short_t){
-        return strdup("short");
-    } else if(type == double_t){
-        return strdup("double");
-    } else if(type == void_t){
-        return strdup("void");
-    } else if(type == undefined_t){
-        return strdup("undefined");
-    } else{
-        printf("\n\nERRO, N DEVIA ACONTECER\n\n");
-        return NULL;
+        return undefined_t;
     }
 }
