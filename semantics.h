@@ -1,5 +1,6 @@
 #include "structures.h"
 #include "symbol_table.h"
+#include <ctype.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>

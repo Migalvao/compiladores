@@ -50,7 +50,7 @@ void insert_default_functions(void){
     parameter->id = NULL;
     parameter->type = strdup("void");
 
-    insert_function(symtab, strdup("getchar"), strdup("void"), parameter);
+    insert_function(symtab, strdup("getchar"), strdup("int"), parameter);
 
 }
 
@@ -152,5 +152,6 @@ void check_func_definition(program * node){
     }
 
     //Inserior return e parametros
+    * node->children->type = tolower(* node->children->type);   //Passar Int para int
     table_element * inserted = insert_variable(tab, strdup("return"), strdup(node->children->type));
 }
