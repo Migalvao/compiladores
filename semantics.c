@@ -147,8 +147,10 @@ void check_func_definition(program * node){
 
     if(! (tab = insert_table(strdup(string)))){
         //ERRO, FUNÇAO JA FOI DEFINIDA
+        printf("Function %s already defined!", node ->children->next->children->type);
         return;
     }
 
-    //INserior return e parametros
+    //Inserior return e parametros
+    table_element * inserted = insert_variable(tab, strdup("return"), strdup(node->children->type));
 }
