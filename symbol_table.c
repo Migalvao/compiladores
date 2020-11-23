@@ -131,28 +131,33 @@ var_declaration * search_variable(char * id, table * tab){
 
 void print_tables(){
     table * aux = symtab;
+    table_element * aux_ele;
     
-    while(aux->next != NULL){
+    while(aux != NULL){
+        //percorrer as tabelas
+        aux_ele = aux->element;
         printf("===== %s Symbol Table =====\n", aux->name);
 
-        while(aux->element->next != NULL){
-            if(aux->element->type == func_dec){
+        while(aux_ele != NULL){
+
+            if(aux_ele->type == func_dec){
                 char help[200] = "";
-                func_parameter * param = aux->element->entry_type.func->parameters;
+                func_parameter * param = aux_ele->entry_type.func->parameters;
                 strcpy(help, param->type);
                 param = param -> next;
-                while(param -> next != NULL){
+                while(param != NULL){
                     strcat(help, ", ");
                     strcat(help, param->type);
+                    param = param -> next;
                 }
                 
-                printf("%s  %s  %s\n", aux->element->entry_type.func->id, aux->element->entry_type.func->type, help);
+                printf("%s %s  %s\n", aux_ele->entry_type.func->id, aux_ele->entry_type.func->type, help);
             }
             else{
-                printf("%s  %s\n", aux->element->entry_type.var->id, aux->element->entry_type.var->type);
+                printf("%s  %s\n", aux_ele->entry_type.var->id, aux_ele->entry_type.var->type);
             }
 
-            aux->element = aux->element->next;
+            aux_ele = aux_ele->next;
         }
         printf("\n");
         aux = aux->next;

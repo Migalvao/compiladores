@@ -99,7 +99,7 @@ void check_func_declaration(program * node){
 
     if(aux->children->next){
         //Tambem ha um ID para guardar
-        parameters->id = strup(aux->children->next->children->type);
+        parameters->id = strdup(aux->children->next->children->type);
     } else {
         //TODO VERIFICAÇAO DE TIPO / ERROS; ETC
         parameters->id = NULL;
@@ -119,7 +119,7 @@ void check_func_declaration(program * node){
         if(aux->children->next){
             //Tambem ha um ID para guardar
             aux_params->id = strdup(aux->children->next->children->type);
-        } else {
+        } else {    
             //TODO VERIFICAÇAO DE TIPO / ERROS; ETC
             aux_params->id = NULL;
         }
