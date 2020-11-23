@@ -102,9 +102,9 @@ void print_ast_noted(program * my_program){
     indent += 2;
 
     if(strcmp(my_program->type, "IntLit") == 0)
-        printf("IntLit(%s) - int\n", my_program->children->type);
+        printf("IntLit(%s)\n", my_program->children->type);
     else if(strcmp(my_program->type, "ChrLit") == 0)
-        printf("ChrLit(%s) - int\n", my_program->children->type);
+        printf("ChrLit(%s)\n", my_program->children->type);
     else if(strcmp(my_program->type, "RealLit") == 0)
         printf("RealLit(%s)\n", my_program->children->type);
     else if(strcmp(my_program->type, "Id") == 0)

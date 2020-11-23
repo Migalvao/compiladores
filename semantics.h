@@ -5,9 +5,13 @@
 #include <stdio.h>
 #include <string.h>
 
+typedef enum {int_t, short_t, char_t, double_t, undefined_t, void_t} data_type;
+
 void check_program(program * full_program);
 void insert_default_functions(void);
 void check_declaration(table * symtable, program * node);
 void check_func_declaration(program * node);
 void check_func_definition(program * node);
 void check_func_body(table * tab, program * node);
+void check_statement(table * tab, program * node);
+data_type check_expression(table * tab, program * node);

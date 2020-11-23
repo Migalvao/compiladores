@@ -5,6 +5,7 @@
 #define STRING_SIZE 100
 
 table * symtab = NULL;
+char * aux_string;
 
 void check_program(program * full_program){
     //criar global symbol table
@@ -25,6 +26,7 @@ void check_program(program * full_program){
         }
         else if(strcmp(aux->type, "FuncDefinition") == 0){
             check_func_definition(aux);
+
         } else{
             printf("\n\nERRO WTF IS GOING ON\n\n");
         }
@@ -65,8 +67,9 @@ void check_declaration(table * symtable, program * node){
         return;
     }
 
-    * node->children->type = tolower(* node->children->type);   //passar de Int para int
-    table_element * inserted = insert_variable(symtable, strdup(node->children->next->children->type), strdup(node->children->type));
+    aux_string = strdup(node->children->type);
+    * aux_string = tolower(* aux_string);   //passar de Int para int
+    table_element * inserted = insert_variable(symtable, strdup(node->children->next->children->type), aux_string);
 
     if(! inserted) {
         //ERRO -> NAO DEVIA CHEGAR AQUI
@@ -96,8 +99,9 @@ void check_func_declaration(program * node){
     parameters->next = NULL;
     
     //Guardar Tipo
-    * aux->children->type = tolower(* aux->children->type);   //Passar Int para int
-    parameters->type = strdup(aux->children->type);
+    aux_string = strdup(aux->children->type);
+    * aux_string = tolower(* aux_string);   //Passar Int para int
+    parameters->type = aux_string;
 
     if(aux->children->next){
         //Tambem ha um ID para guardar
@@ -116,8 +120,9 @@ void check_func_declaration(program * node){
         aux_params->next = NULL;
 
         //Guardar Tipo
-        * aux->children->type = tolower(* aux->children->type);   //Passar Int para int
-        aux_params->type = strdup(aux->children->type);
+        aux_string = strdup(aux->children->type);
+        * aux_string = tolower(* aux_string);   //Passar Int para int
+        aux_params->type = aux_string;
 
         if(aux->children->next){
             //Tambem ha um ID para guardar
@@ -150,7 +155,8 @@ void check_func_definition(program * node){
 
     sprintf(string, "Function %s", node ->children->next->children->type);
     
-    * node->children->type = tolower(* node->children->type);   //Passar Int para int
+    aux_string = strdup(node->children->type);
+    * aux_string = tolower(* aux_string);   //Passar Int para int
 
     if(! (tab = insert_table(strdup(string)))){
         //ERRO, FUNÇAO JA FOI DEFINIDA
@@ -164,7 +170,7 @@ void check_func_definition(program * node){
     }
 
     //Inserior return e parametros
-    inserted = insert_variable(tab, strdup("return"), strdup(node->children->type));
+    inserted = insert_variable(tab, strdup("return"), aux_string);
     
     aux = node -> children -> next -> next -> children;
     while(aux){
@@ -185,8 +191,70 @@ void check_func_body(table * tab, program * node){
     while(aux){
         if(strcmp(aux->type, "Declaration") == 0){
             check_declaration(tab, aux);
+        } else {
+            check_statement(tab, aux);
         }
 
         aux = aux -> next;
+    }
+}
+
+void check_statement(table * tab, program * node){
+    if(strcmp(node->type, "If") == 0){
+        //check_if();
+    } else if(strcmp(node->type, "While") == 0){
+        //check_while();
+    } else if(strcmp(node->type, "Return") == 0){
+        //check_return();
+    } else if(strcmp(node->type, "StatList") == 0){
+        //check_statlist();
+    } else if(strcmp(node->type, "Erro") == 0){
+        //ignorar erro
+    } else{
+        //em principio, expressions;
+        //check_expression();
+    }
+}
+
+data_type check_expression(table * tab, program * node){
+    if(strcmp(node->type, "Call") == 0){
+        //check_call() que vai retornar o tipo
+    } else if(strcmp(node->type, "IntLit") == 0){
+        return int_t;
+    } else if(strcmp(node->type, "ChrLit") == 0){
+        return char_t;
+    } else if(strcmp(node->type, "RealLit") == 0){
+        return double_t;
+    } else if(strcmp(node->type, "Id") == 0){
+        //search_variable e retornar o tipo
+    } else if(strcmp(node->type, "Erro") == 0){
+        //Ignorar erro
+    } else if(strcmp(node->type, "Not") == 0){
+        //check_not() que vai retornar o tipo
+    } else if(strcmp(node->type, "Plus") == 0 || strcmp(node->type, "Minus") == 0){
+        //check_not() que vai retornar o tipo
+    } else if(strcmp(node->type, "Gt") == 0 ||
+            strcmp(node->type, "Lt") == 0 ||
+            strcmp(node->type, "Ge") == 0 ||
+            strcmp(node->type, "Le") == 0 ||
+            strcmp(node->type, "Ne") == 0 ||
+            strcmp(node->type, "Eq") == 0 ||
+            strcmp(node->type, "BitWiseXor") == 0 ||
+            strcmp(node->type, "BitWiseOr") == 0 ||
+            strcmp(node->type, "BitWiseAnd") == 0 ||
+            strcmp(node->type, "And") == 0 ||
+            strcmp(node->type, "Or") == 0 ||
+            strcmp(node->type, "Mod") == 0 ||
+            strcmp(node->type, "Div") == 0 ||
+            strcmp(node->type, "Mul") == 0 ||
+            strcmp(node->type, "Sub") == 0 ||
+            strcmp(node->type, "Add") == 0 ||
+            strcmp(node->type, "Store") == 0){
+                //check_operation e retornar o tipo
+            }
+    else{
+        //commas e afins
+        //check_expression nos filhos, so isso
+        
     }
 }
