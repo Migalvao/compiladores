@@ -331,7 +331,7 @@ data_type check_not(table * tab, program * node){
 
     data_type type = check_expression(tab, expr);
 
-    char help[100];
+    char help[STRING_SIZE];
     sprintf(help, "%s - %s", node->type, data_type_to_string(type));
     node->type = strdup(help);
 
@@ -345,7 +345,7 @@ data_type check_operation(table * tab, program * node){
     data_type type_child1 = check_expression(tab, child1);
     data_type type_child2 = check_expression(tab, child2);
 
-    char help[100];
+    char help[STRING_SIZE];
 
     // FALTAM VERIFICAÇÕES
     if(type_child1 == type_child2){
@@ -354,7 +354,22 @@ data_type check_operation(table * tab, program * node){
 
         return type_child1;
     }
-    else{       
+    else if((type_child1 == int_t && type_child2 == char_t) || (type_child1 == char_t && type_child2 == int_t)){
+        if(strcmp(node->type, "Store") == 0){
+            sprintf(help, "%s - %s", node->type, data_type_to_string(type_child1));
+            node->type = strdup(help);
+
+            return type_child1;
+        }
+        else{
+            sprintf(help, "%s - %s", node->type, data_type_to_string(int_t));
+            node->type = strdup(help);
+
+            return int_t;
+        }
+    }
+    else{
+        printf("incompatible types\n");       
         sprintf(help, "%s - %s", node->type, data_type_to_string(undefined_t));
         node->type = strdup(help);
     
@@ -364,7 +379,6 @@ data_type check_operation(table * tab, program * node){
 
 data_type check_commas(table * tab, program * node){
     //PODE ESTAR INCOMPLETO OU INCORRETO!
-
 
     program * child1 = node->children;
     program * child2 = node->children->next;
@@ -396,19 +410,81 @@ char * data_type_to_string(data_type type){
 }
 
 data_type check_call(table * tab, program * node){
+    char help[STRING_SIZE], help2[STRING_SIZE * 2];
     func_declaration * function;
+    func_parameter * param;
+    program * aux_node;
+    data_type type;
+    //node -> type é "Call"
     //node -> children é o ID
+    //node -> children -> next sao os parametros
 
     //procurar no global scope, so ai e que ha funçoes
     function = search_function(node->children->children->type, symtab);
 
     if(! function){
         printf("Undefined function!\n");
+        node -> type = strdup("Call - undefined");
         return undefined_t;
     }
 
+    //reescrever "Call"
+    sprintf(help, "Call - %s", function->type);
+    node -> type = strdup(help);
+
+    //reescrever ID - precisamos do ID, o return value e os tipos dos parametros
+    param = function->parameters;
+    strcpy(help, param->type);
+    
+    param = param -> next;
+    while(param != NULL){
+        strcat(help, ", ");
+        strcat(help, param->type);
+        param = param -> next;
+    }
+    
+    sprintf(help2, "Id(%s) - %s(%s)", node->children->children->type, function->type, help);
+    node->children->type = strdup(help2);
+    free(node->children->children);
+    node->children->children = NULL;
+    
     //TODO verificar parametros
     // se n bater, imprimir erro
+    aux_node = node -> children -> next;        //parametros do input
+    param = function->parameters;               //parâmetros da funçao(esperados)
+
+    //TODO verificar tipos do parametro
+
+    type = check_expression(tab, aux_node);
+
+    if(strcmp(aux_node->type, "Id") == 0){
+        //parametro é um ID
+        sprintf(help, "Id(%s) - %s", aux_node->children->type, data_type_to_string(type));
+        aux_node->type = strdup(help);
+        free(aux_node->children);
+        aux_node->children = NULL;
+    } 
+    
+    param = param -> next;
+    aux_node = aux_node -> next;
+
+    while(param != NULL && aux_node != NULL){
+        type = check_expression(tab, aux_node);
+
+        if(strcmp(aux_node->type, "Id") == 0){
+            //parametro é um ID
+            sprintf(help, "Id(%s) - %s", aux_node->children->type, data_type_to_string(type));
+            aux_node->type = strdup(help);
+            free(aux_node->children);
+            aux_node->children = NULL;
+        } 
+
+        param = param -> next;
+        aux_node = aux_node -> next;
+    }
+
+    //TODO verificar se o numero de parametros bateu,
+    //aka ver se tanto param como aux_node sao NULL
 
     return string_to_data_type(function -> type);
 }
@@ -430,7 +506,7 @@ data_type check_var(table * tab, program * node){
         return undefined_t;
     }
 
-    char help[100];
+    char help[STRING_SIZE];
     sprintf(help, "Id(%s) - %s", node->children->type, variable->type);
     free(node->children);
     node->children = NULL;
