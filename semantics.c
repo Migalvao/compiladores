@@ -1,17 +1,18 @@
 #include "semantics.h"
 #include "structures.h"
-#include "symtab.h"
+#include "symbol_table.h"
 
 #define STRING_SIZE 100
 
-extern table * symtab;
+table * symtab = NULL;
 
-void check_program(program * myprogram){
+void check_program(program * full_program){
     //criar global symbol table
-    symtab = insert_table(strdup("Global"));
+
+    symtab = insert_table("Global");
     insert_default_functions();
 
-    program * aux = myprogram->children;
+    program * aux = full_program->children;
 
     while(aux){
         if(strcmp(aux->type, "Declaration") == 0){
@@ -24,20 +25,22 @@ void check_program(program * myprogram){
         }
         else if(strcmp(aux->type, "FuncDefinition") == 0){
             check_func_definition(aux);
-        } else
+        } else{
             printf("\n\nERRO WTF IS GOING ON\n\n");
+        }
         
         aux = aux->next;
+        
     }
-
+    
 }
 
-void insert_default_functions(){
+void insert_default_functions(void){
     //PUTCHAR
     func_parameter * parameter = (func_parameter *)malloc(sizeof(func_parameter));
     parameter->next = NULL;
     parameter->id = NULL;
-    strcpy(parameter->type, "int");
+    parameter->type = strdup("int");
 
     insert_function(symtab, strdup("putchar"), strdup("int"), parameter);
 
@@ -45,7 +48,7 @@ void insert_default_functions(){
     parameter = (func_parameter *)malloc(sizeof(func_parameter));
     parameter->next = NULL;
     parameter->id = NULL;
-    strcpy(parameter->type, "void");
+    parameter->type = strdup("void");
 
     insert_function(symtab, strdup("getchar"), strdup("void"), parameter);
 
@@ -86,7 +89,8 @@ void check_func_declaration(program * node){
     }
 
     program * aux = node -> children -> next -> next -> children;
-    func_parameter * aux_params = * parameters = (func_parameter *)malloc(sizeof(func_parameter));
+    func_parameter * aux_params, * parameters;
+    aux_params = parameters = (func_parameter *)malloc(sizeof(func_parameter));
 
     parameters->next = NULL;
 
@@ -141,7 +145,7 @@ void check_func_definition(program * node){
 
     sprintf(string, "Function %s", node ->children->next->children->type);
 
-    if(! tab = insert_table(strdup(string))){
+    if(! (tab = insert_table(strdup(string)))){
         //ERRO, FUNÇAO JA FOI DEFINIDA
         return;
     }

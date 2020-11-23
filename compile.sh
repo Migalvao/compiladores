@@ -1,1 +1,1 @@
-lex uccompiler.l && yacc -d -v -Wno-yacc uccompiler.y && cc -o uccompiler lex.yy.c y.tab.c functions.c
+lex uccompiler.l && yacc -d -v -Wno-yacc uccompiler.y && cc -o uccompiler lex.yy.c y.tab.c semantics.c functions.c symbol_table.c

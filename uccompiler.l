@@ -7,6 +7,7 @@ int				    [0-9]+
 %{
     #include <stdbool.h>
     #include "structures.h"
+    #include "semantics.h"
     #include "functions.h"
     #include "symbol_table.h"
     #include "y.tab.h"
@@ -14,7 +15,7 @@ int				    [0-9]+
     bool l = false, e1 = false, t = false, e2 = false, s = false, comment_error = false;
     int line = 1, column = 1, unfinished_line, unfinished_column;
     extern program * myprogram;
-    table * symtab = NULL;
+    extern table * symtab;
     extern bool is_error;
 
 %}
@@ -113,11 +114,14 @@ int main(int argc, char *argv[])
         print_ast(myprogram);
     }
 
-    if(s || (!l && !e1 && !t && !e2)){
+    if((s || (!l && !e1 && !t && !e2)) && myprogram){
         //fazer analise sintatica
-
+        check_program(myprogram);
+        
         if(s){
+            printf("cona\n");
             //imprimir tabelas de simbolos e nova AST 
+            print_tables();
         }
     }
 

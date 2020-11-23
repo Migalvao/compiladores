@@ -43,10 +43,11 @@ typedef struct _t0 {
 } table;
 
 
-table_element *insert_function(table *tab, char * id, char * type);
-table_element *insert_variable(table *tab, char * id, char * type, char * param);
+table_element * insert_function(table *tab, char * id, char * type, func_parameter * param);
+table_element * insert_variable(table *tab, char * id, char * type);
 table *insert_table(char * name);
 var_declaration *search_declaration(char * id, table * tab);
 func_declaration *search_function(char * id, table * tab);
+void print_tables();
 
 #endif

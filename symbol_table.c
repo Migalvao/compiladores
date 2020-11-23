@@ -1,7 +1,8 @@
 #include "symbol_table.h"
-#include<stdlib.h>
-#include<string.h>
-#include<stdio.h>
+#include "semantics.h"
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 
 extern table * symtab;
 
@@ -36,7 +37,7 @@ table_element * insert_variable(table *tab, char * id, char * type){
         tab->element = new_element;
     }
 
-    return new;
+        return new_element;
 }
 
 table_element * insert_function(table *tab, char * id, char * type, func_parameter * param){
@@ -79,9 +80,9 @@ table * insert_table(char * name){
     table * new = (table*)malloc(sizeof(table));
     table * aux;
     
-    strcpy(new->name, name);
+    new->name = strdup(name);
     new->next = NULL;
-
+    
     if (symtab){
         aux = symtab;
         while(aux->next != NULL){
