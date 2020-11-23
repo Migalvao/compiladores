@@ -95,11 +95,11 @@ void check_func_declaration(program * node){
     parameters->next = NULL;
 
     //Guardar Tipo
-    strcpy(parameters->type, aux->children->type);
+    parameters->type = strdup(aux->children->type);
 
     if(aux->children->next){
         //Tambem ha um ID para guardar
-        strcpy(parameters->id, aux->children->next->children->type);
+        parameters->id = strup(aux->children->next->children->type);
     } else {
         //TODO VERIFICAÇAO DE TIPO / ERROS; ETC
         parameters->id = NULL;
@@ -114,11 +114,11 @@ void check_func_declaration(program * node){
         aux_params->next = NULL;
 
         //Guardar Tipo
-        strcpy(aux_params->type, aux->children->type);
+        parameters->type = strdup(aux->children->type);
 
         if(aux->children->next){
             //Tambem ha um ID para guardar
-            strcpy(aux_params->id, aux->children->next->children->type);
+            aux_params->id = strdup(aux->children->next->children->type);
         } else {
             //TODO VERIFICAÇAO DE TIPO / ERROS; ETC
             aux_params->id = NULL;
