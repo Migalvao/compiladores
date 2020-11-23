@@ -15,8 +15,8 @@ table_element * insert_variable(table *tab, char * id, char * type){
     new_element->entry_type.var = new;
     new_element->next = NULL;
 
-    strcpy(new->id, id);
-    strcpy(new->type, type);
+    new->id = strdup(id);
+    new->type = strdup(type);
 
     aux = tab->element;
 
@@ -49,8 +49,8 @@ table_element * insert_function(table *tab, char * id, char * type, func_paramet
     new_element -> entry_type.func = new;
     new_element->next = NULL;
 
-    strcpy(new->id, id);
-    strcpy(new->type, type);
+    new->id = strdup(id);
+    new->type = strdup(type);
     new->parameters = param;
 
     aux = tab->element;
