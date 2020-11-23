@@ -15,3 +15,7 @@ void check_func_definition(program * node);
 void check_func_body(table * tab, program * node);
 void check_statement(table * tab, program * node);
 data_type check_expression(table * tab, program * node);
+data_type string_to_data_type(char * type);
+char * data_type_to_string(data_type type);
+data_type check_call(program * node);
+data_type check_var(table * tab, program * node);

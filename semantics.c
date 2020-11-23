@@ -218,17 +218,24 @@ void check_statement(table * tab, program * node){
 
 data_type check_expression(table * tab, program * node){
     if(strcmp(node->type, "Call") == 0){
-        //check_call() que vai retornar o tipo
+        return check_call(node);   
+
     } else if(strcmp(node->type, "IntLit") == 0){
         return int_t;
+
     } else if(strcmp(node->type, "ChrLit") == 0){
         return char_t;
+
     } else if(strcmp(node->type, "RealLit") == 0){
         return double_t;
+
     } else if(strcmp(node->type, "Id") == 0){
-        //search_variable e retornar o tipo
+        return check_var(tab, node);
+
     } else if(strcmp(node->type, "Erro") == 0){
         //Ignorar erro
+        return undefined_t;
+
     } else if(strcmp(node->type, "Not") == 0){
         //check_not() que vai retornar o tipo
     } else if(strcmp(node->type, "Plus") == 0 || strcmp(node->type, "Minus") == 0){
@@ -256,5 +263,77 @@ data_type check_expression(table * tab, program * node){
         //commas e afins
         //check_expression nos filhos, so isso
         
+    }
+}
+
+data_type check_call(program * node){
+    func_declaration * function;
+    //node -> children é o ID
+
+    //procurar no global scope, so ai e que ha funçoes
+    function = search_function(node->children->children->type, symtab);
+
+    if(! function){
+        printf("Undefined function!\n");
+        return undefined_t;
+    }
+
+    //TODO verificar parametros
+    // se n bater, imprimir erro
+
+    return string_to_data_type(function -> type);
+}
+
+data_type check_var(table * tab, program * node){
+    var_declaration * variable;
+    //node é o ID
+
+    //procurar no local scope
+    variable = search_variable(node->children->type, tab);
+
+    if(!variable){
+        //procurar no global scope
+        variable = search_variable(node->children->type, symtab);
+    }
+
+    if(!variable){
+        printf("Undefined variable!\n");
+        return undefined_t;
+    }
+
+    return string_to_data_type(variable -> type);
+}
+
+data_type string_to_data_type(char * type){
+    if(strcmp(type, "int") == 0)
+        return int_t;
+    else if(strcmp(type, "short") == 0)
+        return short_t;
+    else if(strcmp(type, "double") == 0)
+        return double_t;
+    else if(strcmp(type, "char") == 0)
+        return char_t;
+    else if(strcmp(type, "void") == 0)
+        return void_t;
+    else
+        printf("\n\nERRO, N DEVIA ACONTECER\n\n");
+}
+
+char * data_type_to_string(data_type type){
+    if(type == int_t){
+        return strdup("int");
+    } else if(type == char_t){
+        return strdup("char");
+    } else if(type == short_t){
+        return strdup("short");
+    } else if(type == double_t){
+        return strdup("double");
+    } else if(type == void_t){
+        return strdup("void");
+    } else if(type == undefined_t){
+        return strdup("undefined");
+    } else{
+        printf("\n\nERRO, N DEVIA ACONTECER\n\n");
+        return NULL;
     }
 }
