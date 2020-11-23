@@ -135,7 +135,9 @@ void check_func_declaration(program * node){
         aux = aux -> next;
     }
 
-    table_element * inserted = insert_function(symtab, strdup(node->children->next->children->type), strdup(node->children->type), parameters);
+    aux_string = strdup(node->children->type);
+    * aux_string = tolower(* aux_string);   //Passar Int para int
+    table_element * inserted = insert_function(symtab, strdup(node->children->next->children->type), aux_string, parameters);
 
     if(! inserted) {
         //ERRO -> NAO DEVIA CHEGAR AQUI
@@ -154,9 +156,6 @@ void check_func_definition(program * node){
     //node -> children -> next -> next -> next é body
 
     sprintf(string, "Function %s", node ->children->next->children->type);
-    
-    aux_string = strdup(node->children->type);
-    * aux_string = tolower(* aux_string);   //Passar Int para int
 
     if(! (tab = insert_table(strdup(string)))){
         //ERRO, FUNÇAO JA FOI DEFINIDA
@@ -168,6 +167,9 @@ void check_func_definition(program * node){
         //O header ainda nao esta na tabela global
         check_func_declaration(node);
     }
+
+    aux_string = strdup(node->children->type);
+    * aux_string = tolower(* aux_string);   //Passar Int para int
 
     //Inserior return e parametros
     inserted = insert_variable(tab, strdup("return"), aux_string);
