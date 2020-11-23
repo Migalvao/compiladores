@@ -17,10 +17,13 @@ void check_statement(table * tab, program * node);
 data_type check_expression(table * tab, program * node);
 data_type string_to_data_type(char * type);
 char * data_type_to_string(data_type type);
-data_type check_call(program * node);
+data_type check_call(table * tab, program * node);
 data_type check_var(table * tab, program * node);
 data_type check_not(table * tab, program * node);
 data_type check_operation(table * tab, program * node);
 data_type check_commas(table * tab, program * node);
-
 void check_while(table * tab, program * node);
+void check_if(table * tab, program * node);
+void check_return(table * tab, program * node);
+void check_statlist(table * tab, program * node);
+data_type check_expression(table * tab, program * node);

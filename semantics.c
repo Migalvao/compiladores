@@ -201,13 +201,13 @@ void check_func_body(table * tab, program * node){
 
 void check_statement(table * tab, program * node){
     if(strcmp(node->type, "If") == 0){
-        //check_if();
+        check_if(tab, node);
     } else if(strcmp(node->type, "While") == 0){
         check_while(tab, node);
     } else if(strcmp(node->type, "Return") == 0){
-        //check_return();
+        check_return(tab, node);
     } else if(strcmp(node->type, "StatList") == 0){
-        //check_statlist();
+        check_statlist(tab, node);
     } else if(strcmp(node->type, "Erro") == 0){
         //ignorar erro
     } else{
@@ -216,9 +216,67 @@ void check_statement(table * tab, program * node){
     }
 }
 
+void check_if(table * tab, program * node){
+    //FALTAM VERIFICAÇOES!
+
+    program *expr = node->children;
+
+    data_type expr_type = check_expression(tab, expr);
+    
+    if(node->children->next){
+        program *stat = node->children->next;
+    
+        check_statement(tab, stat);
+    }
+
+    if(node->children->next->next){
+        program * stat = node->children->next->next;
+
+        check_statement(tab, stat->next);
+    }
+}
+
+void check_while(table * tab, program * node){
+    //FALTAM VERIFICAÇOES!
+
+    program *expr = node->children;
+
+    data_type type = check_expression(tab, expr);
+    
+    if(node->children->next){
+        program *stat = node->children->next;
+        
+        check_statement(tab, stat);
+    }
+}
+
+void check_return(table * tab, program * node){
+    //FALTAM VERIFICAÇOES!
+
+    if(node->children){
+        program *expr = node->children;
+        
+        data_type type = check_expression(tab, expr);
+    }
+}
+
+void check_statlist(table * tab, program * node){
+    //FALTAM VERIFICAÇOES!
+
+    program *stat_list = node->children;
+    
+    check_statement(tab, stat_list);
+
+    if(node->children->next){
+        program *stat = node->children->next;
+        
+        check_statement(tab, stat);
+    }
+}
+
 data_type check_expression(table * tab, program * node){
     if(strcmp(node->type, "Call") == 0){
-        return check_call(node);   
+        return check_call(tab, node);   
 
     } else if(strcmp(node->type, "IntLit") == 0){
         return int_t;
@@ -335,7 +393,7 @@ char * data_type_to_string(data_type type){
     }
 }
 
-data_type check_call(program * node){
+data_type check_call(table * tab, program * node){
     func_declaration * function;
     //node -> children é o ID
 
@@ -394,15 +452,4 @@ data_type string_to_data_type(char * type){
         printf("\n\nERRO, N DEVIA ACONTECER\n\n");
         return undefined_t;
     }
-}
-
-void check_while(table * tab, program * node){
-    //FALTAM VERIFICAÇOES!
-
-    program *expr = node->children;
-    program *stat = node->children->next;
-
-
-    data_type type = check_expression(tab, expr);
-    check_statement(tab, stat);
 }
