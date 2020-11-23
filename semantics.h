@@ -22,3 +22,5 @@ data_type check_var(table * tab, program * node);
 data_type check_not(table * tab, program * node);
 data_type check_operation(table * tab, program * node);
 data_type check_commas(table * tab, program * node);
+
+void check_while(table * tab, program * node);

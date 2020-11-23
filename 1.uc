@@ -1,4 +1,4 @@
-int main(int j, int k, char l) {
+int main(void) {
   char i = 'A';
   while (i <= 'Z')
   {

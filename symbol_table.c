@@ -104,7 +104,7 @@ table * insert_table(char * name){
 func_declaration * search_function(char * id, table * tab){
     table_element * aux = tab->element;
 
-    while(aux->next != NULL){
+    while(aux != NULL){
         if(aux->type == func_dec){
             if(strcmp(aux->entry_type.func->id, id) == 0){
                 return aux->entry_type.func;
@@ -118,7 +118,7 @@ func_declaration * search_function(char * id, table * tab){
 var_declaration * search_variable(char * id, table * tab){
     table_element * aux = tab->element;
 
-    while(aux->next != NULL){
+    while(aux != NULL){
         if(aux->type == var_dec){
             if(strcmp(aux->entry_type.var->id, id) == 0){
                 return aux->entry_type.var;

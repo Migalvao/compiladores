@@ -203,7 +203,7 @@ void check_statement(table * tab, program * node){
     if(strcmp(node->type, "If") == 0){
         //check_if();
     } else if(strcmp(node->type, "While") == 0){
-        //check_while();
+        check_while(tab, node);
     } else if(strcmp(node->type, "Return") == 0){
         //check_return();
     } else if(strcmp(node->type, "StatList") == 0){
@@ -212,7 +212,7 @@ void check_statement(table * tab, program * node){
         //ignorar erro
     } else{
         //em principio, expressions;
-        //check_expression();
+        check_expression(tab, node);
     }
 }
 
@@ -224,7 +224,7 @@ data_type check_expression(table * tab, program * node){
         return int_t;
 
     } else if(strcmp(node->type, "ChrLit") == 0){
-        return char_t;
+        return int_t;
 
     } else if(strcmp(node->type, "RealLit") == 0){
         return double_t;
@@ -272,7 +272,7 @@ data_type check_not(table * tab, program * node){
     data_type type = check_expression(tab, expr);
 
     char help[100];
-    sprintf(help, "%s - %s\n", node->type, data_type_to_string(type));
+    sprintf(help, "%s - %s", node->type, data_type_to_string(type));
     node->type = strdup(help);
 
     return type;
@@ -289,13 +289,13 @@ data_type check_operation(table * tab, program * node){
 
     // FALTAM VERIFICAÇÕES
     if(type_child1 == type_child2){
-        sprintf(help, "%s - %s\n", node->type, data_type_to_string(type_child1));
+        sprintf(help, "%s - %s", node->type, data_type_to_string(type_child1));
         node->type = strdup(help);
 
         return type_child1;
     }
-    else{
-        sprintf(help, "%s - %s\n", node->type, data_type_to_string(undefined_t));
+    else{       
+        sprintf(help, "%s - %s", node->type, data_type_to_string(undefined_t));
         node->type = strdup(help);
     
         return undefined_t;
@@ -370,6 +370,12 @@ data_type check_var(table * tab, program * node){
         return undefined_t;
     }
 
+    char help[100];
+    sprintf(help, "Id(%s) - %s", node->children->type, variable->type);
+    free(node->children);
+    node->children = NULL;
+    node->type = strdup(help);
+
     return string_to_data_type(variable -> type);
 }
 
@@ -388,4 +394,15 @@ data_type string_to_data_type(char * type){
         printf("\n\nERRO, N DEVIA ACONTECER\n\n");
         return undefined_t;
     }
+}
+
+void check_while(table * tab, program * node){
+    //FALTAM VERIFICAÇOES!
+
+    program *expr = node->children;
+    program *stat = node->children->next;
+
+
+    data_type type = check_expression(tab, expr);
+    check_statement(tab, stat);
 }

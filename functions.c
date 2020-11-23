@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "structures.h"
+#include "symbol_table.h"
 #include "functions.h"
 
 int indent = 0;
@@ -97,33 +98,40 @@ void free_arvore(program * no){
 
 
 void print_ast_noted(program * my_program){
-     
+    var_declaration * var;
+    char string[100];
+
     print_indent(indent);
     indent += 2;
 
-    if(strcmp(my_program->type, "IntLit") == 0)
-        printf("IntLit(%s)\n", my_program->children->type);
-    else if(strcmp(my_program->type, "ChrLit") == 0)
-        printf("ChrLit(%s)\n", my_program->children->type);
-    else if(strcmp(my_program->type, "RealLit") == 0)
-        printf("RealLit(%s)\n", my_program->children->type);
-    else if(strcmp(my_program->type, "Id") == 0)
+    if(strcmp(my_program->type, "IntLit") == 0){
+        printf("IntLit(%s) - int\n", my_program->children->type);
+    }
+    
+    else if(strcmp(my_program->type, "ChrLit") == 0){
+        printf("ChrLit(%s) - int\n", my_program->children->type);
+    }
+    else if(strcmp(my_program->type, "RealLit") == 0){
+        printf("RealLit(%s) - double\n", my_program->children->type);
+    }
+    else if(strcmp(my_program->type, "Id") == 0){
         printf("Id(%s)\n", my_program->children->type);
+    }
 
     else if(strcmp(my_program->type, "RealComma") == 0){
         printf("Comma\n");
         if(my_program->children)
-            print_ast(my_program->children);
+            print_ast_noted(my_program->children);
     }
     else{
         printf("%s\n", my_program->type);
         if(my_program->children)
-            print_ast(my_program->children);
+            print_ast_noted(my_program->children);
     }   
 
 
     indent -= 2;
 
     if(my_program->next)
-        print_ast(my_program->next);
+        print_ast_noted(my_program->next);
 }
