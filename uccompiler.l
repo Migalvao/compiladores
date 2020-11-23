@@ -119,7 +119,6 @@ int main(int argc, char *argv[])
         check_program(myprogram);
         
         if(s){
-            printf("cona\n");
             //imprimir tabelas de simbolos e nova AST 
             print_tables();
         }

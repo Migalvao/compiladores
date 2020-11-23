@@ -151,10 +151,10 @@ void print_tables(){
                     param = param -> next;
                 }
                 
-                printf("%s %s  %s\n", aux_ele->entry_type.func->id, aux_ele->entry_type.func->type, help);
+                printf("%s\t%s(%s)\n", aux_ele->entry_type.func->id, aux_ele->entry_type.func->type, help);
             }
             else{
-                printf("%s  %s\n", aux_ele->entry_type.var->id, aux_ele->entry_type.var->type);
+                printf("%s\t%s\n", aux_ele->entry_type.var->id, aux_ele->entry_type.var->type);
             }
 
             aux_ele = aux_ele->next;
