@@ -1,19 +1,9 @@
-char v (void) {
-    int;
-    void x;
-    z = ;
-    ;;;
-    {{{{{}{}{}{}}}{}{}{}}{}}
-      if(0);
-    { if(int);
-    if(a);
-    if(char *);
-
-    ;;;
-
-    if([]
-
-    ;;;
-
-    if(x){z1 z2;}
+int main(int j, int k, char l) {
+  char i = 'A';
+  while (i <= 'Z')
+  {
+    putchar(i);
+    i = i + 1;
+  }
+  return 0;
 }

@@ -60,11 +60,12 @@ void check_declaration(table * symtable, program * node){
     //node -> children é int/char/double/short
     //node -> children -> next é o ID
 
-    if(!search_function(strdup(node->children->next->children->type), symtab)){
+    if(search_variable(strdup(node->children->next->children->type), symtab)){
         //TODO ERRO -> variavel ja definida
         return;
     }
 
+    * node->children->type = tolower(* node->children->type);   //passar de Int para int
     table_element * inserted = insert_variable(symtable, strdup(node->children->next->children->type), strdup(node->children->type));
 
     if(! inserted) {
@@ -83,7 +84,7 @@ void check_func_declaration(program * node){
     // node -> children -> next -> next -> children é o primeiro parametro
     // node -> children -> next -> next -> children -> children é o tipo do primeiro parametro
     
-    if(!search_function(strdup(node->children->next->children->type), symtab)){
+    if(search_function(strdup(node->children->next->children->type), symtab)){
         //TODO ERRO -> variavel ja definida
         return;
     }
@@ -93,8 +94,9 @@ void check_func_declaration(program * node){
     aux_params = parameters = (func_parameter *)malloc(sizeof(func_parameter));
 
     parameters->next = NULL;
-
+    
     //Guardar Tipo
+    * aux->children->type = tolower(* aux->children->type);   //Passar Int para int
     parameters->type = strdup(aux->children->type);
 
     if(aux->children->next){
@@ -104,7 +106,7 @@ void check_func_declaration(program * node){
         //TODO VERIFICAÇAO DE TIPO / ERROS; ETC
         parameters->id = NULL;
     }
-
+    
     aux = aux -> next;
 
     while(aux){
@@ -114,7 +116,8 @@ void check_func_declaration(program * node){
         aux_params->next = NULL;
 
         //Guardar Tipo
-        parameters->type = strdup(aux->children->type);
+        * aux->children->type = tolower(* aux->children->type);   //Passar Int para int
+        aux_params->type = strdup(aux->children->type);
 
         if(aux->children->next){
             //Tambem ha um ID para guardar
@@ -123,7 +126,7 @@ void check_func_declaration(program * node){
             //TODO VERIFICAÇAO DE TIPO / ERROS; ETC
             aux_params->id = NULL;
         }
-
+        
         aux = aux -> next;
     }
 
@@ -138,12 +141,16 @@ void check_func_declaration(program * node){
 void check_func_definition(program * node){
     char string[STRING_SIZE];
     table * tab;
+    program * aux;
+    table_element * inserted;
     //node -> children é o tipo int/void/char
     //node -> children -> next é ID
     //node -> children -> next -> next é paramList
     //node -> children -> next -> next -> next é body
 
     sprintf(string, "Function %s", node ->children->next->children->type);
+    
+    * node->children->type = tolower(* node->children->type);   //Passar Int para int
 
     if(! (tab = insert_table(strdup(string)))){
         //ERRO, FUNÇAO JA FOI DEFINIDA
@@ -151,7 +158,35 @@ void check_func_definition(program * node){
         return;
     }
 
+    if(!search_function(strdup(node->children->next->children->type), symtab)){
+        //O header ainda nao esta na tabela global
+        check_func_declaration(node);
+    }
+
     //Inserior return e parametros
-    * node->children->type = tolower(* node->children->type);   //Passar Int para int
-    table_element * inserted = insert_variable(tab, strdup("return"), strdup(node->children->type));
+    inserted = insert_variable(tab, strdup("return"), strdup(node->children->type));
+    
+    aux = node -> children -> next -> next -> children;
+    while(aux){
+        if(aux->children->next){
+            //temos um ID
+            inserted = insert_variable(tab, strdup(aux->children->next->children->type), strdup(aux->children->type));
+        }
+        aux = aux -> next;
+    }
+
+    check_func_body(tab, node -> children -> next -> next -> next);
+}
+
+void check_func_body(table * tab, program * node){
+    program * aux = node -> children;
+    //node -> children, se existir sao as declarations and statemants
+    
+    while(aux){
+        if(strcmp(aux->type, "Declaration") == 0){
+            check_declaration(tab, aux);
+        }
+
+        aux = aux -> next;
+    }
 }

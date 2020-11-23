@@ -10,3 +10,4 @@ void insert_default_functions(void);
 void check_declaration(table * symtable, program * node);
 void check_func_declaration(program * node);
 void check_func_definition(program * node);
+void check_func_body(table * tab, program * node);

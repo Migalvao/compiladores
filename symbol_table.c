@@ -144,6 +144,7 @@ void print_tables(){
                 char help[200] = "";
                 func_parameter * param = aux_ele->entry_type.func->parameters;
                 strcpy(help, param->type);
+                
                 param = param -> next;
                 while(param != NULL){
                     strcat(help, ", ");
@@ -151,7 +152,7 @@ void print_tables(){
                     param = param -> next;
                 }
                 
-                printf("%s\t%s(%s)\n", aux_ele->entry_type.func->id, aux_ele->entry_type.func->type, help);
+                printf("%s\t%s(%s)\n", aux_ele->entry_type.func->id, aux_ele->entry_type.func->type, strdup(help));
             }
             else{
                 printf("%s\t%s\n", aux_ele->entry_type.var->id, aux_ele->entry_type.var->type);
