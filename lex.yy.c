@@ -2199,6 +2199,7 @@ int main(int argc, char *argv[])
         if(s){
             //imprimir tabelas de simbolos e nova AST 
             print_tables();
+            print_ast(myprogram);
         }
     }
 

@@ -5,6 +5,7 @@
 #define STRING_SIZE 100
 
 table * symtab = NULL;
+char * aux_string;
 
 void check_program(program * full_program){
     //criar global symbol table
@@ -65,8 +66,9 @@ void check_declaration(table * symtable, program * node){
         return;
     }
 
-    * node->children->type = tolower(* node->children->type);   //passar de Int para int
-    table_element * inserted = insert_variable(symtable, strdup(node->children->next->children->type), strdup(node->children->type));
+    aux_string = strdup(node->children->type);
+    * aux_string = tolower(* aux_string);   //passar de Int para int
+    table_element * inserted = insert_variable(symtable, strdup(node->children->next->children->type), aux_string);
 
     if(! inserted) {
         //ERRO -> NAO DEVIA CHEGAR AQUI
@@ -96,8 +98,9 @@ void check_func_declaration(program * node){
     parameters->next = NULL;
     
     //Guardar Tipo
-    * aux->children->type = tolower(* aux->children->type);   //Passar Int para int
-    parameters->type = strdup(aux->children->type);
+    aux_string = strdup(aux->children->type);
+    * aux_string = tolower(* aux_string);   //Passar Int para int
+    parameters->type = aux_string;
 
     if(aux->children->next){
         //Tambem ha um ID para guardar
@@ -116,8 +119,9 @@ void check_func_declaration(program * node){
         aux_params->next = NULL;
 
         //Guardar Tipo
-        * aux->children->type = tolower(* aux->children->type);   //Passar Int para int
-        aux_params->type = strdup(aux->children->type);
+        aux_string = strdup(aux->children->type);
+        * aux_string = tolower(* aux_string);   //Passar Int para int
+        aux_params->type = aux_string;
 
         if(aux->children->next){
             //Tambem ha um ID para guardar
@@ -150,7 +154,8 @@ void check_func_definition(program * node){
 
     sprintf(string, "Function %s", node ->children->next->children->type);
     
-    * node->children->type = tolower(* node->children->type);   //Passar Int para int
+    aux_string = strdup(node->children->type);
+    * aux_string = tolower(* aux_string);   //Passar Int para int
 
     if(! (tab = insert_table(strdup(string)))){
         //ERRO, FUNÇAO JA FOI DEFINIDA
@@ -164,7 +169,7 @@ void check_func_definition(program * node){
     }
 
     //Inserior return e parametros
-    inserted = insert_variable(tab, strdup("return"), strdup(node->children->type));
+    inserted = insert_variable(tab, strdup("return"), aux_string);
     
     aux = node -> children -> next -> next -> children;
     while(aux){
