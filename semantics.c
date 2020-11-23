@@ -490,6 +490,7 @@ data_type check_call(table * tab, program * node){
 }
 
 data_type check_var(table * tab, program * node){
+    char help[STRING_SIZE];
     var_declaration * variable;
     //node é o ID
 
@@ -503,10 +504,13 @@ data_type check_var(table * tab, program * node){
 
     if(!variable){
         printf("Undefined variable!\n");
+        sprintf(help, "Id(%s) - undefined", node->children->type);
+        free(node->children);
+        node->children = NULL;
+        node->type = strdup(help);
         return undefined_t;
     }
 
-    char help[STRING_SIZE];
     sprintf(help, "Id(%s) - %s", node->children->type, variable->type);
     free(node->children);
     node->children = NULL;
