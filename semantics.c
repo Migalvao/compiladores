@@ -199,21 +199,86 @@ void check_func_body(table * tab, program * node){
     }
 }
 
-void check_statement(table * tab, program * node){
+data_type check_statement(table * tab, program * node){
     if(strcmp(node->type, "If") == 0){
-        //check_if();
+        return check_if(tab, node);
     } else if(strcmp(node->type, "While") == 0){
-        //check_while();
+        return check_while(tab, node);
     } else if(strcmp(node->type, "Return") == 0){
-        //check_return();
+        return check_return(tab, node);
     } else if(strcmp(node->type, "StatList") == 0){
         //check_statlist();
     } else if(strcmp(node->type, "Erro") == 0){
-        //ignorar erro
+        return undefined_t;
     } else{
-        //em principio, expressions;
-        //check_expression();
+        return check_expression(tab, node);
     }
+}
+
+data_type check_if(table * tab, program * node){
+    //FALTAM VERIFICAÇOES!
+
+    program *expr = node->children;
+
+    data_type expr_type = check_expression(tab, expr);
+    
+    if(node->children->next){
+        program *stat = node->children->next;
+    
+        data_type stat_type = check_statement(tab, stat);
+    }
+
+    if(node->children->next->next){
+        program * stat = node->children->next->next;
+
+        data_type stat_type_else = check_statement(tab, stat->next);
+    }
+
+    return node->type;
+}
+
+data_type check_while(table * tab, program * node){
+    //FALTAM VERIFICAÇOES!
+
+    program *expr = node->children;
+
+    data_type type = check_expression(tab, expr);
+    
+    if(node->children->next){
+        program *stat = node->children->next;
+        
+        data_type stat_type = check_statement(tab, stat);
+    }
+
+    return node->type;
+}
+
+data_type check_return(table * tab, program * node){
+    //FALTAM VERIFICAÇOES!
+
+    if(node->children){
+        program *expr = node->children;
+        
+        data_type type = check_expression(tab, expr);
+    }
+
+    return node->type;
+}
+
+data_type check_statlist(table * tab, program * node){
+    //FALTAM VERIFICAÇOES!
+
+    program *stat_list = node->children;
+    
+    data_type stat_list_type = check_statement(tab, stat_list);
+
+    if(node->children->next){
+        program *stat = node->children->next;
+        
+        data_type stat_type = check_statement(tab, stat);
+    }
+
+    return node->type;
 }
 
 data_type check_expression(table * tab, program * node){
