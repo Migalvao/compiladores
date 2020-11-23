@@ -352,7 +352,22 @@ data_type check_operation(table * tab, program * node){
 
         return type_child1;
     }
-    else{       
+    else if((type_child1 == int_t && type_child2 == char_t) || (type_child1 == char_t && type_child2 == int_t)){
+        if(strcmp(node->type, "Store") == 0){
+            sprintf(help, "%s - %s", node->type, data_type_to_string(type_child1));
+            node->type = strdup(help);
+
+            return type_child1;
+        }
+        else{
+            sprintf(help, "%s - %s", node->type, data_type_to_string(int_t));
+            node->type = strdup(help);
+
+            return int_t;
+        }
+    }
+    else{
+        printf("incompatible types\n");       
         sprintf(help, "%s - %s", node->type, data_type_to_string(undefined_t));
         node->type = strdup(help);
     
@@ -362,7 +377,6 @@ data_type check_operation(table * tab, program * node){
 
 data_type check_commas(table * tab, program * node){
     //PODE ESTAR INCOMPLETO OU INCORRETO!
-
 
     program * child1 = node->children;
     program * child2 = node->children->next;
