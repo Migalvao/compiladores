@@ -103,6 +103,8 @@ void check_func_declaration(program * node){
         return;
     }
 
+    //-----------------------------------------------------------------------
+
     program * aux = node -> children -> next -> next -> children;
     func_parameter * aux_params, * parameters;
     aux_params = parameters = (func_parameter *)malloc(sizeof(func_parameter));
@@ -157,10 +159,12 @@ void check_func_declaration(program * node){
 }
 
 void check_func_definition(program * node){
+
     char string[STRING_SIZE];
     table * tab;
     program * aux;
     table_element * inserted;
+    func_declaration * function;
     //node -> children é o tipo int/void/char
     //node -> children -> next é ID
     //node -> children -> next -> next é paramList
@@ -176,9 +180,31 @@ void check_func_definition(program * node){
         return;
     }
 
-    if(!search_function(strdup(node->children->next->children->type), symtab)){
+    if(!(function = search_function(strdup(node->children->next->children->type), symtab))){
         //O header ainda nao esta na tabela global
         check_func_declaration(node);
+    }
+    else{
+        program * param_aux1 = node -> children -> next -> next -> children;
+        func_parameter * param_aux2 = function -> parameters;
+        char help[STRING_SIZE];
+        char help2[STRING_SIZE];
+
+        //FALTA VER SE O NUMERO DE PARAMETRO É IGUAL EM PARAM_AUX1 E PARA_AUX2
+
+        //ERRO DE CONFLICTING TYPES
+        while(param_aux1 != NULL){
+            strcpy(help2, param_aux1->children->type);
+            *help2 = tolower(*help2);
+            if(strcmp(help2, param_aux2->type) != 0){
+                sprintf(help, "Conflicting types (got %s, expected %s)", help2, param_aux2->type);
+                print_error(help, node->children->line, node->children->column);
+                break;
+            }
+
+            param_aux1 = param_aux1->next;
+            param_aux2 = param_aux2->next;
+        }
     }
 
     aux_string = strdup(node->children->type);
@@ -198,10 +224,10 @@ void check_func_definition(program * node){
         aux = aux -> next;
     }
 
-    check_func_body(tab, node -> children -> next -> next -> next);
+    check_func_body(tab, node -> children -> next -> next -> next, node->children->type);
 }
 
-void check_func_body(table * tab, program * node){
+void check_func_body(table * tab, program * node, char * func_type){
     program * aux = node -> children;
     //node -> children, se existir sao as declarations and statemants
     
@@ -209,22 +235,22 @@ void check_func_body(table * tab, program * node){
         if(strcmp(aux->type, "Declaration") == 0){
             check_declaration(tab, aux);
         } else {
-            check_statement(tab, aux);
+            check_statement(tab, aux, func_type);
         }
 
         aux = aux -> next;
     }
 }
 
-void check_statement(table * tab, program * node){
+void check_statement(table * tab, program * node, char * func_type){
     if(strcmp(node->type, "If") == 0){
-        check_if(tab, node);
+        check_if(tab, node, func_type);
     } else if(strcmp(node->type, "While") == 0){
-        check_while(tab, node);
+        check_while(tab, node, func_type);
     } else if(strcmp(node->type, "Return") == 0){
-        check_return(tab, node);
+        check_return(tab, node, func_type);
     } else if(strcmp(node->type, "StatList") == 0){
-        check_statlist(tab, node);
+        check_statlist(tab, node, func_type);
     } else if(strcmp(node->type, "Erro") == 0){
         //ignorar erro
     } else{
@@ -233,7 +259,7 @@ void check_statement(table * tab, program * node){
     }
 }
 
-void check_if(table * tab, program * node){
+void check_if(table * tab, program * node, char * func_type){
     //FALTAM VERIFICAÇOES!
 
     program *expr = node->children;
@@ -243,17 +269,17 @@ void check_if(table * tab, program * node){
     if(node->children->next){
         program *stat = node->children->next;
     
-        check_statement(tab, stat);
+        check_statement(tab, stat, func_type);
     }
 
     if(node->children->next->next){
         program * stat = node->children->next->next;
 
-        check_statement(tab, stat->next);
+        check_statement(tab, stat->next, func_type);
     }
 }
 
-void check_while(table * tab, program * node){
+void check_while(table * tab, program * node, char * func_type){
     //FALTAM VERIFICAÇOES!
 
     program *expr = node->children;
@@ -263,12 +289,17 @@ void check_while(table * tab, program * node){
     if(node->children->next){
         program *stat = node->children->next;
         
-        check_statement(tab, stat);
+        check_statement(tab, stat, func_type);
     }
 }
 
-void check_return(table * tab, program * node){
+void check_return(table * tab, program * node, char * func_type){
     //FALTAM VERIFICAÇOES!
+
+    //verificar se existe erro invalid use of void
+    if((strcmp(func_type, "Void") == 0) && strcmp(node->children->type, "Null") != 0){
+        print_error("Invalid use of void type in declaration", node->children->line, node->children->column);
+    }
 
     if(node->children){
         program *expr = node->children;
@@ -277,17 +308,17 @@ void check_return(table * tab, program * node){
     }
 }
 
-void check_statlist(table * tab, program * node){
+void check_statlist(table * tab, program * node, char * func_type){
     //FALTAM VERIFICAÇOES!
 
     program *stat_list = node->children;
     
-    check_statement(tab, stat_list);
+    check_statement(tab, stat_list, func_type);
 
     if(node->children->next){
         program *stat = node->children->next;
         
-        check_statement(tab, stat);
+        check_statement(tab, stat, func_type);
     }
 }
 
@@ -383,8 +414,7 @@ data_type check_operation(table * tab, program * node){
             return int_t;
         }
     }
-    else{
-        printf("incompatible types\n");       
+    else{     
         sprintf(help, "%s - %s", node->type, data_type_to_string(undefined_t));
         node->type = strdup(help);
     

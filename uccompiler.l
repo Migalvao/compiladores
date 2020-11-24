@@ -114,7 +114,7 @@ int main(int argc, char *argv[])
         print_ast(myprogram);
     }
 
-    if((s || (!l && !e1 && !t && !e2)) && myprogram){
+    if((s || (!l && !e1 && !t && !e2)) && myprogram && !is_error){
         //fazer analise sintatica
         check_program(myprogram);
         
