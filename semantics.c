@@ -58,15 +58,25 @@ void insert_default_functions(void){
 }
 
 void check_declaration(table * symtable, program * node){
+    char string[STRING_SIZE];
     // uma declaraçao apenas
     //node é "Declaration"
     //node -> children é int/char/double/short
     //node -> children -> next é o ID
 
+    if(search_variable(strdup(node->children->next->children->type), symtable)){
+        sprintf(string, "Symbol %s already defined", node->children->next->children->type);
+        print_error(string, node->children->next->line, node->children->next->column);
+        return;
+    } 
+    
+    /* PROCURAR NA TABELA GLOBAL
     if(search_variable(strdup(node->children->next->children->type), symtab)){
-        //TODO ERRO -> variavel ja definida
+        sprintf(string, "Symbol %s already defined", node->children->next->children->type);
+        print_error(string, node->children->next->line, node->children->next->column);
         return;
     }
+    */
 
     aux_string = strdup(node->children->type);
     * aux_string = tolower(* aux_string);   //passar de Int para int
@@ -164,7 +174,9 @@ void check_func_definition(program * node){
 
     if(! (tab = insert_table(strdup(string)))){
         //ERRO, FUNÇAO JA FOI DEFINIDA
-        printf("Function %s already defined!", node ->children->next->children->type);
+        sprintf(string, "Symbol %s already defined", node ->children->next->children->type);
+        print_error(string, node ->children->next->line, node ->children->next->column);
+        //printf("Function %s already defined!", node ->children->next->children->type);
         return;
     }
 
@@ -252,7 +264,7 @@ void check_if(table * tab, program * node, char * func_type){
 
     program *expr = node->children;
 
-    data_type expr_type = check_expression(tab, expr);
+    check_expression(tab, expr);
     
     if(node->children->next){
         program *stat = node->children->next;
@@ -272,7 +284,7 @@ void check_while(table * tab, program * node, char * func_type){
 
     program *expr = node->children;
 
-    data_type type = check_expression(tab, expr);
+    check_expression(tab, expr);
     
     if(node->children->next){
         program *stat = node->children->next;
@@ -292,7 +304,7 @@ void check_return(table * tab, program * node, char * func_type){
     if(node->children){
         program *expr = node->children;
         
-        data_type type = check_expression(tab, expr);
+        check_expression(tab, expr);
     }
 }
 
@@ -402,8 +414,7 @@ data_type check_operation(table * tab, program * node){
             return int_t;
         }
     }
-    else{
-        printf("incompatible types\n");       
+    else{     
         sprintf(help, "%s - %s", node->type, data_type_to_string(undefined_t));
         node->type = strdup(help);
     
@@ -417,8 +428,8 @@ data_type check_commas(table * tab, program * node){
     program * child1 = node->children;
     program * child2 = node->children->next;
 
-    data_type type_child1 = check_expression(tab, child1);
-    data_type type_child2 = check_expression(tab, child2);
+    check_expression(tab, child1);
+    check_expression(tab, child2);
 
     return undefined_t;
 }
@@ -449,6 +460,7 @@ data_type check_call(table * tab, program * node){
     func_parameter * param;
     program * aux_node;
     data_type type;
+    int i_param = 0, e_param = 0;
     //node -> type é "Call"
     //node -> children é o ID
     //node -> children -> next sao os parametros
@@ -480,30 +492,33 @@ data_type check_call(table * tab, program * node){
     
     sprintf(help2, "Id(%s) - %s(%s)", node->children->children->type, function->type, help);
     node->children->type = strdup(help2);
-    free(node->children->children);
-    node->children->children = NULL;
     
-    //TODO verificar parametros
-    // se n bater, imprimir erro
+    //verificar parametros
     aux_node = node -> children -> next;        //parametros do input
     param = function->parameters;               //parâmetros da funçao(esperados)
 
-    //TODO verificar tipos do parametro
-
-    type = check_expression(tab, aux_node);
-
-    if(strcmp(aux_node->type, "Id") == 0){
-        //parametro é um ID
-        sprintf(help, "Id(%s) - %s", aux_node->children->type, data_type_to_string(type));
-        aux_node->type = strdup(help);
-        free(aux_node->children);
-        aux_node->children = NULL;
-    } 
-    
+    if(strcmp(param->type, "void") != 0)
+        e_param++;
     param = param -> next;
-    aux_node = aux_node -> next;
+
+    //TODO verificar tipos do parametro
+    if(aux_node){
+        type = check_expression(tab, aux_node);
+
+        if(strcmp(aux_node->type, "Id") == 0){
+            //parametro é um ID
+            sprintf(help, "Id(%s) - %s", aux_node->children->type, data_type_to_string(type));
+            aux_node->type = strdup(help);
+            free(aux_node->children);
+            aux_node->children = NULL;
+        } 
+        
+        aux_node = aux_node -> next;
+        i_param++;
+    } 
 
     while(param != NULL && aux_node != NULL){
+        //TODO verificar tipos do parametro
         type = check_expression(tab, aux_node);
 
         if(strcmp(aux_node->type, "Id") == 0){
@@ -515,11 +530,34 @@ data_type check_call(table * tab, program * node){
         } 
 
         param = param -> next;
+        e_param++;
         aux_node = aux_node -> next;
+        i_param++;
     }
 
-    //TODO verificar se o numero de parametros bateu,
-    //aka ver se tanto param como aux_node sao NULL
+    if(param || aux_node){
+        //ou temos parametros a mais ou parametros a menos
+        if(param){
+            while(param){
+                param = param ->next;
+                e_param++;
+            }
+        } else if(aux_node){
+            while(aux_node){
+                aux_node = aux_node ->next;
+                i_param++;
+            }
+        }
+    }
+
+    //TODO verificar se o numero de parametros esta certo
+    if(e_param != i_param){
+        sprintf(help2, "Wrong number of arguments to function %s (got %d , required %d)", node->children->children->type, i_param, e_param);
+        print_error(help2, node->children->line, node->children->column);
+    }
+
+    free(node->children->children);
+    node->children->children = NULL;
 
     return string_to_data_type(function -> type);
 }
@@ -538,7 +576,9 @@ data_type check_var(table * tab, program * node){
     }
 
     if(!variable){
-        printf("Undefined variable!\n");
+        sprintf(help, "Unknown symbol %s", node->children->type);
+        print_error(help, node->children->line, node->children->column);
+
         sprintf(help, "Id(%s) - undefined", node->children->type);
         free(node->children);
         node->children = NULL;

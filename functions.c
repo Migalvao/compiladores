@@ -102,9 +102,6 @@ void free_arvore(program * no){
 
 
 void print_ast_noted(program * my_program){
-    var_declaration * var;
-    char string[100];
-
     print_indent(indent);
     indent += 2;
 

@@ -2,11 +2,10 @@ void main(char a, int b);
 
 void main(int a, int b) {
   
-  while (i <= 'Z'
+  while (i <= 'Z')
   {
-    putcharddddd(i);
+    putchar(i);
     i = i + 1;
   }
-  char i = 'A';
   return 0;
 }
