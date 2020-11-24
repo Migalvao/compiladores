@@ -85,12 +85,15 @@ table * insert_table(char * name){
     
     if (symtab){
         aux = symtab;
-        while(aux->next != NULL){
+        while(aux->next != NULL){   
             if(strcmp(aux->name, name) == 0){
                 return NULL;
             }
             aux = aux->next;
         }
+        if(strcmp(aux->name, name) == 0){
+                return NULL;
+            }
         aux->next = new;
     }
     else{

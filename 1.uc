@@ -1,10 +1,10 @@
 int main(void) {
-  
+  char i = 'A';
   while (i <= 'Z')
   {
-    putcharddddd(i);
+    putchar(i);
     i = i + 1;
   }
-  char i = 'A';
   return 0;
+  char i = 'A';
 }
