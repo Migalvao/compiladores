@@ -1,7 +1,7 @@
-char i = 'A';
+void main(char a, int b);
 
-int main(void) {
-  char i = 'A';
+void main(int a, int b) {
+
   while (i <= 'Z')
   {
     putchar(i);
