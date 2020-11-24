@@ -1,6 +1,8 @@
-int main(void) {
+void main(char a, int b);
+
+void main(int a, int b) {
   
-  while (i <= 'Z')
+  while (i <= 'Z'
   {
     putcharddddd(i);
     i = i + 1;

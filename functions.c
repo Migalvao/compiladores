@@ -141,5 +141,5 @@ void print_ast_noted(program * my_program){
 }
 
 void print_error(char * text, int l, int c){
-    printf("“Line %d, col %d: %s\n", l, c, text);
+    printf("Line %d, col %d: %s\n", l, c, text);
 }
