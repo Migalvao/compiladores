@@ -1,3 +1,5 @@
+char i = 'A';
+
 int main(void) {
   char i = 'A';
   while (i <= 'Z')
@@ -6,5 +8,4 @@ int main(void) {
     i = i + 1;
   }
   return 0;
-  char i = 'A';
 }

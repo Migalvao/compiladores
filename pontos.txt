@@ -1,8 +1,6 @@
-A - 600
-B - Syntax errors - Variable and function declarations/definitions: 50/50
-C - Syntax errors - Expressions: 90/90
-D - Syntax errors - Statements: 60/60
-E - AST - Variable and function declarations/definitions: 80/80
-F - AST - Expressions: 140/140
-G - AST - Statements: 80/80
-H - AST - Full Programs: 100/100
+A - 135/1200
+B - Symbol Tables - Variable Declaration 60/60
+C - Symbol Tables - Function Declaration/Definition 30/140
+D - Annotated AST - valid programs 45/140
+E - Semantic Errors - Declarations and Function Definitions 0/80
+F - Semantic Errors - Expressions and Statements 0/120

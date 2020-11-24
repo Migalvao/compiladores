@@ -69,11 +69,14 @@ void check_declaration(table * symtable, program * node){
         print_error(string, node->children->next->line, node->children->next->column);
         return;
     } 
+    
+    /* PROCURAR NA TABELA GLOBAL
     if(search_variable(strdup(node->children->next->children->type), symtab)){
         sprintf(string, "Symbol %s already defined", node->children->next->children->type);
         print_error(string, node->children->next->line, node->children->next->column);
         return;
     }
+    */
 
     aux_string = strdup(node->children->type);
     * aux_string = tolower(* aux_string);   //passar de Int para int
@@ -235,7 +238,7 @@ void check_if(table * tab, program * node){
 
     program *expr = node->children;
 
-    data_type expr_type = check_expression(tab, expr);
+    check_expression(tab, expr);
     
     if(node->children->next){
         program *stat = node->children->next;
@@ -255,7 +258,7 @@ void check_while(table * tab, program * node){
 
     program *expr = node->children;
 
-    data_type type = check_expression(tab, expr);
+    check_expression(tab, expr);
     
     if(node->children->next){
         program *stat = node->children->next;
@@ -270,7 +273,7 @@ void check_return(table * tab, program * node){
     if(node->children){
         program *expr = node->children;
         
-        data_type type = check_expression(tab, expr);
+        check_expression(tab, expr);
     }
 }
 
@@ -395,8 +398,8 @@ data_type check_commas(table * tab, program * node){
     program * child1 = node->children;
     program * child2 = node->children->next;
 
-    data_type type_child1 = check_expression(tab, child1);
-    data_type type_child2 = check_expression(tab, child2);
+    check_expression(tab, child1);
+    check_expression(tab, child2);
 
     return undefined_t;
 }
