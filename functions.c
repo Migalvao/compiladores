@@ -7,6 +7,8 @@
 #include "functions.h"
 
 int indent = 0;
+extern int line, column;
+extern char * yytext;
 
 program * insert_element(char * type,  program * children){
 
@@ -14,6 +16,8 @@ program * insert_element(char * type,  program * children){
     new->next = NULL;
     new->type = strdup(type);
     new->children = children;
+    new -> line = line;
+    new -> column = (int)(column - strlen(yytext));
 
     return new;
 }
@@ -134,4 +138,8 @@ void print_ast_noted(program * my_program){
 
     if(my_program->next)
         print_ast_noted(my_program->next);
+}
+
+void print_error(char * text, int l, int c){
+    printf("“Line %d, col %d: %s\n", l, c, text);
 }

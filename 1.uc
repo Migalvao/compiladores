@@ -2,7 +2,7 @@ int main(void) {
   
   while (i <= 'Z')
   {
-    putchar(i);
+    putcharddddd(i);
     i = i + 1;
   }
   char i = 'A';

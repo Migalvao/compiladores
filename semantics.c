@@ -1,5 +1,6 @@
 #include "semantics.h"
 #include "structures.h"
+#include "functions.h"
 #include "symbol_table.h"
 
 #define STRING_SIZE 100
@@ -423,7 +424,8 @@ data_type check_call(table * tab, program * node){
     function = search_function(node->children->children->type, symtab);
 
     if(! function){
-        printf("Undefined function!\n");
+        sprintf(help, "Symbol %s is not a function", node->children->children->type);
+        print_error(help, node->children->line, node->children->column);
         node -> type = strdup("Call - undefined");
         return undefined_t;
     }
