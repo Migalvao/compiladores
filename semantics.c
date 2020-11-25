@@ -176,11 +176,23 @@ void check_func_definition(program * node){
     else{
         program * param_aux1 = node -> children -> next -> next -> children;
         func_parameter * param_aux2 = function -> parameters;
-        char help[2 * STRING_SIZE];
+        char help[STRING_SIZE];
         char help2[STRING_SIZE];
 
-        //FALTA VER SE O NUMERO DE PARAMETRO É IGUAL EM PARAM_AUX1 E PARA_AUX2
+        //VER SE O NUMERO DE PARAMETROS E IGUAL E SE OS PARAMETRO SAO OS MESMOS
+        //function == NULL se nao forem iguais os parametros, function != NULL function vai ser igual a um node
 
+        if(function){
+            strcpy(help2, node->children->type);
+            *help2 = tolower(*help2);
+            if(strcmp(help2, function->type) != 0){
+                sprintf(help, "Conflicting types (got %s, expected %s)", help2, function->type);
+                print_error(help, node->children->line, node->children->column);
+            }
+        }
+
+
+        /*
         //ERRO DE CONFLICTING TYPES
         while(param_aux1 != NULL){
             strcpy(help2, param_aux1->children->type);
@@ -194,6 +206,7 @@ void check_func_definition(program * node){
             param_aux1 = param_aux1->next;
             param_aux2 = param_aux2->next;
         }
+        */
     }
 
     aux_string = strdup(node->children->type);
