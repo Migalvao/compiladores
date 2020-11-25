@@ -1,8 +1,8 @@
 int main(int);
 int main(int,int);
-int main(char);
+char main(void);
 int main(int,int);
 
-int main1(void){
+int main(void){
   return 1;
 }

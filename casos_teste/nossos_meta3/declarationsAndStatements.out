@@ -111,11 +111,11 @@ Program
 ......If
 ........Not - int
 ..........IntLit(45) - int
-........Store - undef
+........Store - undefined
 ..........Id(p) - double
 ..........Minus - int
 ............IntLit(5) - int
-........Store - undef
+........Store - undefined
 ..........Id(p) - double
 ..........Plus - int
 ............IntLit(5) - int

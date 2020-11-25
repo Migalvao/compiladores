@@ -80,9 +80,6 @@ table * insert_table(char * name){
     if (symtab){
         aux = symtab;
         while(aux->next != NULL){   
-            if(strcmp(aux->name, name) == 0){
-                return NULL;
-            }
             aux = aux->next;
         }
         if(strcmp(aux->name, name) == 0){
@@ -107,9 +104,16 @@ func_declaration * search_function(program * id_node, table * tab){
     while(aux != NULL){
         if(aux->type == func_dec){
             if(strcmp(aux->entry_type.func->id, id_node->children->type) == 0){
+
+                if(!id_node -> next || !id_node -> next -> children || !id_node -> next -> children -> children){
+                    //A search_function esta a ser chamada por uma "Call"
+                    return aux->entry_type.func;
+                }
+
                 //Id é igual, falta verificar parametros
                 param = aux->entry_type.func->parameters;
                 param_node = id_node -> next -> children;
+                
                 
                 while(param && param_node){
                     strcpy(string, param_node->children->type);
@@ -125,7 +129,7 @@ func_declaration * search_function(program * id_node, table * tab){
                 }
 
                 if(!param && !param_node){
-                    //tem o mm numeoro de parametros e sempre iguais~
+                    //tem o mm numero de parametros e sempre iguais~
                     return aux->entry_type.func;
                 }
             }
