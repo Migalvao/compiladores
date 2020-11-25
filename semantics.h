@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#define STRING_SIZE 100
+
 typedef enum {int_t, short_t, char_t, double_t, undefined_t, void_t} data_type;
 
 void check_program(program * full_program);

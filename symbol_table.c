@@ -59,13 +59,6 @@ table_element * insert_function(table *tab, char * id, char * type, func_paramet
 
     if(tab->element){
         while(aux->next != NULL){
-            if(aux->type == func_dec){
-                if(strcmp(aux->entry_type.func->id, id) == 0){
-                    free(new);
-                    free(new_element);
-                    return NULL;
-                }
-            }
             aux = aux->next;
         }
         aux->next = new_element;
@@ -105,13 +98,36 @@ table * insert_table(char * name){
 
 }
 
-func_declaration * search_function(char * id, table * tab){
+func_declaration * search_function(program * id_node, table * tab){
     table_element * aux = tab->element;
+    program * param_node;
+    func_parameter * param;
+    char string[STRING_SIZE];
 
     while(aux != NULL){
         if(aux->type == func_dec){
-            if(strcmp(aux->entry_type.func->id, id) == 0){
-                return aux->entry_type.func;
+            if(strcmp(aux->entry_type.func->id, id_node->children->type) == 0){
+                //Id é igual, falta verificar parametros
+                param = aux->entry_type.func->parameters;
+                param_node = id_node -> next -> children;
+                
+                while(param && param_node){
+                    strcpy(string, param_node->children->type);
+                    * string = tolower(*string);
+
+                    if(strcmp(param->type, string) != 0){
+                        //tipos sao diferentes logo sabemos que nao é a mm funçao
+                        break;
+                    }
+
+                    param = param -> next;
+                    param_node = param_node -> next;
+                }
+
+                if(!param && !param_node){
+                    //tem o mm numeoro de parametros e sempre iguais~
+                    return aux->entry_type.func;
+                }
             }
         }
         aux = aux->next;

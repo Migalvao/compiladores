@@ -1,4 +1,5 @@
 #include <stdbool.h> 
+#include "structures.h"
 #ifndef SYMBOL_TABLE_H
 #define SYMBOL_TABLE_H
 
@@ -49,7 +50,7 @@ table_element * insert_function(table *tab, char * id, char * type, func_paramet
 table_element * insert_variable(table *tab, char * id, char * type, bool is_param);
 table *insert_table(char * name);
 var_declaration * search_variable(char * id, table * tab);
-func_declaration *search_function(char * id, table * tab);
+func_declaration * search_function(program * id_node, table * tab);
 void print_tables();
 
 #endif

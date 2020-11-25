@@ -3,8 +3,6 @@
 #include "functions.h"
 #include "symbol_table.h"
 
-#define STRING_SIZE 100
-
 table * symtab = NULL;
 char * aux_string;
 
@@ -74,7 +72,6 @@ void check_declaration(table * symtable, program * node){
     table_element * inserted = insert_variable(symtable, strdup(node->children->next->children->type), aux_string, false);
 
     if(! inserted) {
-        //ERRO -> NAO DEVIA CHEGAR AQUI
         printf("\n\nNAO DEVIA CHEGAR AQUI\n\n");
     }
 
@@ -91,7 +88,7 @@ void check_func_declaration(program * node){
     // node -> children -> next -> next -> children é o primeiro parametro
     // node -> children -> next -> next -> children -> children é o tipo do primeiro parametro
     
-    if(search_function(strdup(node->children->next->children->type), symtab)){
+    if(search_function(node->children->next, symtab)){
         //TODO ERRO -> variavel ja definida
         return;
     }
@@ -146,8 +143,7 @@ void check_func_declaration(program * node){
     table_element * inserted = insert_function(symtab, strdup(node->children->next->children->type), aux_string, parameters);
 
     if(! inserted) {
-        //ERRO -> NAO DEVIA CHEGAR AQUI
-        printf("\n\nNAO DEVIA CHEGAR AQUI\n\n");
+        printf("\n\nNAO DEVIA CHEGAR AQUI FUNC\n\n");
     }
 }
 
@@ -173,7 +169,7 @@ void check_func_definition(program * node){
         return;
     }
 
-    if(!(function = search_function(strdup(node->children->next->children->type), symtab))){
+    if(!(function = search_function(node->children->next, symtab))){
         //O header ainda nao esta na tabela global
         check_func_declaration(node);
     }
@@ -458,7 +454,7 @@ data_type check_call(table * tab, program * node){
     //node -> children -> next sao os parametros
 
     //procurar no global scope, so ai e que ha funçoes
-    function = search_function(node->children->children->type, symtab);
+    function = search_function(node->children, symtab);
 
     if(! function){
         sprintf(help, "Symbol %s is not a function", node->children->children->type);

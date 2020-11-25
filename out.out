@@ -1,10 +1,13 @@
-Line 6, col 1: Conflicting types (got void, expected int)
+Ja existia!
 ===== Global Symbol Table =====
 putchar	int(int)
 getchar	int(void)
 main	int(int)
+main	int(int,int)
+main	int(char)
+main1	int(void)
 
-===== Function main Symbol Table =====
+===== Function main1 Symbol Table =====
 return	int
 
 Program
@@ -28,9 +31,17 @@ Program
 ....ParamList
 ......ParamDeclaration
 ........Char
-..FuncDefinition
+..FuncDeclaration
 ....Int
 ....Id(main)
+....ParamList
+......ParamDeclaration
+........Int
+......ParamDeclaration
+........Int
+..FuncDefinition
+....Int
+....Id(main1)
 ....ParamList
 ......ParamDeclaration
 ........Void
