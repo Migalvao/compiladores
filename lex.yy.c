@@ -2187,7 +2187,6 @@ int main(int argc, char *argv[])
         yylex();
     }
 
-
     if(t && myprogram && !is_error){
         print_ast(myprogram);
     }

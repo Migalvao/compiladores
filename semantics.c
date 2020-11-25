@@ -10,7 +10,6 @@ char * aux_string;
 
 void check_program(program * full_program){
     //criar global symbol table
-
     symtab = insert_table("Global");
     insert_default_functions();
 
@@ -59,28 +58,20 @@ void insert_default_functions(void){
 
 void check_declaration(table * symtable, program * node){
     char string[STRING_SIZE];
-    // uma declaraçao apenas
     //node é "Declaration"
     //node -> children é int/char/double/short
     //node -> children -> next é o ID
+    //node -> children -> next -> next é a expression, se houver
 
     if(search_variable(strdup(node->children->next->children->type), symtable)){
         sprintf(string, "Symbol %s already defined", node->children->next->children->type);
         print_error(string, node->children->next->line, node->children->next->column);
         return;
     } 
-    
-    /* PROCURAR NA TABELA GLOBAL
-    if(search_variable(strdup(node->children->next->children->type), symtab)){
-        sprintf(string, "Symbol %s already defined", node->children->next->children->type);
-        print_error(string, node->children->next->line, node->children->next->column);
-        return;
-    }
-    */
 
     aux_string = strdup(node->children->type);
     * aux_string = tolower(* aux_string);   //passar de Int para int
-    table_element * inserted = insert_variable(symtable, strdup(node->children->next->children->type), aux_string);
+    table_element * inserted = insert_variable(symtable, strdup(node->children->next->children->type), aux_string, false);
 
     if(! inserted) {
         //ERRO -> NAO DEVIA CHEGAR AQUI
@@ -88,6 +79,8 @@ void check_declaration(table * symtable, program * node){
     }
 
     //TODO Verificar se os tipos de dados dao match 
+    if(node -> children -> next -> next)
+        check_expression(symtable, node -> children -> next -> next);
 }
 
 void check_func_declaration(program * node){
@@ -187,7 +180,7 @@ void check_func_definition(program * node){
     else{
         program * param_aux1 = node -> children -> next -> next -> children;
         func_parameter * param_aux2 = function -> parameters;
-        char help[STRING_SIZE];
+        char help[2 * STRING_SIZE];
         char help2[STRING_SIZE];
 
         //FALTA VER SE O NUMERO DE PARAMETRO É IGUAL EM PARAM_AUX1 E PARA_AUX2
@@ -211,7 +204,7 @@ void check_func_definition(program * node){
     * aux_string = tolower(* aux_string);   //Passar Int para int
 
     //Inserior return e parametros
-    inserted = insert_variable(tab, strdup("return"), aux_string);
+    inserted = insert_variable(tab, strdup("return"), aux_string, false);
     
     aux = node -> children -> next -> next -> children;
     while(aux){
@@ -219,7 +212,7 @@ void check_func_definition(program * node){
             //temos um ID
             aux_string = strdup(aux->children->type);
             * aux_string = tolower(* aux_string);   //Passar Int para int
-            inserted = insert_variable(tab, strdup(aux->children->next->children->type), aux_string);
+            inserted = insert_variable(tab, strdup(aux->children->next->children->type), aux_string, true);
         }
         aux = aux -> next;
     }
@@ -260,22 +253,22 @@ void check_statement(table * tab, program * node, char * func_type){
 }
 
 void check_if(table * tab, program * node, char * func_type){
+    program * stat;
     //FALTAM VERIFICAÇOES!
 
     program *expr = node->children;
-
     check_expression(tab, expr);
     
     if(node->children->next){
-        program *stat = node->children->next;
+        stat = node->children->next;
     
         check_statement(tab, stat, func_type);
     }
 
     if(node->children->next->next){
-        program * stat = node->children->next->next;
+        stat = node->children->next->next;
 
-        check_statement(tab, stat->next, func_type);
+        check_statement(tab, stat, func_type);
     }
 }
 
@@ -295,7 +288,6 @@ void check_while(table * tab, program * node, char * func_type){
 
 void check_return(table * tab, program * node, char * func_type){
     //FALTAM VERIFICAÇOES!
-
     //verificar se existe erro invalid use of void
     if((strcmp(func_type, "Void") == 0) && strcmp(node->children->type, "Null") != 0){
         print_error("Invalid use of void type in declaration", node->children->line, node->children->column);
@@ -303,7 +295,6 @@ void check_return(table * tab, program * node, char * func_type){
 
     if(node->children){
         program *expr = node->children;
-        
         check_expression(tab, expr);
     }
 }
@@ -313,12 +304,9 @@ void check_statlist(table * tab, program * node, char * func_type){
 
     program *stat_list = node->children;
     
-    check_statement(tab, stat_list, func_type);
-
-    if(node->children->next){
-        program *stat = node->children->next;
-        
-        check_statement(tab, stat, func_type);
+    while(stat_list){
+        check_statement(tab, stat_list, func_type);
+        stat_list = stat_list -> next;
     }
 }
 
@@ -365,6 +353,10 @@ data_type check_expression(table * tab, program * node){
             strcmp(node->type, "Store") == 0){
                 return check_operation(tab, node);
             }
+    else if(strcmp(node->type, "Null") == 0){
+        node->type = strdup("Null - void");
+        return void_t;
+    }
     else{
         return check_commas(tab, node);
     }
@@ -485,7 +477,7 @@ data_type check_call(table * tab, program * node){
     
     param = param -> next;
     while(param != NULL){
-        strcat(help, ", ");
+        strcat(help, ",");
         strcat(help, param->type);
         param = param -> next;
     }

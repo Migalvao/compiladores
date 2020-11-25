@@ -6,7 +6,7 @@
 
 extern table * symtab;
 
-table_element * insert_variable(table *tab, char * id, char * type){
+table_element * insert_variable(table *tab, char * id, char * type, bool is_param){
     var_declaration * new = (var_declaration*)malloc(sizeof(var_declaration));
     table_element * new_element = (table_element*)malloc(sizeof(table_element));
     table_element * aux;
@@ -17,6 +17,7 @@ table_element * insert_variable(table *tab, char * id, char * type){
 
     new->id = strdup(id);
     new->type = strdup(type);
+    new->is_param = is_param;
 
     aux = tab->element;
 
@@ -150,7 +151,7 @@ void print_tables(){
                 
                 param = param -> next;
                 while(param != NULL){
-                    strcat(help, ", ");
+                    strcat(help, ",");
                     strcat(help, param->type);
                     param = param -> next;
                 }
@@ -158,7 +159,10 @@ void print_tables(){
                 printf("%s\t%s(%s)\n", aux_ele->entry_type.func->id, aux_ele->entry_type.func->type, strdup(help));
             }
             else{
-                printf("%s\t%s\n", aux_ele->entry_type.var->id, aux_ele->entry_type.var->type);
+                if(aux_ele->entry_type.var->is_param)
+                    printf("%s\t%s\tparam\n", aux_ele->entry_type.var->id, aux_ele->entry_type.var->type);
+                else
+                    printf("%s\t%s\n", aux_ele->entry_type.var->id, aux_ele->entry_type.var->type);
             }
 
             aux_ele = aux_ele->next;

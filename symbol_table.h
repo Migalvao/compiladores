@@ -1,3 +1,4 @@
+#include <stdbool.h> 
 #ifndef SYMBOL_TABLE_H
 #define SYMBOL_TABLE_H
 
@@ -14,6 +15,7 @@ typedef struct _t3 {
 } func_declaration;
 
 typedef struct _t2 {
+    bool is_param;
     char * id;
     char * type;  //int, double ou char
 } var_declaration;
@@ -44,7 +46,7 @@ typedef struct _t0 {
 
 
 table_element * insert_function(table *tab, char * id, char * type, func_parameter * param);
-table_element * insert_variable(table *tab, char * id, char * type);
+table_element * insert_variable(table *tab, char * id, char * type, bool is_param);
 table *insert_table(char * name);
 var_declaration * search_variable(char * id, table * tab);
 func_declaration *search_function(char * id, table * tab);

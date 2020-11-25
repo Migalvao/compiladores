@@ -1,11 +1,8 @@
-void main(char a, int b);
+int main(int);
+int main(int,int);
+int main(char);
 
-void main(int a, int b) {
 
-  while (i <= 'Z')
-  {
-    putchar(i);
-    i = i + 1;
-  }
-  return 0;
+int main(void){
+  return 1;
 }
