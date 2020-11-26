@@ -380,10 +380,23 @@ data_type check_not(table * tab, program * node){
     data_type type = check_expression(tab, expr);
 
     char help[STRING_SIZE];
-    sprintf(help, "%s - %s", node->type, data_type_to_string(type));
-    node->type = strdup(help);
 
-    return type;
+    if(type == void_t || type == undefined_t){
+        sprintf(help, "Operator %s cannot be applied to type %s", string_to_operator(node->type), data_type_to_string(type));
+
+        print_error(help, node->line, node->column);
+
+        sprintf(help, "%s - undef", node->type);
+        node->type = strdup(help);
+
+        return undefined_t;
+    }
+    else{
+        sprintf(help, "%s - %s", node->type, data_type_to_string(type));
+        node->type = strdup(help);
+
+        return type;
+    }
 }
 
 data_type check_operation(table * tab, program * node){
@@ -395,14 +408,33 @@ data_type check_operation(table * tab, program * node){
 
     char help[STRING_SIZE];
 
-    // FALTAM VERIFICAÇÕES
-    if(type_child1 == type_child2){
-        sprintf(help, "%s - %s", node->type, data_type_to_string(type_child1));
-        node->type = strdup(help);
+    if(type_child1 == void_t || type_child2 == void_t || type_child1 == undefined_t || type_child2 == undefined_t){
+            //printf("%s - %s\n", node->type, string_to_operator(node->type));
+            sprintf(help, "Operator %s cannot be applied to types %s, %s", string_to_operator(node->type), data_type_to_string(type_child1), data_type_to_string(type_child2));
 
-        return type_child1;
+            print_error(help, node->line, node->column);
+
+            sprintf(help, "%s - undef", node->type);
+            node->type = strdup(help);
+
+            return undefined_t;
     }
-    else if((type_child1 == int_t && type_child2 == char_t) || (type_child1 == char_t && type_child2 == int_t)){
+
+    else if(type_child1 == double_t || type_child2 == double_t){
+        if(strcmp(node->type, "Store") == 0){
+            sprintf(help, "%s - %s", node->type, data_type_to_string(type_child1));
+            node->type = strdup(help);
+
+            return type_child1;
+        }
+        else{
+            sprintf(help, "%s - %s", node->type, data_type_to_string(double_t));
+            node->type = strdup(help);
+
+            return double_t;
+        }
+    }
+    else if(type_child1 == int_t || type_child2 == int_t){
         if(strcmp(node->type, "Store") == 0){
             sprintf(help, "%s - %s", node->type, data_type_to_string(type_child1));
             node->type = strdup(help);
@@ -416,11 +448,26 @@ data_type check_operation(table * tab, program * node){
             return int_t;
         }
     }
-    else{     
-        sprintf(help, "%s - %s", node->type, data_type_to_string(undefined_t));
+    else if(type_child1 == short_t || type_child2 == short_t){
+        if(strcmp(node->type, "Store") == 0){
+            sprintf(help, "%s - %s", node->type, data_type_to_string(type_child1));
+            node->type = strdup(help);
+
+            return type_child1;
+        }
+        else{
+            sprintf(help, "%s - %s", node->type, data_type_to_string(short_t));
+            node->type = strdup(help);
+
+            return short_t;
+        }
+    }
+    else{    
+        //char 
+        sprintf(help, "%s - %s", node->type, data_type_to_string(type_child1));
         node->type = strdup(help);
-    
-        return undefined_t;
+
+        return type_child1;
     }
 }
 
@@ -435,32 +482,44 @@ data_type check_commas(table * tab, program * node){
 
     char help[STRING_SIZE];
 
-    // FALTAM VERIFICAÇÕES
-    if(type_child1 == type_child2){
-        sprintf(help, "%s - %s", node->type, data_type_to_string(type_child1));
-        node->type = strdup(help);
+    if(type_child1 == void_t || type_child2 == void_t || type_child1 == undefined_t || type_child2 == undefined_t){
+            sprintf(help, "Operator , cannot be applied to types %s, %s", data_type_to_string(type_child1), data_type_to_string(type_child2));
 
-        return type_child1;
-    }
-    else if((type_child1 == int_t && type_child2 == char_t) || (type_child1 == char_t && type_child2 == int_t)){
-        if(strcmp(node->type, "Store") == 0){
-            sprintf(help, "%s - %s", node->type, data_type_to_string(type_child1));
+            print_error(help, node->line, node->column);
+
+            sprintf(help, "Comma - undef");
             node->type = strdup(help);
 
-            return type_child1;
-        }
-        else{
-            sprintf(help, "%s - %s", node->type, data_type_to_string(int_t));
+            return undefined_t;
+    }
+
+    else if(type_child1 == double_t || type_child2 == double_t){
+
+        sprintf(help, "Comma - %s", data_type_to_string(double_t));
+        node->type = strdup(help);
+
+        return double_t;
+    }
+    else if(type_child1 == int_t || type_child2 == int_t){
+
+            sprintf(help, "Comma - %s", data_type_to_string(int_t));
             node->type = strdup(help);
 
             return int_t;
-        }
     }
-    else{     
-        sprintf(help, "%s - %s", node->type, data_type_to_string(undefined_t));
+    else if(type_child1 == short_t || type_child2 == short_t){
+        sprintf(help, "Comma - %s", data_type_to_string(short_t));
         node->type = strdup(help);
-    
-        return undefined_t;
+
+        return short_t;
+
+    }
+    else{    
+        //char 
+        sprintf(help, "Comma - %s", data_type_to_string(type_child1));
+        node->type = strdup(help);
+
+        return type_child1;
     }
 }
 
@@ -639,4 +698,68 @@ data_type string_to_data_type(char * type){
         printf("\n\nERRO, N DEVIA ACONTECER\n\n");
         return undefined_t;
     }
+}
+
+char * string_to_operator(char * str){
+    if(strcmp(str, "Add") == 0 || strcmp(str, "Plus") == 0){
+        return strdup("+");
+    }
+    else if(strcmp(str, "Store") == 0){
+        return strdup("=");
+    }
+    else if(strcmp(str, "Sub") == 0 || strcmp(str, "Minus") == 0){
+        return strdup("-");
+    }
+    else if(strcmp(str, "Mul") == 0){
+        return strdup("*");
+    }
+    else if(strcmp(str, "Div") == 0){
+        return strdup("/");
+    }
+    else if(strcmp(str, "Mod") == 0){
+        return strdup("%");
+    }
+    else if(strcmp(str, "Or") == 0){
+        return strdup("||");
+    }
+    else if(strcmp(str, "And") == 0){
+        return strdup("&&");
+    }
+    else if(strcmp(str, "BitWiseAnd") == 0){
+        return strdup("&");
+    }
+    else if(strcmp(str, "BitWiseOr") == 0){
+        return strdup("|");
+    }
+    else if(strcmp(str, "BitWiseXor") == 0){
+        return strdup("^");
+    }
+    else if(strcmp(str, "Eq") == 0){
+        return strdup("==");
+    }
+    else if(strcmp(str, "Ne") == 0){
+        return strdup("!=");
+    }
+    else if(strcmp(str, "Le") == 0){
+        return strdup("<=");
+    }
+    else if(strcmp(str, "Ge") == 0){
+        return strdup(">=");
+    }
+    else if(strcmp(str, "Lt") == 0){
+        return strdup("<");
+    }
+    else if(strcmp(str, "Gt") == 0){
+        return strdup(">");
+    }
+    else if(strcmp(str, "Not") == 0){
+        return strdup("!");
+    }
+    else if(strcmp(str, "RealComma") == 0){
+        return strdup(",");
+    }
+    else if(strcmp(str, "Comma") == 0){
+        return strdup(",");
+    } 
+    return NULL;
 }

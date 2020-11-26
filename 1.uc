@@ -6,3 +6,7 @@ int main(int,int);
 int main(void){
   return 1;
 }
+
+int main(int i){
+  return i;
+}

@@ -19,6 +19,9 @@ program * insert_element(char * type,  program * children){
     new -> line = line;
     new -> column = (int)(column - strlen(yytext));
 
+
+    //printf("type - %s\ncolumn - %d\nyytext - %ld\n", new->type, new -> column, strlen(yytext));
+
     return new;
 }
 

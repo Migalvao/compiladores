@@ -1,150 +1,60 @@
+Line 6, col 1: Conflicting types (got int, expected char)
+Line 10, col 5: Symbol main already defined
 ===== Global Symbol Table =====
 putchar	int(int)
 getchar	int(void)
-decl1	double(void)
-decl2	double(void)
-decl3	double(int,int)
-decl4	double(char,char)
-func	char(double,double,double)
-func2	char(void)
-func3	short(double,double)
+main	int(int)
+main	int(int,int)
+main	char(void)
 
-===== Function func Symbol Table =====
-return	char
-t	double	param
-r	double	param
-k	double	param
-p	char
-g	int
-f	int
-
-===== Function func2 Symbol Table =====
-return	char
-p	double
-
-===== Function func3 Symbol Table =====
-return	short
+===== Function main Symbol Table =====
+return	int
 
 Program
 ..FuncDeclaration
-....Double
-....Id(decl1)
-....ParamList
-......ParamDeclaration
-........Void
-..FuncDeclaration
-....Double
-....Id(decl2)
-....ParamList
-......ParamDeclaration
-........Void
-..FuncDeclaration
-....Double
-....Id(decl3)
+....Int
+....Id(main)
 ....ParamList
 ......ParamDeclaration
 ........Int
-........Id(a)
-......ParamDeclaration
-........Int
-........Id(b)
 ..FuncDeclaration
-....Double
-....Id(decl4)
+....Int
+....Id(main)
 ....ParamList
 ......ParamDeclaration
-........Char
+........Int
 ......ParamDeclaration
-........Char
-..FuncDefinition
+........Int
+..FuncDeclaration
 ....Char
-....Id(func)
+....Id(main)
 ....ParamList
 ......ParamDeclaration
-........Double
-........Id(t)
+........Void
+..FuncDeclaration
+....Int
+....Id(main)
+....ParamList
 ......ParamDeclaration
-........Double
-........Id(r)
+........Int
 ......ParamDeclaration
-........Double
-........Id(k)
-....FuncBody
-......Declaration
-........Char
-........Id(p)
-........ChrLit('u') - int
-......Declaration
 ........Int
-........Id(g)
-........Call - int
-..........Id(getchar) - int(void)
-......Declaration
-........Int
-........Id(f)
-........Add - int
-..........Div - int
-............Mul - int
-..............IntLit(5) - int
-..............IntLit(5) - int
-............IntLit(1) - int
-..........IntLit(8) - int
-......Call - int
-........Id(putchar) - int(int)
-........Id(g) - int
-......Return
-........Null - void
 ..FuncDefinition
-....Char
-....Id(func2)
+....Int
+....Id(main)
 ....ParamList
 ......ParamDeclaration
 ........Void
 ....FuncBody
-......If
-........IntLit(5) - int
-........Null - void
-........Null - void
-......Declaration
-........Double
-........Id(p)
-......If
-........Not - int
-..........IntLit(45) - int
-........Store - undef
-..........Id(p) - double
-..........Minus - int
-............IntLit(5) - int
-........Store - undef
-..........Id(p) - double
-..........Plus - int
-............IntLit(5) - int
 ......Return
-........ChrLit('b') - int
+........IntLit(1) - int
 ..FuncDefinition
-....Short
-....Id(func3)
+....Int
+....Id(main)
 ....ParamList
 ......ParamDeclaration
-........Double
-......ParamDeclaration
-........Double
+........Int
+........Id(i)
 ....FuncBody
-......While
-........IntLit(5) - int
-........Null - void
-......While
-........Not - int
-..........IntLit(10) - int
-........StatList
-..........Call - int
-............Id(putchar) - int(int)
-............IntLit(1) - int
-..........Call - int
-............Id(putchar) - int(int)
-............IntLit(1) - int
-..........Call - int
-............Id(putchar) - int(int)
-............IntLit(1) - int
 ......Return
-........RealLit(5.5) - double
+........Id(i)
