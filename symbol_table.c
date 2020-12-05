@@ -71,20 +71,29 @@ table_element * insert_function(table *tab, char * id, char * type, func_paramet
 }
 
 table * insert_table(char * name){
+    //DA NULL SE JA EXISTIR, NOVO SE NAO EXISTIA
     table * new = (table*)malloc(sizeof(table));
     table * aux;
     
     new->name = strdup(name);
     new->next = NULL;
-    
+    new->element = NULL;
+
     if (symtab){
         aux = symtab;
         while(aux->next != NULL){   
-            aux = aux->next;
-        }
-        if(strcmp(aux->name, name) == 0){
+
+            if(strcmp(aux->name, name) == 0){
                 return NULL;
             }
+
+            aux = aux->next;
+        }
+
+        if(strcmp(aux->name, name) == 0){
+            return NULL;
+        }
+
         aux->next = new;
     }
     else{
@@ -95,16 +104,34 @@ table * insert_table(char * name){
 
 }
 
+table * search_table(char * name){
+    //DA NULL SE NAO EXISTIR
+    table * aux = symtab;
+
+    while(aux != NULL){   
+        if(strcmp(aux->name, name) == 0){
+            return aux;
+        }
+
+        aux = aux->next;
+    }
+
+    return NULL;
+}
+
 func_declaration * search_function(program * id_node, table * tab){
     table_element * aux = tab->element;
-    program * param_node;
-    func_parameter * param;
-    char string[STRING_SIZE];
+    //program * param_node;
+    //func_parameter * param;
+    //char string[STRING_SIZE];
 
     while(aux != NULL){
         if(aux->type == func_dec){
             if(strcmp(aux->entry_type.func->id, id_node->children->type) == 0){
-
+                
+                return aux->entry_type.func;
+                
+                /*
                 if(!id_node -> next || !id_node -> next -> children || !id_node -> next -> children -> children){
                     //A search_function esta a ser chamada por uma "Call"
                     return aux->entry_type.func;
@@ -132,6 +159,7 @@ func_declaration * search_function(program * id_node, table * tab){
                     //tem o mm numero de parametros e sempre iguais~
                     return aux->entry_type.func;
                 }
+                */
             }
         }
         aux = aux->next;
@@ -160,6 +188,10 @@ void print_tables(){
     while(aux != NULL){
         //percorrer as tabelas
         aux_ele = aux->element;
+        if(! aux_ele){
+        aux = aux->next;
+            continue;
+        }
         printf("===== %s Symbol Table =====\n", aux->name);
 
         while(aux_ele != NULL){

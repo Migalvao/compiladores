@@ -52,5 +52,6 @@ table *insert_table(char * name);
 var_declaration * search_variable(char * id, table * tab);
 func_declaration * search_function(program * id_node, table * tab);
 void print_tables();
+table * search_table(char * name);
 
 #endif

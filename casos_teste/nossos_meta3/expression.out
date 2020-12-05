@@ -170,13 +170,13 @@ Program
 ........Null
 ........Null
 ......If
-........Add - char
+........Add - int
 ..........Id(a) - char
 ..........Id(a) - char
 ........Null
 ........Null
 ......If
-........Add - short
+........Add - int
 ..........Id(a) - char
 ..........Id(b) - short
 ........Null
@@ -194,7 +194,7 @@ Program
 ........Null
 ........Null
 ......If
-........Add - short
+........Add - int
 ..........Id(b) - short
 ..........Id(b) - short
 ........Null
@@ -230,13 +230,13 @@ Program
 ........Null
 ........Null
 ......If
-........Mul - char
+........Mul - int
 ..........Id(a) - char
 ..........Id(a) - char
 ........Null
 ........Null
 ......If
-........Mul - short
+........Mul - int
 ..........Id(a) - char
 ..........Id(b) - short
 ........Null
@@ -254,7 +254,7 @@ Program
 ........Null
 ........Null
 ......If
-........Mul - short
+........Mul - int
 ..........Id(b) - short
 ..........Id(b) - short
 ........Null
@@ -290,13 +290,13 @@ Program
 ........Null
 ........Null
 ......If
-........Sub - char
+........Sub - int
 ..........Id(a) - char
 ..........Id(a) - char
 ........Null
 ........Null
 ......If
-........Sub - short
+........Sub - int
 ..........Id(a) - char
 ..........Id(b) - short
 ........Null
@@ -314,7 +314,7 @@ Program
 ........Null
 ........Null
 ......If
-........Sub - short
+........Sub - int
 ..........Id(b) - short
 ..........Id(b) - short
 ........Null
@@ -368,7 +368,7 @@ Program
 ........Null
 ........Null
 ......If
-........Mod - int
+........Mod - double
 ..........Id(a) - char
 ..........Id(d) - double
 ........Null
@@ -386,7 +386,7 @@ Program
 ........Null
 ........Null
 ......If
-........Mod - int
+........Mod - double
 ..........Id(b) - short
 ..........Id(d) - double
 ........Null
@@ -398,25 +398,25 @@ Program
 ........Null
 ........Null
 ......If
-........Mod - int
+........Mod - double
 ..........Id(c) - int
 ..........Id(d) - double
 ........Null
 ........Null
 ......If
-........Mod - int
+........Mod - double
 ..........Id(d) - double
 ..........Id(d) - double
 ........Null
 ........Null
 ......If
-........Div - char
+........Div - int
 ..........Id(a) - char
 ..........Id(a) - char
 ........Null
 ........Null
 ......If
-........Div - short
+........Div - int
 ..........Id(a) - char
 ..........Id(b) - short
 ........Null
@@ -434,7 +434,7 @@ Program
 ........Null
 ........Null
 ......If
-........Div - short
+........Div - int
 ..........Id(b) - short
 ..........Id(b) - short
 ........Null
@@ -488,7 +488,7 @@ Program
 ........Null
 ........Null
 ......If
-........Or - int
+........Or - double
 ..........Id(a) - char
 ..........Id(d) - double
 ........Null
@@ -506,7 +506,7 @@ Program
 ........Null
 ........Null
 ......If
-........Or - int
+........Or - double
 ..........Id(b) - short
 ..........Id(d) - double
 ........Null
@@ -518,13 +518,13 @@ Program
 ........Null
 ........Null
 ......If
-........Or - int
+........Or - double
 ..........Id(c) - int
 ..........Id(d) - double
 ........Null
 ........Null
 ......If
-........Or - int
+........Or - double
 ..........Id(d) - double
 ..........Id(d) - double
 ........Null
@@ -548,7 +548,7 @@ Program
 ........Null
 ........Null
 ......If
-........And - int
+........And - double
 ..........Id(a) - char
 ..........Id(d) - double
 ........Null
@@ -566,7 +566,7 @@ Program
 ........Null
 ........Null
 ......If
-........And - int
+........And - double
 ..........Id(b) - short
 ..........Id(d) - double
 ........Null
@@ -578,13 +578,13 @@ Program
 ........Null
 ........Null
 ......If
-........And - int
+........And - double
 ..........Id(c) - int
 ..........Id(d) - double
 ........Null
 ........Null
 ......If
-........And - int
+........And - double
 ..........Id(d) - double
 ..........Id(d) - double
 ........Null
@@ -608,7 +608,7 @@ Program
 ........Null
 ........Null
 ......If
-........Le - int
+........Le - double
 ..........Id(a) - char
 ..........Id(d) - double
 ........Null
@@ -626,7 +626,7 @@ Program
 ........Null
 ........Null
 ......If
-........Le - int
+........Le - double
 ..........Id(b) - short
 ..........Id(d) - double
 ........Null
@@ -638,13 +638,13 @@ Program
 ........Null
 ........Null
 ......If
-........Le - int
+........Le - double
 ..........Id(c) - int
 ..........Id(d) - double
 ........Null
 ........Null
 ......If
-........Le - int
+........Le - double
 ..........Id(d) - double
 ..........Id(d) - double
 ........Null
@@ -668,7 +668,7 @@ Program
 ........Null
 ........Null
 ......If
-........Lt - int
+........Lt - double
 ..........Id(a) - char
 ..........Id(d) - double
 ........Null
@@ -686,7 +686,7 @@ Program
 ........Null
 ........Null
 ......If
-........Lt - int
+........Lt - double
 ..........Id(b) - short
 ..........Id(d) - double
 ........Null
@@ -698,13 +698,13 @@ Program
 ........Null
 ........Null
 ......If
-........Lt - int
+........Lt - double
 ..........Id(c) - int
 ..........Id(d) - double
 ........Null
 ........Null
 ......If
-........Lt - int
+........Lt - double
 ..........Id(d) - double
 ..........Id(d) - double
 ........Null
@@ -728,7 +728,7 @@ Program
 ........Null
 ........Null
 ......If
-........Ge - int
+........Ge - double
 ..........Id(a) - char
 ..........Id(d) - double
 ........Null
@@ -746,7 +746,7 @@ Program
 ........Null
 ........Null
 ......If
-........Ge - int
+........Ge - double
 ..........Id(b) - short
 ..........Id(d) - double
 ........Null
@@ -758,13 +758,13 @@ Program
 ........Null
 ........Null
 ......If
-........Ge - int
+........Ge - double
 ..........Id(c) - int
 ..........Id(d) - double
 ........Null
 ........Null
 ......If
-........Ge - int
+........Ge - double
 ..........Id(d) - double
 ..........Id(d) - double
 ........Null
@@ -788,7 +788,7 @@ Program
 ........Null
 ........Null
 ......If
-........Gt - int
+........Gt - double
 ..........Id(a) - char
 ..........Id(d) - double
 ........Null
@@ -806,7 +806,7 @@ Program
 ........Null
 ........Null
 ......If
-........Gt - int
+........Gt - double
 ..........Id(b) - short
 ..........Id(d) - double
 ........Null
@@ -818,13 +818,13 @@ Program
 ........Null
 ........Null
 ......If
-........Gt - int
+........Gt - double
 ..........Id(c) - int
 ..........Id(d) - double
 ........Null
 ........Null
 ......If
-........Gt - int
+........Gt - double
 ..........Id(d) - double
 ..........Id(d) - double
 ........Null
@@ -848,7 +848,7 @@ Program
 ........Null
 ........Null
 ......If
-........Eq - int
+........Eq - double
 ..........Id(a) - char
 ..........Id(d) - double
 ........Null
@@ -866,7 +866,7 @@ Program
 ........Null
 ........Null
 ......If
-........Eq - int
+........Eq - double
 ..........Id(b) - short
 ..........Id(d) - double
 ........Null
@@ -878,13 +878,13 @@ Program
 ........Null
 ........Null
 ......If
-........Eq - int
+........Eq - double
 ..........Id(c) - int
 ..........Id(d) - double
 ........Null
 ........Null
 ......If
-........Eq - int
+........Eq - double
 ..........Id(d) - double
 ..........Id(d) - double
 ........Null
@@ -908,7 +908,7 @@ Program
 ........Null
 ........Null
 ......If
-........Ne - int
+........Ne - double
 ..........Id(a) - char
 ..........Id(d) - double
 ........Null
@@ -926,7 +926,7 @@ Program
 ........Null
 ........Null
 ......If
-........Ne - int
+........Ne - double
 ..........Id(b) - short
 ..........Id(d) - double
 ........Null
@@ -938,13 +938,13 @@ Program
 ........Null
 ........Null
 ......If
-........Ne - int
+........Ne - double
 ..........Id(c) - int
 ..........Id(d) - double
 ........Null
 ........Null
 ......If
-........Ne - int
+........Ne - double
 ..........Id(d) - double
 ..........Id(d) - double
 ........Null
@@ -968,7 +968,7 @@ Program
 ........Null
 ........Null
 ......If
-........BitWiseAnd - int
+........BitWiseAnd - double
 ..........Id(a) - char
 ..........Id(d) - double
 ........Null
@@ -986,7 +986,7 @@ Program
 ........Null
 ........Null
 ......If
-........BitWiseAnd - int
+........BitWiseAnd - double
 ..........Id(b) - short
 ..........Id(d) - double
 ........Null
@@ -998,13 +998,13 @@ Program
 ........Null
 ........Null
 ......If
-........BitWiseAnd - int
+........BitWiseAnd - double
 ..........Id(c) - int
 ..........Id(d) - double
 ........Null
 ........Null
 ......If
-........BitWiseAnd - int
+........BitWiseAnd - double
 ..........Id(d) - double
 ..........Id(d) - double
 ........Null
@@ -1028,7 +1028,7 @@ Program
 ........Null
 ........Null
 ......If
-........BitWiseOr - int
+........BitWiseOr - double
 ..........Id(a) - char
 ..........Id(d) - double
 ........Null
@@ -1046,7 +1046,7 @@ Program
 ........Null
 ........Null
 ......If
-........BitWiseOr - int
+........BitWiseOr - double
 ..........Id(b) - short
 ..........Id(d) - double
 ........Null
@@ -1058,13 +1058,13 @@ Program
 ........Null
 ........Null
 ......If
-........BitWiseOr - int
+........BitWiseOr - double
 ..........Id(c) - int
 ..........Id(d) - double
 ........Null
 ........Null
 ......If
-........BitWiseOr - int
+........BitWiseOr - double
 ..........Id(d) - double
 ..........Id(d) - double
 ........Null
@@ -1088,7 +1088,7 @@ Program
 ........Null
 ........Null
 ......If
-........BitWiseXor - int
+........BitWiseXor - double
 ..........Id(a) - char
 ..........Id(d) - double
 ........Null
@@ -1106,7 +1106,7 @@ Program
 ........Null
 ........Null
 ......If
-........BitWiseXor - int
+........BitWiseXor - double
 ..........Id(b) - short
 ..........Id(d) - double
 ........Null
@@ -1118,13 +1118,13 @@ Program
 ........Null
 ........Null
 ......If
-........BitWiseXor - int
+........BitWiseXor - double
 ..........Id(c) - int
 ..........Id(d) - double
 ........Null
 ........Null
 ......If
-........BitWiseXor - int
+........BitWiseXor - double
 ..........Id(d) - double
 ..........Id(d) - double
 ........Null
@@ -1170,12 +1170,12 @@ Program
 ........Null
 ........Null
 ......If
-........Not - int
+........Not - char
 ..........Id(a) - char
 ........Null
 ........Null
 ......If
-........Not - int
+........Not - short
 ..........Id(b) - short
 ........Null
 ........Null
