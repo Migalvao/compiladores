@@ -615,3 +615,80 @@ data_type string_to_data_type(char * type){
         return undefined_t;
     }
 }
+
+char * string_to_operator(char * str){
+    char operator[5];
+
+    if(strcmp(str, "Add") == 0 || strcmp(str, "Plus") == 0){
+        strcpy(operator, "+");
+        return operator;
+    }
+    else if(strcmp(str, "Store") == 0){
+        strcpy(operator, "=");
+        return operator;
+    }
+    else if(strcmp(str, "Sub") == 0 || strcmp(str, "Minus") == 0){
+        strcpy(operator, "-");
+        return operator;
+    }
+    else if(strcmp(str, "Mul") == 0){
+        strcpy(operator, "*");
+        return operator;
+    }
+    else if(strcmp(str, "Div") == 0){
+        strcpy(operator, "/");
+        return operator;
+    }
+    else if(strcmp(str, "Mod") == 0){
+        strcpy(operator, "%");
+        return operator;
+    }
+    else if(strcmp(str, "Or") == 0){
+        strcpy(operator, "||");
+        return operator;
+    }
+    else if(strcmp(str, "And") == 0){
+        strcpy(operator, "&&");
+        return operator;
+    }
+    else if(strcmp(str, "BitWiseAnd") == 0){
+        strcpy(operator, "&");
+        return operator;
+    }
+    else if(strcmp(str, "BitWiseOr") == 0){
+        strcpy(operator, "|");
+        return operator;
+    }
+    else if(strcmp(str, "BitWiseXor") == 0){
+        strcpy(operator, "^");
+        return operator;
+    }
+    else if(strcmp(str, "Eq") == 0){
+        strcpy(operator, "==");
+        return operator;
+    }
+    else if(strcmp(str, "Ne") == 0){
+        strcpy(operator, "!=");
+        return operator;
+    }
+    else if(strcmp(str, "Le") == 0){
+        strcpy(operator, "<=");
+        return operator;
+    }
+    else if(strcmp(str, "Ge") == 0){
+        strcpy(operator, ">=");
+        return operator;
+    }
+    else if(strcmp(str, "Lt") == 0){
+        strcpy(operator, "<");
+        return operator;
+    }
+    else if(strcmp(str, "Gt") == 0){
+        strcpy(operator, ">");
+        return operator;
+    }
+    else if(strcmp(str, "Not") == 0){
+        strcpy(operator, "!");
+        return operator;
+    }
+}
