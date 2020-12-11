@@ -1,0 +1,18 @@
+-*Conflicting types ( got < type >, expected < type >) (NAO ESTA COMPLETO)
+
+-*Invalid use of void type in declaration (EM PRINCIPIO TA FEITO)
+
+-Lvalue required
+
+-Operator < token > cannot be applied to type < type >
+
+-Operator < token > cannot be applied to types < type > , <type >
+
+-Symbol < token > already defined
+
+-Symbol < token > is not a function
+
+-Unknown symbol < token >
+
+-Wrong number of arguments to function < token > ( got < number > ,
+required < number >)
