@@ -1,0 +1,150 @@
+===== Global Symbol Table =====
+putchar	int(int)
+getchar	int(void)
+decl1	double(void)
+decl2	double(void)
+decl3	double(int,int)
+decl4	double(char,char)
+func	char(double,double,double)
+func2	char(void)
+func3	short(double,double)
+
+===== Function func Symbol Table =====
+return	char
+t	double	param
+r	double	param
+k	double	param
+p	char
+g	int
+f	int
+
+===== Function func2 Symbol Table =====
+return	char
+p	double
+
+===== Function func3 Symbol Table =====
+return	short
+
+Program
+..FuncDeclaration
+....Double
+....Id(decl1)
+....ParamList
+......ParamDeclaration
+........Void
+..FuncDeclaration
+....Double
+....Id(decl2)
+....ParamList
+......ParamDeclaration
+........Void
+..FuncDeclaration
+....Double
+....Id(decl3)
+....ParamList
+......ParamDeclaration
+........Int
+........Id(a)
+......ParamDeclaration
+........Int
+........Id(b)
+..FuncDeclaration
+....Double
+....Id(decl4)
+....ParamList
+......ParamDeclaration
+........Char
+......ParamDeclaration
+........Char
+..FuncDefinition
+....Char
+....Id(func)
+....ParamList
+......ParamDeclaration
+........Double
+........Id(t)
+......ParamDeclaration
+........Double
+........Id(r)
+......ParamDeclaration
+........Double
+........Id(k)
+....FuncBody
+......Declaration
+........Char
+........Id(p)
+........ChrLit('u') - int
+......Declaration
+........Int
+........Id(g)
+........Call - int
+..........Id(getchar) - int(void)
+......Declaration
+........Int
+........Id(f)
+........Add - int
+..........Div - int
+............Mul - int
+..............IntLit(5) - int
+..............IntLit(5) - int
+............IntLit(1) - int
+..........IntLit(8) - int
+......Call - int
+........Id(putchar) - int(int)
+........Id(g) - int
+......Return
+........Null - void
+..FuncDefinition
+....Char
+....Id(func2)
+....ParamList
+......ParamDeclaration
+........Void
+....FuncBody
+......If
+........IntLit(5) - int
+........Null - void
+........Null - void
+......Declaration
+........Double
+........Id(p)
+......If
+........Not - int
+..........IntLit(45) - int
+........Store - undefined
+..........Id(p) - double
+..........Minus - int
+............IntLit(5) - int
+........Store - undefined
+..........Id(p) - double
+..........Plus - int
+............IntLit(5) - int
+......Return
+........ChrLit('b') - int
+..FuncDefinition
+....Short
+....Id(func3)
+....ParamList
+......ParamDeclaration
+........Double
+......ParamDeclaration
+........Double
+....FuncBody
+......While
+........IntLit(5) - int
+........Null - void
+......While
+........Not - int
+..........IntLit(10) - int
+........StatList
+..........Call - int
+............Id(putchar) - int(int)
+............IntLit(1) - int
+..........Call - int
+............Id(putchar) - int(int)
+............IntLit(1) - int
+..........Call - int
+............Id(putchar) - int(int)
+............IntLit(1) - int
+......Return
+........RealLit(5.5) - double

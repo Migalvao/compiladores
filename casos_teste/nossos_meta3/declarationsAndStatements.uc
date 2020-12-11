@@ -27,7 +27,7 @@ short func3(double, double){
   while(! 10){
     putchar(1);
     putchar(1);
-    putchar(1);
   }
+  int a = (5,5);
   return 5.5;
 }
