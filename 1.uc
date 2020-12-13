@@ -1,23 +1,10 @@
-/*int main(int);
-//int main(int,int);
-char main(void);
-int main(int,int);
-
-int main(void a){
-  return 1;
+int g {
+  return void;
 }
-
-int main(int i){
-  return i;
+double f( double g() ) {
+  return int;
 }
-*/
-
-char func(int);
-
-char func2(int a, int b){
-  return 'a';
+int main(void) {
+  return g();
 }
-
-char func(int a){
-  return 'a';
-}
+f();

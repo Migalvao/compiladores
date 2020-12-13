@@ -23,6 +23,9 @@ char type_string[10];
 %type <nonterminal> functionsAndDeclarations functionDefinition functionDeclaration typeSpec functionDeclarator
 %type <nonterminal> parameterList parameterDeclaration functionBody declarationsAndStatements declaration
 %type <nonterminal> declaratorsList declarator statementList expr program id_token statement statement_error
+%type <nonterminal> plus_token minus_token mul_token div_token mod_token and_token or_token bitwiseand_token
+%type <nonterminal> bitwiseor_token bitwisexor_token eq_token ne_token le_token lt_token gt_token ge_token 
+%type <nonterminal> assign_token not_token comma_token
 %type <terminal> error
  
 %union{
@@ -41,7 +44,7 @@ char type_string[10];
 %left BITWISEAND 
 %left EQ NE 
 %left GE GT LE LT 
-%left PLUS MINUS
+%left PLUS MINUS 
 %left MUL DIV MOD
 %right NOT
 %left LPAR RPAR
@@ -185,28 +188,86 @@ statement_error: statement                                                      
                 | error SEMI                                                    {$$ = insert_element("Erro", NULL); is_error = true; /*ERRO*/ } 
                 ;
 
-expr:   expr ASSIGN expr                                                        {$1->next = $3; $$ = insert_element("Store", $1);}
-    |   expr COMMA expr                                                         {aux = $1; while(aux->next) aux=aux->next; aux->next = $3; $$ = insert_element("Comma", $1);}
-    |   LPAR expr COMMA expr RPAR                                               {aux = $2; while(aux->next) aux=aux->next; aux->next = $4; $$ = insert_element("RealComma", $2);}
-    |   expr PLUS expr                                                          {$1->next = $3; $$ = insert_element("Add", $1);}
-    |   expr MINUS expr                                                         {$1->next = $3; $$ = insert_element("Sub", $1);}
-    |   expr MUL expr                                                           {$1->next = $3; $$ = insert_element("Mul", $1);}
-    |   expr DIV expr                                                           {$1->next = $3; $$ = insert_element("Div", $1);}
-    |   expr MOD expr                                                           {$1->next = $3; $$ = insert_element("Mod", $1);}
-    |   expr OR expr                                                            {$1->next = $3; $$ = insert_element("Or", $1);}
-    |   expr AND expr                                                           {$1->next = $3; $$ = insert_element("And", $1);}
-    |   expr BITWISEAND expr                                                    {$1->next = $3; $$ = insert_element("BitWiseAnd", $1);}
-    |   expr BITWISEOR expr                                                     {$1->next = $3; $$ = insert_element("BitWiseOr", $1);}
-    |   expr BITWISEXOR expr                                                    {$1->next = $3; $$ = insert_element("BitWiseXor", $1);}
-    |   expr EQ expr                                                            {$1->next = $3; $$ = insert_element("Eq", $1);}
-    |   expr NE expr                                                            {$1->next = $3; $$ = insert_element("Ne", $1);}
-    |   expr LE expr                                                            {$1->next = $3; $$ = insert_element("Le", $1);}
-    |   expr GE expr                                                            {$1->next = $3; $$ = insert_element("Ge", $1);}
-    |   expr LT expr                                                            {$1->next = $3; $$ = insert_element("Lt", $1);}
-    |   expr GT expr                                                            {$1->next = $3; $$ = insert_element("Gt", $1);}
-    |   PLUS expr %prec NOT                                                     {$$ = insert_element("Plus", $2);}
-    |   MINUS expr %prec NOT                                                    {$$ = insert_element("Minus", $2);}
-    |   NOT expr                                                                {$$ = insert_element("Not", $2);}
+
+plus_token: PLUS                                                                    {$$ = insert_element(strdup("Add"), NULL);}
+        ;
+
+minus_token: MINUS                                                                    {$$ = insert_element(strdup("Sub"), NULL);}
+        ;
+
+mul_token: MUL                                                                    {$$ = insert_element(strdup("Mul"), NULL);}
+        ;
+
+div_token: DIV                                                                    {$$ = insert_element(strdup("Div"), NULL);}
+        ;
+        
+mod_token: MOD                                                                    {$$ = insert_element(strdup("Mod"), NULL);}
+        ;
+
+or_token: OR                                                                    {$$ = insert_element(strdup("Or"), NULL);}
+        ;
+
+and_token: AND                                                                    {$$ = insert_element(strdup("And"), NULL);}
+        ;
+
+bitwiseand_token: BITWISEAND                                                                    {$$ = insert_element(strdup("BitWiseAnd"), NULL);}
+        ;
+
+bitwiseor_token: BITWISEOR                                                                    {$$ = insert_element(strdup("BitWiseOr"), NULL);}
+        ;
+
+bitwisexor_token: BITWISEXOR                                                                    {$$ = insert_element(strdup("BitWiseXor"), NULL);}
+        ;
+
+eq_token: EQ                                                                    {$$ = insert_element(strdup("Eq"), NULL);}
+        ;
+
+ne_token: NE                                                                    {$$ = insert_element(strdup("Ne"), NULL);}
+        ;
+
+le_token: LE                                                                    {$$ = insert_element(strdup("Le"), NULL);}
+        ;
+
+ge_token: GE                                                                    {$$ = insert_element(strdup("Ge"), NULL);}
+        ;
+
+lt_token: LT                                                                    {$$ = insert_element(strdup("Lt"), NULL);}
+        ;
+
+gt_token: GT                                                                    {$$ = insert_element(strdup("Gt"), NULL);}
+        ;
+
+assign_token: ASSIGN                                                            {$$ = insert_element(strdup("Store"), NULL);}
+        ;
+
+not_token: NOT                                                                  {$$ = insert_element(strdup("Not"), NULL);}
+        ;
+
+comma_token: COMMA                                                              {$$ = insert_element(strdup("Comma"), NULL);}
+        ;
+
+expr:   expr assign_token %prec ASSIGN expr                                     {$1->next = $3; $2 -> children = $1; $$ = $2;}
+    |   expr comma_token %prec COMMA expr                                       {aux = $1; while(aux->next) aux=aux->next; aux->next = $3; $2 -> children = $1; $$ = $2;}
+    |   LPAR expr comma_token %prec COMMA expr RPAR                             {aux = $2; while(aux->next) aux=aux->next; aux->next = $4; $3 -> type = strdup("RealComma"); $3 -> children = $2; $$ = $3;}
+    |   expr plus_token %prec PLUS expr                                         {$1->next = $3; $2 -> children = $1; $$ = $2;}
+    |   expr minus_token %prec MINUS expr                                       {$1->next = $3; $2 -> children = $1; $$ = $2;}
+    |   expr mul_token %prec MUL expr                                           {$1->next = $3; $2 -> children = $1; $$ = $2;}
+    |   expr div_token %prec DIV expr                                           {$1->next = $3; $2 -> children = $1; $$ = $2;}
+    |   expr mod_token %prec MOD expr                                           {$1->next = $3; $2 -> children = $1; $$ = $2;}
+    |   expr or_token %prec OR expr                                             {$1->next = $3; $2 -> children = $1; $$ = $2;}
+    |   expr and_token %prec AND expr                                           {$1->next = $3; $2 -> children = $1; $$ = $2;}
+    |   expr bitwiseand_token %prec BITWISEAND expr                             {$1->next = $3; $2 -> children = $1; $$ = $2;}
+    |   expr bitwiseor_token %prec BITWISEOR expr                               {$1->next = $3; $2 -> children = $1; $$ = $2;}
+    |   expr bitwisexor_token %prec BITWISEXOR expr                             {$1->next = $3; $2 -> children = $1; $$ = $2;}
+    |   expr eq_token %prec EQ expr                                             {$1->next = $3; $2 -> children = $1; $$ = $2;}
+    |   expr ne_token %prec NE expr                                             {$1->next = $3; $2 -> children = $1; $$ = $2;}
+    |   expr le_token %prec LE expr                                             {$1->next = $3; $2 -> children = $1; $$ = $2;}
+    |   expr ge_token %prec GE expr                                             {$1->next = $3; $2 -> children = $1; $$ = $2;}
+    |   expr lt_token %prec LT expr                                             {$1->next = $3; $2 -> children = $1; $$ = $2;}
+    |   expr gt_token %prec GT expr                                             {$1->next = $3; $2 -> children = $1; $$ = $2;}
+    |   plus_token expr %prec NOT                                               {$1 -> children = $2;  $1 -> type = strdup("Plus"); $$ = $1;}
+    |   minus_token expr %prec NOT                                              {$1 -> children = $2;  $1 -> type = strdup("Minus"); $$ = $1;}
+    |   not_token expr %prec NOT                                                {$1 -> children = $2;  $1 -> type = strdup("Not"); $$ = $1;}
     |   id_token LPAR RPAR                                                      {$$ = insert_element("Call", $1);}
     |   id_token LPAR expr RPAR                                                 {$1 -> next = children_to_brother($3); $$ = insert_element("Call", $1);}
     |   id_token                                                                {$$ = $1;}

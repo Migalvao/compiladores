@@ -20,4 +20,9 @@ double dbl(int i, double d) {
     d >= und3f | und3f && und3f % und3f;
     und3f + und3f;
     x = s(i) + 1;
+    if(x) {}
+}
+
+void ret(void) {
+    return d;
 }

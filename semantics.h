@@ -25,6 +25,7 @@ data_type check_not(table * tab, program * node);
 data_type check_binary_operation(table * tab, program * node);
 data_type check_operation(table * tab, program * node);
 data_type check_commas(table * tab, program * node);
+data_type check_comparison(table * tab, program * node);
 void check_while(table * tab, program * node, char * func_type);
 void check_if(table * tab, program * node, char * func_type);
 void check_return(table * tab, program * node, char * func_type);

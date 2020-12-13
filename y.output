@@ -71,43 +71,81 @@ Grammar
    46 statement_error: statement
    47                | error SEMI
 
-   48 expr: expr ASSIGN expr
-   49     | expr COMMA expr
-   50     | LPAR expr COMMA expr RPAR
-   51     | expr PLUS expr
-   52     | expr MINUS expr
-   53     | expr MUL expr
-   54     | expr DIV expr
-   55     | expr MOD expr
-   56     | expr OR expr
-   57     | expr AND expr
-   58     | expr BITWISEAND expr
-   59     | expr BITWISEOR expr
-   60     | expr BITWISEXOR expr
-   61     | expr EQ expr
-   62     | expr NE expr
-   63     | expr LE expr
-   64     | expr GE expr
-   65     | expr LT expr
-   66     | expr GT expr
-   67     | PLUS expr
-   68     | MINUS expr
-   69     | NOT expr
-   70     | id_token LPAR RPAR
-   71     | id_token LPAR expr RPAR
-   72     | id_token
-   73     | INTLIT
-   74     | CHRLIT
-   75     | REALLIT
-   76     | LPAR expr RPAR
-   77     | id_token LPAR error RPAR
-   78     | LPAR error RPAR
+   48 plus_token: PLUS
+
+   49 minus_token: MINUS
+
+   50 mul_token: MUL
+
+   51 div_token: DIV
+
+   52 mod_token: MOD
+
+   53 or_token: OR
+
+   54 and_token: AND
+
+   55 bitwiseand_token: BITWISEAND
+
+   56 bitwiseor_token: BITWISEOR
+
+   57 bitwisexor_token: BITWISEXOR
+
+   58 eq_token: EQ
+
+   59 ne_token: NE
+
+   60 le_token: LE
+
+   61 ge_token: GE
+
+   62 lt_token: LT
+
+   63 gt_token: GT
+
+   64 assign_token: ASSIGN
+
+   65 not_token: NOT
+
+   66 comma_token: COMMA
+
+   67 expr: expr assign_token expr
+   68     | expr comma_token expr
+   69     | LPAR expr comma_token expr RPAR
+   70     | expr plus_token expr
+   71     | expr minus_token expr
+   72     | expr mul_token expr
+   73     | expr div_token expr
+   74     | expr mod_token expr
+   75     | expr or_token expr
+   76     | expr and_token expr
+   77     | expr bitwiseand_token expr
+   78     | expr bitwiseor_token expr
+   79     | expr bitwisexor_token expr
+   80     | expr eq_token expr
+   81     | expr ne_token expr
+   82     | expr le_token expr
+   83     | expr ge_token expr
+   84     | expr lt_token expr
+   85     | expr gt_token expr
+   86     | plus_token expr
+   87     | minus_token expr
+   88     | not_token expr
+   89     | id_token LPAR RPAR
+   90     | id_token LPAR expr RPAR
+   91     | id_token
+   92     | INTLIT
+   93     | CHRLIT
+   94     | REALLIT
+   95     | LPAR expr RPAR
+   96     | id_token LPAR error RPAR
+   97     | LPAR error RPAR
 
 
 Terminals, with rules where they appear
 
     $end (0) 0
-    error <terminal> (256) 27 35 47 77 78
+    error <terminal> (256) 27 35 47 96 97
     CHAR <terminal> (258) 10
     ELSE <terminal> (259) 39
     WHILE <terminal> (260) 41
@@ -117,34 +155,34 @@ Terminals, with rules where they appear
     DOUBLE <terminal> (264) 14
     RETURN <terminal> (265) 42 43
     VOID <terminal> (266) 12
-    BITWISEAND <terminal> (267) 58
-    BITWISEOR <terminal> (268) 59
-    BITWISEXOR <terminal> (269) 60
-    AND <terminal> (270) 57
-    ASSIGN <terminal> (271) 31 48
-    MUL <terminal> (272) 53
-    COMMA <terminal> (273) 17 29 49 50
-    DIV <terminal> (274) 54
-    EQ <terminal> (275) 61
-    GE <terminal> (276) 64
-    GT <terminal> (277) 66
+    BITWISEAND <terminal> (267) 55
+    BITWISEOR <terminal> (268) 56
+    BITWISEXOR <terminal> (269) 57
+    AND <terminal> (270) 54
+    ASSIGN <terminal> (271) 31 64
+    MUL <terminal> (272) 50
+    COMMA <terminal> (273) 17 29 66
+    DIV <terminal> (274) 51
+    EQ <terminal> (275) 58
+    GE <terminal> (276) 61
+    GT <terminal> (277) 63
     LBRACE <terminal> (278) 20 21 35 36 37 38
-    LE <terminal> (279) 63
-    LPAR <terminal> (280) 15 39 40 41 50 70 71 76 77 78
-    LT <terminal> (281) 65
-    MINUS <terminal> (282) 52 68
-    MOD <terminal> (283) 55
-    NE <terminal> (284) 62
-    NOT <terminal> (285) 69
-    OR <terminal> (286) 56
-    PLUS <terminal> (287) 51 67
+    LE <terminal> (279) 60
+    LPAR <terminal> (280) 15 39 40 41 69 89 90 95 96 97
+    LT <terminal> (281) 62
+    MINUS <terminal> (282) 49
+    MOD <terminal> (283) 52
+    NE <terminal> (284) 59
+    NOT <terminal> (285) 65
+    OR <terminal> (286) 53
+    PLUS <terminal> (287) 48
     RBRACE <terminal> (288) 20 21 35 36 37 38
-    RPAR <terminal> (289) 15 39 40 41 50 70 71 76 77 78
+    RPAR <terminal> (289) 15 39 40 41 69 89 90 95 96 97
     SEMI <terminal> (290) 9 26 27 42 43 44 45 47
     RESERVED <terminal> (291)
-    CHRLIT <terminal> (292) 74
-    REALLIT <terminal> (293) 75
-    INTLIT <terminal> (294) 73
+    CHRLIT <terminal> (292) 93
+    REALLIT <terminal> (293) 94
+    INTLIT <terminal> (294) 92
     ID <idTerminal> (295) 32
 
 
@@ -193,7 +231,7 @@ Nonterminals, with rules where they appear
         on right: 28 29
     id_token <nonterminal> (55)
         on left: 32
-        on right: 15 19 30 31 70 71 72 77
+        on right: 15 19 30 31 89 90 91 96
     statementList <nonterminal> (56)
         on left: 33 34
         on right: 34 36
@@ -203,9 +241,66 @@ Nonterminals, with rules where they appear
     statement_error <nonterminal> (58)
         on left: 46 47
         on right: 33 34 36 37 39 40 41
-    expr <nonterminal> (59)
-        on left: 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78
-        on right: 31 39 40 41 42 44 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 71 76
+    plus_token <nonterminal> (59)
+        on left: 48
+        on right: 70 86
+    minus_token <nonterminal> (60)
+        on left: 49
+        on right: 71 87
+    mul_token <nonterminal> (61)
+        on left: 50
+        on right: 72
+    div_token <nonterminal> (62)
+        on left: 51
+        on right: 73
+    mod_token <nonterminal> (63)
+        on left: 52
+        on right: 74
+    or_token <nonterminal> (64)
+        on left: 53
+        on right: 75
+    and_token <nonterminal> (65)
+        on left: 54
+        on right: 76
+    bitwiseand_token <nonterminal> (66)
+        on left: 55
+        on right: 77
+    bitwiseor_token <nonterminal> (67)
+        on left: 56
+        on right: 78
+    bitwisexor_token <nonterminal> (68)
+        on left: 57
+        on right: 79
+    eq_token <nonterminal> (69)
+        on left: 58
+        on right: 80
+    ne_token <nonterminal> (70)
+        on left: 59
+        on right: 81
+    le_token <nonterminal> (71)
+        on left: 60
+        on right: 82
+    ge_token <nonterminal> (72)
+        on left: 61
+        on right: 83
+    lt_token <nonterminal> (73)
+        on left: 62
+        on right: 84
+    gt_token <nonterminal> (74)
+        on left: 63
+        on right: 85
+    assign_token <nonterminal> (75)
+        on left: 64
+        on right: 67
+    not_token <nonterminal> (76)
+        on left: 65
+        on right: 88
+    comma_token <nonterminal> (77)
+        on left: 66
+        on right: 68 69
+    expr <nonterminal> (78)
+        on left: 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97
+        on right: 31 39 40 41 42 44 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 90 95
 
 
 State 0
@@ -445,7 +540,10 @@ State 23
     declaration                go to state 45
     id_token                   go to state 46
     statement                  go to state 47
-    expr                       go to state 48
+    plus_token                 go to state 48
+    minus_token                go to state 49
+    not_token                  go to state 50
+    expr                       go to state 51
 
 
 State 24
@@ -468,8 +566,8 @@ State 26
 
     ID  shift, and go to state 18
 
-    declarator  go to state 49
-    id_token    go to state 50
+    declarator  go to state 52
+    id_token    go to state 53
 
 
 State 27
@@ -492,8 +590,11 @@ State 28
     INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
 
-    id_token  go to state 46
-    expr      go to state 51
+    id_token     go to state 46
+    plus_token   go to state 48
+    minus_token  go to state 49
+    not_token    go to state 50
+    expr         go to state 54
 
 
 State 29
@@ -506,16 +607,16 @@ State 29
     DOUBLE  shift, and go to state 5
     VOID    shift, and go to state 6
 
-    typeSpec              go to state 52
-    parameterList         go to state 53
-    parameterDeclaration  go to state 54
+    typeSpec              go to state 55
+    parameterList         go to state 56
+    parameterDeclaration  go to state 57
 
 
 State 30
 
    41 statement: WHILE . LPAR expr RPAR statement_error
 
-    LPAR  shift, and go to state 55
+    LPAR  shift, and go to state 58
 
 
 State 31
@@ -523,7 +624,7 @@ State 31
    39 statement: IF . LPAR expr RPAR statement_error ELSE statement_error
    40          | IF . LPAR expr RPAR statement_error
 
-    LPAR  shift, and go to state 56
+    LPAR  shift, and go to state 59
 
 
 State 32
@@ -535,14 +636,17 @@ State 32
     MINUS    shift, and go to state 35
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
-    SEMI     shift, and go to state 57
+    SEMI     shift, and go to state 60
     CHRLIT   shift, and go to state 40
     REALLIT  shift, and go to state 41
     INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
 
-    id_token  go to state 46
-    expr      go to state 58
+    id_token     go to state 46
+    plus_token   go to state 48
+    minus_token  go to state 49
+    not_token    go to state 50
+    expr         go to state 61
 
 
 State 33
@@ -552,7 +656,7 @@ State 33
    37          | LBRACE . statement_error RBRACE
    38          | LBRACE . RBRACE
 
-    error    shift, and go to state 59
+    error    shift, and go to state 62
     WHILE    shift, and go to state 30
     IF       shift, and go to state 31
     RETURN   shift, and go to state 32
@@ -561,7 +665,7 @@ State 33
     MINUS    shift, and go to state 35
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
-    RBRACE   shift, and go to state 60
+    RBRACE   shift, and go to state 63
     SEMI     shift, and go to state 39
     CHRLIT   shift, and go to state 40
     REALLIT  shift, and go to state 41
@@ -569,19 +673,22 @@ State 33
     ID       shift, and go to state 18
 
     id_token         go to state 46
-    statementList    go to state 61
-    statement        go to state 62
-    statement_error  go to state 63
-    expr             go to state 48
+    statementList    go to state 64
+    statement        go to state 65
+    statement_error  go to state 66
+    plus_token       go to state 48
+    minus_token      go to state 49
+    not_token        go to state 50
+    expr             go to state 51
 
 
 State 34
 
-   50 expr: LPAR . expr COMMA expr RPAR
-   76     | LPAR . expr RPAR
-   78     | LPAR . error RPAR
+   69 expr: LPAR . expr comma_token expr RPAR
+   95     | LPAR . expr RPAR
+   97     | LPAR . error RPAR
 
-    error    shift, and go to state 64
+    error    shift, and go to state 67
     LPAR     shift, and go to state 34
     MINUS    shift, and go to state 35
     NOT      shift, and go to state 36
@@ -591,59 +698,32 @@ State 34
     INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
 
-    id_token  go to state 46
-    expr      go to state 65
+    id_token     go to state 46
+    plus_token   go to state 48
+    minus_token  go to state 49
+    not_token    go to state 50
+    expr         go to state 68
 
 
 State 35
 
-   68 expr: MINUS . expr
+   49 minus_token: MINUS .
 
-    LPAR     shift, and go to state 34
-    MINUS    shift, and go to state 35
-    NOT      shift, and go to state 36
-    PLUS     shift, and go to state 37
-    CHRLIT   shift, and go to state 40
-    REALLIT  shift, and go to state 41
-    INTLIT   shift, and go to state 42
-    ID       shift, and go to state 18
-
-    id_token  go to state 46
-    expr      go to state 66
+    $default  reduce using rule 49 (minus_token)
 
 
 State 36
 
-   69 expr: NOT . expr
+   65 not_token: NOT .
 
-    LPAR     shift, and go to state 34
-    MINUS    shift, and go to state 35
-    NOT      shift, and go to state 36
-    PLUS     shift, and go to state 37
-    CHRLIT   shift, and go to state 40
-    REALLIT  shift, and go to state 41
-    INTLIT   shift, and go to state 42
-    ID       shift, and go to state 18
-
-    id_token  go to state 46
-    expr      go to state 67
+    $default  reduce using rule 65 (not_token)
 
 
 State 37
 
-   67 expr: PLUS . expr
+   48 plus_token: PLUS .
 
-    LPAR     shift, and go to state 34
-    MINUS    shift, and go to state 35
-    NOT      shift, and go to state 36
-    PLUS     shift, and go to state 37
-    CHRLIT   shift, and go to state 40
-    REALLIT  shift, and go to state 41
-    INTLIT   shift, and go to state 42
-    ID       shift, and go to state 18
-
-    id_token  go to state 46
-    expr      go to state 68
+    $default  reduce using rule 48 (plus_token)
 
 
 State 38
@@ -662,23 +742,23 @@ State 39
 
 State 40
 
-   74 expr: CHRLIT .
+   93 expr: CHRLIT .
 
-    $default  reduce using rule 74 (expr)
+    $default  reduce using rule 93 (expr)
 
 
 State 41
 
-   75 expr: REALLIT .
+   94 expr: REALLIT .
 
-    $default  reduce using rule 75 (expr)
+    $default  reduce using rule 94 (expr)
 
 
 State 42
 
-   73 expr: INTLIT .
+   92 expr: INTLIT .
 
-    $default  reduce using rule 73 (expr)
+    $default  reduce using rule 92 (expr)
 
 
 State 43
@@ -689,7 +769,7 @@ State 43
 
     declaratorsList  go to state 20
     declarator       go to state 21
-    id_token         go to state 50
+    id_token         go to state 53
 
 
 State 44
@@ -723,7 +803,10 @@ State 44
     declaration  go to state 70
     id_token     go to state 46
     statement    go to state 71
-    expr         go to state 48
+    plus_token   go to state 48
+    minus_token  go to state 49
+    not_token    go to state 50
+    expr         go to state 51
 
 
 State 45
@@ -735,14 +818,14 @@ State 45
 
 State 46
 
-   70 expr: id_token . LPAR RPAR
-   71     | id_token . LPAR expr RPAR
-   72     | id_token .
-   77     | id_token . LPAR error RPAR
+   89 expr: id_token . LPAR RPAR
+   90     | id_token . LPAR expr RPAR
+   91     | id_token .
+   96     | id_token . LPAR error RPAR
 
     LPAR  shift, and go to state 72
 
-    $default  reduce using rule 72 (expr)
+    $default  reduce using rule 91 (expr)
 
 
 State 47
@@ -754,55 +837,134 @@ State 47
 
 State 48
 
-   44 statement: expr . SEMI
-   48 expr: expr . ASSIGN expr
-   49     | expr . COMMA expr
-   51     | expr . PLUS expr
-   52     | expr . MINUS expr
-   53     | expr . MUL expr
-   54     | expr . DIV expr
-   55     | expr . MOD expr
-   56     | expr . OR expr
-   57     | expr . AND expr
-   58     | expr . BITWISEAND expr
-   59     | expr . BITWISEOR expr
-   60     | expr . BITWISEXOR expr
-   61     | expr . EQ expr
-   62     | expr . NE expr
-   63     | expr . LE expr
-   64     | expr . GE expr
-   65     | expr . LT expr
-   66     | expr . GT expr
+   86 expr: plus_token . expr
 
-    BITWISEAND  shift, and go to state 73
-    BITWISEOR   shift, and go to state 74
-    BITWISEXOR  shift, and go to state 75
-    AND         shift, and go to state 76
-    ASSIGN      shift, and go to state 77
-    MUL         shift, and go to state 78
-    COMMA       shift, and go to state 79
-    DIV         shift, and go to state 80
-    EQ          shift, and go to state 81
-    GE          shift, and go to state 82
-    GT          shift, and go to state 83
-    LE          shift, and go to state 84
-    LT          shift, and go to state 85
-    MINUS       shift, and go to state 86
-    MOD         shift, and go to state 87
-    NE          shift, and go to state 88
-    OR          shift, and go to state 89
-    PLUS        shift, and go to state 90
-    SEMI        shift, and go to state 91
+    LPAR     shift, and go to state 34
+    MINUS    shift, and go to state 35
+    NOT      shift, and go to state 36
+    PLUS     shift, and go to state 37
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
+    ID       shift, and go to state 18
+
+    id_token     go to state 46
+    plus_token   go to state 48
+    minus_token  go to state 49
+    not_token    go to state 50
+    expr         go to state 73
 
 
 State 49
+
+   87 expr: minus_token . expr
+
+    LPAR     shift, and go to state 34
+    MINUS    shift, and go to state 35
+    NOT      shift, and go to state 36
+    PLUS     shift, and go to state 37
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
+    ID       shift, and go to state 18
+
+    id_token     go to state 46
+    plus_token   go to state 48
+    minus_token  go to state 49
+    not_token    go to state 50
+    expr         go to state 74
+
+
+State 50
+
+   88 expr: not_token . expr
+
+    LPAR     shift, and go to state 34
+    MINUS    shift, and go to state 35
+    NOT      shift, and go to state 36
+    PLUS     shift, and go to state 37
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
+    ID       shift, and go to state 18
+
+    id_token     go to state 46
+    plus_token   go to state 48
+    minus_token  go to state 49
+    not_token    go to state 50
+    expr         go to state 75
+
+
+State 51
+
+   44 statement: expr . SEMI
+   67 expr: expr . assign_token expr
+   68     | expr . comma_token expr
+   70     | expr . plus_token expr
+   71     | expr . minus_token expr
+   72     | expr . mul_token expr
+   73     | expr . div_token expr
+   74     | expr . mod_token expr
+   75     | expr . or_token expr
+   76     | expr . and_token expr
+   77     | expr . bitwiseand_token expr
+   78     | expr . bitwiseor_token expr
+   79     | expr . bitwisexor_token expr
+   80     | expr . eq_token expr
+   81     | expr . ne_token expr
+   82     | expr . le_token expr
+   83     | expr . ge_token expr
+   84     | expr . lt_token expr
+   85     | expr . gt_token expr
+
+    BITWISEAND  shift, and go to state 76
+    BITWISEOR   shift, and go to state 77
+    BITWISEXOR  shift, and go to state 78
+    AND         shift, and go to state 79
+    ASSIGN      shift, and go to state 80
+    MUL         shift, and go to state 81
+    COMMA       shift, and go to state 82
+    DIV         shift, and go to state 83
+    EQ          shift, and go to state 84
+    GE          shift, and go to state 85
+    GT          shift, and go to state 86
+    LE          shift, and go to state 87
+    LT          shift, and go to state 88
+    MINUS       shift, and go to state 35
+    MOD         shift, and go to state 89
+    NE          shift, and go to state 90
+    OR          shift, and go to state 91
+    PLUS        shift, and go to state 37
+    SEMI        shift, and go to state 92
+
+    plus_token        go to state 93
+    minus_token       go to state 94
+    mul_token         go to state 95
+    div_token         go to state 96
+    mod_token         go to state 97
+    or_token          go to state 98
+    and_token         go to state 99
+    bitwiseand_token  go to state 100
+    bitwiseor_token   go to state 101
+    bitwisexor_token  go to state 102
+    eq_token          go to state 103
+    ne_token          go to state 104
+    le_token          go to state 105
+    ge_token          go to state 106
+    lt_token          go to state 107
+    gt_token          go to state 108
+    assign_token      go to state 109
+    comma_token       go to state 110
+
+
+State 52
 
    29 declaratorsList: declaratorsList COMMA declarator .
 
     $default  reduce using rule 29 (declaratorsList)
 
 
-State 50
+State 53
 
    30 declarator: id_token .
    31           | id_token . ASSIGN expr
@@ -812,50 +974,69 @@ State 50
     $default  reduce using rule 30 (declarator)
 
 
-State 51
+State 54
 
    31 declarator: id_token ASSIGN expr .
-   48 expr: expr . ASSIGN expr
-   49     | expr . COMMA expr
-   51     | expr . PLUS expr
-   52     | expr . MINUS expr
-   53     | expr . MUL expr
-   54     | expr . DIV expr
-   55     | expr . MOD expr
-   56     | expr . OR expr
-   57     | expr . AND expr
-   58     | expr . BITWISEAND expr
-   59     | expr . BITWISEOR expr
-   60     | expr . BITWISEXOR expr
-   61     | expr . EQ expr
-   62     | expr . NE expr
-   63     | expr . LE expr
-   64     | expr . GE expr
-   65     | expr . LT expr
-   66     | expr . GT expr
+   67 expr: expr . assign_token expr
+   68     | expr . comma_token expr
+   70     | expr . plus_token expr
+   71     | expr . minus_token expr
+   72     | expr . mul_token expr
+   73     | expr . div_token expr
+   74     | expr . mod_token expr
+   75     | expr . or_token expr
+   76     | expr . and_token expr
+   77     | expr . bitwiseand_token expr
+   78     | expr . bitwiseor_token expr
+   79     | expr . bitwisexor_token expr
+   80     | expr . eq_token expr
+   81     | expr . ne_token expr
+   82     | expr . le_token expr
+   83     | expr . ge_token expr
+   84     | expr . lt_token expr
+   85     | expr . gt_token expr
 
-    BITWISEAND  shift, and go to state 73
-    BITWISEOR   shift, and go to state 74
-    BITWISEXOR  shift, and go to state 75
-    AND         shift, and go to state 76
-    ASSIGN      shift, and go to state 77
-    MUL         shift, and go to state 78
-    DIV         shift, and go to state 80
-    EQ          shift, and go to state 81
-    GE          shift, and go to state 82
-    GT          shift, and go to state 83
-    LE          shift, and go to state 84
-    LT          shift, and go to state 85
-    MINUS       shift, and go to state 86
-    MOD         shift, and go to state 87
-    NE          shift, and go to state 88
-    OR          shift, and go to state 89
-    PLUS        shift, and go to state 90
+    BITWISEAND  shift, and go to state 76
+    BITWISEOR   shift, and go to state 77
+    BITWISEXOR  shift, and go to state 78
+    AND         shift, and go to state 79
+    ASSIGN      shift, and go to state 80
+    MUL         shift, and go to state 81
+    DIV         shift, and go to state 83
+    EQ          shift, and go to state 84
+    GE          shift, and go to state 85
+    GT          shift, and go to state 86
+    LE          shift, and go to state 87
+    LT          shift, and go to state 88
+    MINUS       shift, and go to state 35
+    MOD         shift, and go to state 89
+    NE          shift, and go to state 90
+    OR          shift, and go to state 91
+    PLUS        shift, and go to state 37
 
     $default  reduce using rule 31 (declarator)
 
+    plus_token        go to state 93
+    minus_token       go to state 94
+    mul_token         go to state 95
+    div_token         go to state 96
+    mod_token         go to state 97
+    or_token          go to state 98
+    and_token         go to state 99
+    bitwiseand_token  go to state 100
+    bitwiseor_token   go to state 101
+    bitwisexor_token  go to state 102
+    eq_token          go to state 103
+    ne_token          go to state 104
+    le_token          go to state 105
+    ge_token          go to state 106
+    lt_token          go to state 107
+    gt_token          go to state 108
+    assign_token      go to state 109
+    comma_token       go to state 110
 
-State 52
+
+State 55
 
    18 parameterDeclaration: typeSpec .
    19                     | typeSpec . id_token
@@ -864,26 +1045,26 @@ State 52
 
     $default  reduce using rule 18 (parameterDeclaration)
 
-    id_token  go to state 92
+    id_token  go to state 111
 
 
-State 53
+State 56
 
    15 functionDeclarator: id_token LPAR parameterList . RPAR
    17 parameterList: parameterList . COMMA parameterDeclaration
 
-    COMMA  shift, and go to state 93
-    RPAR   shift, and go to state 94
+    COMMA  shift, and go to state 112
+    RPAR   shift, and go to state 113
 
 
-State 54
+State 57
 
    16 parameterList: parameterDeclaration .
 
     $default  reduce using rule 16 (parameterList)
 
 
-State 55
+State 58
 
    41 statement: WHILE LPAR . expr RPAR statement_error
 
@@ -896,11 +1077,14 @@ State 55
     INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
 
-    id_token  go to state 46
-    expr      go to state 95
+    id_token     go to state 46
+    plus_token   go to state 48
+    minus_token  go to state 49
+    not_token    go to state 50
+    expr         go to state 114
 
 
-State 56
+State 59
 
    39 statement: IF LPAR . expr RPAR statement_error ELSE statement_error
    40          | IF LPAR . expr RPAR statement_error
@@ -914,82 +1098,104 @@ State 56
     INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
 
-    id_token  go to state 46
-    expr      go to state 96
+    id_token     go to state 46
+    plus_token   go to state 48
+    minus_token  go to state 49
+    not_token    go to state 50
+    expr         go to state 115
 
 
-State 57
+State 60
 
    43 statement: RETURN SEMI .
 
     $default  reduce using rule 43 (statement)
 
 
-State 58
+State 61
 
    42 statement: RETURN expr . SEMI
-   48 expr: expr . ASSIGN expr
-   49     | expr . COMMA expr
-   51     | expr . PLUS expr
-   52     | expr . MINUS expr
-   53     | expr . MUL expr
-   54     | expr . DIV expr
-   55     | expr . MOD expr
-   56     | expr . OR expr
-   57     | expr . AND expr
-   58     | expr . BITWISEAND expr
-   59     | expr . BITWISEOR expr
-   60     | expr . BITWISEXOR expr
-   61     | expr . EQ expr
-   62     | expr . NE expr
-   63     | expr . LE expr
-   64     | expr . GE expr
-   65     | expr . LT expr
-   66     | expr . GT expr
+   67 expr: expr . assign_token expr
+   68     | expr . comma_token expr
+   70     | expr . plus_token expr
+   71     | expr . minus_token expr
+   72     | expr . mul_token expr
+   73     | expr . div_token expr
+   74     | expr . mod_token expr
+   75     | expr . or_token expr
+   76     | expr . and_token expr
+   77     | expr . bitwiseand_token expr
+   78     | expr . bitwiseor_token expr
+   79     | expr . bitwisexor_token expr
+   80     | expr . eq_token expr
+   81     | expr . ne_token expr
+   82     | expr . le_token expr
+   83     | expr . ge_token expr
+   84     | expr . lt_token expr
+   85     | expr . gt_token expr
 
-    BITWISEAND  shift, and go to state 73
-    BITWISEOR   shift, and go to state 74
-    BITWISEXOR  shift, and go to state 75
-    AND         shift, and go to state 76
-    ASSIGN      shift, and go to state 77
-    MUL         shift, and go to state 78
-    COMMA       shift, and go to state 79
-    DIV         shift, and go to state 80
-    EQ          shift, and go to state 81
-    GE          shift, and go to state 82
-    GT          shift, and go to state 83
-    LE          shift, and go to state 84
-    LT          shift, and go to state 85
-    MINUS       shift, and go to state 86
-    MOD         shift, and go to state 87
-    NE          shift, and go to state 88
-    OR          shift, and go to state 89
-    PLUS        shift, and go to state 90
-    SEMI        shift, and go to state 97
+    BITWISEAND  shift, and go to state 76
+    BITWISEOR   shift, and go to state 77
+    BITWISEXOR  shift, and go to state 78
+    AND         shift, and go to state 79
+    ASSIGN      shift, and go to state 80
+    MUL         shift, and go to state 81
+    COMMA       shift, and go to state 82
+    DIV         shift, and go to state 83
+    EQ          shift, and go to state 84
+    GE          shift, and go to state 85
+    GT          shift, and go to state 86
+    LE          shift, and go to state 87
+    LT          shift, and go to state 88
+    MINUS       shift, and go to state 35
+    MOD         shift, and go to state 89
+    NE          shift, and go to state 90
+    OR          shift, and go to state 91
+    PLUS        shift, and go to state 37
+    SEMI        shift, and go to state 116
+
+    plus_token        go to state 93
+    minus_token       go to state 94
+    mul_token         go to state 95
+    div_token         go to state 96
+    mod_token         go to state 97
+    or_token          go to state 98
+    and_token         go to state 99
+    bitwiseand_token  go to state 100
+    bitwiseor_token   go to state 101
+    bitwisexor_token  go to state 102
+    eq_token          go to state 103
+    ne_token          go to state 104
+    le_token          go to state 105
+    ge_token          go to state 106
+    lt_token          go to state 107
+    gt_token          go to state 108
+    assign_token      go to state 109
+    comma_token       go to state 110
 
 
-State 59
+State 62
 
    35 statement: LBRACE error . RBRACE
    47 statement_error: error . SEMI
 
-    RBRACE  shift, and go to state 98
-    SEMI    shift, and go to state 99
+    RBRACE  shift, and go to state 117
+    SEMI    shift, and go to state 118
 
 
-State 60
+State 63
 
    38 statement: LBRACE RBRACE .
 
     $default  reduce using rule 38 (statement)
 
 
-State 61
+State 64
 
    34 statementList: statementList . statement_error
    36 statement: LBRACE statementList . statement_error RBRACE
 
-    error    shift, and go to state 100
+    error    shift, and go to state 119
     WHILE    shift, and go to state 30
     IF       shift, and go to state 31
     RETURN   shift, and go to state 32
@@ -1005,152 +1211,99 @@ State 61
     ID       shift, and go to state 18
 
     id_token         go to state 46
-    statement        go to state 62
-    statement_error  go to state 101
-    expr             go to state 48
+    statement        go to state 65
+    statement_error  go to state 120
+    plus_token       go to state 48
+    minus_token      go to state 49
+    not_token        go to state 50
+    expr             go to state 51
 
 
-State 62
+State 65
 
    46 statement_error: statement .
 
     $default  reduce using rule 46 (statement_error)
 
 
-State 63
+State 66
 
    33 statementList: statement_error .
    37 statement: LBRACE statement_error . RBRACE
 
-    RBRACE  shift, and go to state 102
+    RBRACE  shift, and go to state 121
 
     $default  reduce using rule 33 (statementList)
 
 
-State 64
-
-   78 expr: LPAR error . RPAR
-
-    RPAR  shift, and go to state 103
-
-
-State 65
-
-   48 expr: expr . ASSIGN expr
-   49     | expr . COMMA expr
-   50     | LPAR expr . COMMA expr RPAR
-   51     | expr . PLUS expr
-   52     | expr . MINUS expr
-   53     | expr . MUL expr
-   54     | expr . DIV expr
-   55     | expr . MOD expr
-   56     | expr . OR expr
-   57     | expr . AND expr
-   58     | expr . BITWISEAND expr
-   59     | expr . BITWISEOR expr
-   60     | expr . BITWISEXOR expr
-   61     | expr . EQ expr
-   62     | expr . NE expr
-   63     | expr . LE expr
-   64     | expr . GE expr
-   65     | expr . LT expr
-   66     | expr . GT expr
-   76     | LPAR expr . RPAR
-
-    BITWISEAND  shift, and go to state 73
-    BITWISEOR   shift, and go to state 74
-    BITWISEXOR  shift, and go to state 75
-    AND         shift, and go to state 76
-    ASSIGN      shift, and go to state 77
-    MUL         shift, and go to state 78
-    COMMA       shift, and go to state 104
-    DIV         shift, and go to state 80
-    EQ          shift, and go to state 81
-    GE          shift, and go to state 82
-    GT          shift, and go to state 83
-    LE          shift, and go to state 84
-    LT          shift, and go to state 85
-    MINUS       shift, and go to state 86
-    MOD         shift, and go to state 87
-    NE          shift, and go to state 88
-    OR          shift, and go to state 89
-    PLUS        shift, and go to state 90
-    RPAR        shift, and go to state 105
-
-
-State 66
-
-   48 expr: expr . ASSIGN expr
-   49     | expr . COMMA expr
-   51     | expr . PLUS expr
-   52     | expr . MINUS expr
-   53     | expr . MUL expr
-   54     | expr . DIV expr
-   55     | expr . MOD expr
-   56     | expr . OR expr
-   57     | expr . AND expr
-   58     | expr . BITWISEAND expr
-   59     | expr . BITWISEOR expr
-   60     | expr . BITWISEXOR expr
-   61     | expr . EQ expr
-   62     | expr . NE expr
-   63     | expr . LE expr
-   64     | expr . GE expr
-   65     | expr . LT expr
-   66     | expr . GT expr
-   68     | MINUS expr .
-
-    $default  reduce using rule 68 (expr)
-
-
 State 67
 
-   48 expr: expr . ASSIGN expr
-   49     | expr . COMMA expr
-   51     | expr . PLUS expr
-   52     | expr . MINUS expr
-   53     | expr . MUL expr
-   54     | expr . DIV expr
-   55     | expr . MOD expr
-   56     | expr . OR expr
-   57     | expr . AND expr
-   58     | expr . BITWISEAND expr
-   59     | expr . BITWISEOR expr
-   60     | expr . BITWISEXOR expr
-   61     | expr . EQ expr
-   62     | expr . NE expr
-   63     | expr . LE expr
-   64     | expr . GE expr
-   65     | expr . LT expr
-   66     | expr . GT expr
-   69     | NOT expr .
+   97 expr: LPAR error . RPAR
 
-    $default  reduce using rule 69 (expr)
+    RPAR  shift, and go to state 122
 
 
 State 68
 
-   48 expr: expr . ASSIGN expr
-   49     | expr . COMMA expr
-   51     | expr . PLUS expr
-   52     | expr . MINUS expr
-   53     | expr . MUL expr
-   54     | expr . DIV expr
-   55     | expr . MOD expr
-   56     | expr . OR expr
-   57     | expr . AND expr
-   58     | expr . BITWISEAND expr
-   59     | expr . BITWISEOR expr
-   60     | expr . BITWISEXOR expr
-   61     | expr . EQ expr
-   62     | expr . NE expr
-   63     | expr . LE expr
-   64     | expr . GE expr
-   65     | expr . LT expr
-   66     | expr . GT expr
-   67     | PLUS expr .
+   67 expr: expr . assign_token expr
+   68     | expr . comma_token expr
+   69     | LPAR expr . comma_token expr RPAR
+   70     | expr . plus_token expr
+   71     | expr . minus_token expr
+   72     | expr . mul_token expr
+   73     | expr . div_token expr
+   74     | expr . mod_token expr
+   75     | expr . or_token expr
+   76     | expr . and_token expr
+   77     | expr . bitwiseand_token expr
+   78     | expr . bitwiseor_token expr
+   79     | expr . bitwisexor_token expr
+   80     | expr . eq_token expr
+   81     | expr . ne_token expr
+   82     | expr . le_token expr
+   83     | expr . ge_token expr
+   84     | expr . lt_token expr
+   85     | expr . gt_token expr
+   95     | LPAR expr . RPAR
 
-    $default  reduce using rule 67 (expr)
+    BITWISEAND  shift, and go to state 76
+    BITWISEOR   shift, and go to state 77
+    BITWISEXOR  shift, and go to state 78
+    AND         shift, and go to state 79
+    ASSIGN      shift, and go to state 80
+    MUL         shift, and go to state 81
+    COMMA       shift, and go to state 82
+    DIV         shift, and go to state 83
+    EQ          shift, and go to state 84
+    GE          shift, and go to state 85
+    GT          shift, and go to state 86
+    LE          shift, and go to state 87
+    LT          shift, and go to state 88
+    MINUS       shift, and go to state 35
+    MOD         shift, and go to state 89
+    NE          shift, and go to state 90
+    OR          shift, and go to state 91
+    PLUS        shift, and go to state 37
+    RPAR        shift, and go to state 123
+
+    plus_token        go to state 93
+    minus_token       go to state 94
+    mul_token         go to state 95
+    div_token         go to state 96
+    mod_token         go to state 97
+    or_token          go to state 98
+    and_token         go to state 99
+    bitwiseand_token  go to state 100
+    bitwiseor_token   go to state 101
+    bitwisexor_token  go to state 102
+    eq_token          go to state 103
+    ne_token          go to state 104
+    le_token          go to state 105
+    ge_token          go to state 106
+    lt_token          go to state 107
+    gt_token          go to state 108
+    assign_token      go to state 109
+    comma_token       go to state 124
 
 
 State 69
@@ -1176,346 +1329,647 @@ State 71
 
 State 72
 
-   70 expr: id_token LPAR . RPAR
-   71     | id_token LPAR . expr RPAR
-   77     | id_token LPAR . error RPAR
+   89 expr: id_token LPAR . RPAR
+   90     | id_token LPAR . expr RPAR
+   96     | id_token LPAR . error RPAR
 
-    error    shift, and go to state 106
+    error    shift, and go to state 125
     LPAR     shift, and go to state 34
     MINUS    shift, and go to state 35
     NOT      shift, and go to state 36
     PLUS     shift, and go to state 37
-    RPAR     shift, and go to state 107
+    RPAR     shift, and go to state 126
     CHRLIT   shift, and go to state 40
     REALLIT  shift, and go to state 41
     INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
 
-    id_token  go to state 46
-    expr      go to state 108
+    id_token     go to state 46
+    plus_token   go to state 48
+    minus_token  go to state 49
+    not_token    go to state 50
+    expr         go to state 127
 
 
 State 73
 
-   58 expr: expr BITWISEAND . expr
+   67 expr: expr . assign_token expr
+   68     | expr . comma_token expr
+   70     | expr . plus_token expr
+   71     | expr . minus_token expr
+   72     | expr . mul_token expr
+   73     | expr . div_token expr
+   74     | expr . mod_token expr
+   75     | expr . or_token expr
+   76     | expr . and_token expr
+   77     | expr . bitwiseand_token expr
+   78     | expr . bitwiseor_token expr
+   79     | expr . bitwisexor_token expr
+   80     | expr . eq_token expr
+   81     | expr . ne_token expr
+   82     | expr . le_token expr
+   83     | expr . ge_token expr
+   84     | expr . lt_token expr
+   85     | expr . gt_token expr
+   86     | plus_token expr .
 
-    LPAR     shift, and go to state 34
-    MINUS    shift, and go to state 35
-    NOT      shift, and go to state 36
-    PLUS     shift, and go to state 37
-    CHRLIT   shift, and go to state 40
-    REALLIT  shift, and go to state 41
-    INTLIT   shift, and go to state 42
-    ID       shift, and go to state 18
+    $default  reduce using rule 86 (expr)
 
-    id_token  go to state 46
-    expr      go to state 109
+    plus_token        go to state 93
+    minus_token       go to state 94
+    mul_token         go to state 95
+    div_token         go to state 96
+    mod_token         go to state 97
+    or_token          go to state 98
+    and_token         go to state 99
+    bitwiseand_token  go to state 100
+    bitwiseor_token   go to state 101
+    bitwisexor_token  go to state 102
+    eq_token          go to state 103
+    ne_token          go to state 104
+    le_token          go to state 105
+    ge_token          go to state 106
+    lt_token          go to state 107
+    gt_token          go to state 108
+    assign_token      go to state 109
+    comma_token       go to state 110
 
 
 State 74
 
-   59 expr: expr BITWISEOR . expr
+   67 expr: expr . assign_token expr
+   68     | expr . comma_token expr
+   70     | expr . plus_token expr
+   71     | expr . minus_token expr
+   72     | expr . mul_token expr
+   73     | expr . div_token expr
+   74     | expr . mod_token expr
+   75     | expr . or_token expr
+   76     | expr . and_token expr
+   77     | expr . bitwiseand_token expr
+   78     | expr . bitwiseor_token expr
+   79     | expr . bitwisexor_token expr
+   80     | expr . eq_token expr
+   81     | expr . ne_token expr
+   82     | expr . le_token expr
+   83     | expr . ge_token expr
+   84     | expr . lt_token expr
+   85     | expr . gt_token expr
+   87     | minus_token expr .
 
-    LPAR     shift, and go to state 34
-    MINUS    shift, and go to state 35
-    NOT      shift, and go to state 36
-    PLUS     shift, and go to state 37
-    CHRLIT   shift, and go to state 40
-    REALLIT  shift, and go to state 41
-    INTLIT   shift, and go to state 42
-    ID       shift, and go to state 18
+    $default  reduce using rule 87 (expr)
 
-    id_token  go to state 46
-    expr      go to state 110
+    plus_token        go to state 93
+    minus_token       go to state 94
+    mul_token         go to state 95
+    div_token         go to state 96
+    mod_token         go to state 97
+    or_token          go to state 98
+    and_token         go to state 99
+    bitwiseand_token  go to state 100
+    bitwiseor_token   go to state 101
+    bitwisexor_token  go to state 102
+    eq_token          go to state 103
+    ne_token          go to state 104
+    le_token          go to state 105
+    ge_token          go to state 106
+    lt_token          go to state 107
+    gt_token          go to state 108
+    assign_token      go to state 109
+    comma_token       go to state 110
 
 
 State 75
 
-   60 expr: expr BITWISEXOR . expr
+   67 expr: expr . assign_token expr
+   68     | expr . comma_token expr
+   70     | expr . plus_token expr
+   71     | expr . minus_token expr
+   72     | expr . mul_token expr
+   73     | expr . div_token expr
+   74     | expr . mod_token expr
+   75     | expr . or_token expr
+   76     | expr . and_token expr
+   77     | expr . bitwiseand_token expr
+   78     | expr . bitwiseor_token expr
+   79     | expr . bitwisexor_token expr
+   80     | expr . eq_token expr
+   81     | expr . ne_token expr
+   82     | expr . le_token expr
+   83     | expr . ge_token expr
+   84     | expr . lt_token expr
+   85     | expr . gt_token expr
+   88     | not_token expr .
 
-    LPAR     shift, and go to state 34
-    MINUS    shift, and go to state 35
-    NOT      shift, and go to state 36
-    PLUS     shift, and go to state 37
-    CHRLIT   shift, and go to state 40
-    REALLIT  shift, and go to state 41
-    INTLIT   shift, and go to state 42
-    ID       shift, and go to state 18
+    $default  reduce using rule 88 (expr)
 
-    id_token  go to state 46
-    expr      go to state 111
+    plus_token        go to state 93
+    minus_token       go to state 94
+    mul_token         go to state 95
+    div_token         go to state 96
+    mod_token         go to state 97
+    or_token          go to state 98
+    and_token         go to state 99
+    bitwiseand_token  go to state 100
+    bitwiseor_token   go to state 101
+    bitwisexor_token  go to state 102
+    eq_token          go to state 103
+    ne_token          go to state 104
+    le_token          go to state 105
+    ge_token          go to state 106
+    lt_token          go to state 107
+    gt_token          go to state 108
+    assign_token      go to state 109
+    comma_token       go to state 110
 
 
 State 76
 
-   57 expr: expr AND . expr
+   55 bitwiseand_token: BITWISEAND .
 
-    LPAR     shift, and go to state 34
-    MINUS    shift, and go to state 35
-    NOT      shift, and go to state 36
-    PLUS     shift, and go to state 37
-    CHRLIT   shift, and go to state 40
-    REALLIT  shift, and go to state 41
-    INTLIT   shift, and go to state 42
-    ID       shift, and go to state 18
-
-    id_token  go to state 46
-    expr      go to state 112
+    $default  reduce using rule 55 (bitwiseand_token)
 
 
 State 77
 
-   48 expr: expr ASSIGN . expr
+   56 bitwiseor_token: BITWISEOR .
 
-    LPAR     shift, and go to state 34
-    MINUS    shift, and go to state 35
-    NOT      shift, and go to state 36
-    PLUS     shift, and go to state 37
-    CHRLIT   shift, and go to state 40
-    REALLIT  shift, and go to state 41
-    INTLIT   shift, and go to state 42
-    ID       shift, and go to state 18
-
-    id_token  go to state 46
-    expr      go to state 113
+    $default  reduce using rule 56 (bitwiseor_token)
 
 
 State 78
 
-   53 expr: expr MUL . expr
+   57 bitwisexor_token: BITWISEXOR .
 
-    LPAR     shift, and go to state 34
-    MINUS    shift, and go to state 35
-    NOT      shift, and go to state 36
-    PLUS     shift, and go to state 37
-    CHRLIT   shift, and go to state 40
-    REALLIT  shift, and go to state 41
-    INTLIT   shift, and go to state 42
-    ID       shift, and go to state 18
-
-    id_token  go to state 46
-    expr      go to state 114
+    $default  reduce using rule 57 (bitwisexor_token)
 
 
 State 79
 
-   49 expr: expr COMMA . expr
+   54 and_token: AND .
 
-    LPAR     shift, and go to state 34
-    MINUS    shift, and go to state 35
-    NOT      shift, and go to state 36
-    PLUS     shift, and go to state 37
-    CHRLIT   shift, and go to state 40
-    REALLIT  shift, and go to state 41
-    INTLIT   shift, and go to state 42
-    ID       shift, and go to state 18
-
-    id_token  go to state 46
-    expr      go to state 115
+    $default  reduce using rule 54 (and_token)
 
 
 State 80
 
-   54 expr: expr DIV . expr
+   64 assign_token: ASSIGN .
 
-    LPAR     shift, and go to state 34
-    MINUS    shift, and go to state 35
-    NOT      shift, and go to state 36
-    PLUS     shift, and go to state 37
-    CHRLIT   shift, and go to state 40
-    REALLIT  shift, and go to state 41
-    INTLIT   shift, and go to state 42
-    ID       shift, and go to state 18
-
-    id_token  go to state 46
-    expr      go to state 116
+    $default  reduce using rule 64 (assign_token)
 
 
 State 81
 
-   61 expr: expr EQ . expr
+   50 mul_token: MUL .
 
-    LPAR     shift, and go to state 34
-    MINUS    shift, and go to state 35
-    NOT      shift, and go to state 36
-    PLUS     shift, and go to state 37
-    CHRLIT   shift, and go to state 40
-    REALLIT  shift, and go to state 41
-    INTLIT   shift, and go to state 42
-    ID       shift, and go to state 18
-
-    id_token  go to state 46
-    expr      go to state 117
+    $default  reduce using rule 50 (mul_token)
 
 
 State 82
 
-   64 expr: expr GE . expr
+   66 comma_token: COMMA .
 
-    LPAR     shift, and go to state 34
-    MINUS    shift, and go to state 35
-    NOT      shift, and go to state 36
-    PLUS     shift, and go to state 37
-    CHRLIT   shift, and go to state 40
-    REALLIT  shift, and go to state 41
-    INTLIT   shift, and go to state 42
-    ID       shift, and go to state 18
-
-    id_token  go to state 46
-    expr      go to state 118
+    $default  reduce using rule 66 (comma_token)
 
 
 State 83
 
-   66 expr: expr GT . expr
+   51 div_token: DIV .
 
-    LPAR     shift, and go to state 34
-    MINUS    shift, and go to state 35
-    NOT      shift, and go to state 36
-    PLUS     shift, and go to state 37
-    CHRLIT   shift, and go to state 40
-    REALLIT  shift, and go to state 41
-    INTLIT   shift, and go to state 42
-    ID       shift, and go to state 18
-
-    id_token  go to state 46
-    expr      go to state 119
+    $default  reduce using rule 51 (div_token)
 
 
 State 84
 
-   63 expr: expr LE . expr
+   58 eq_token: EQ .
 
-    LPAR     shift, and go to state 34
-    MINUS    shift, and go to state 35
-    NOT      shift, and go to state 36
-    PLUS     shift, and go to state 37
-    CHRLIT   shift, and go to state 40
-    REALLIT  shift, and go to state 41
-    INTLIT   shift, and go to state 42
-    ID       shift, and go to state 18
-
-    id_token  go to state 46
-    expr      go to state 120
+    $default  reduce using rule 58 (eq_token)
 
 
 State 85
 
-   65 expr: expr LT . expr
+   61 ge_token: GE .
 
-    LPAR     shift, and go to state 34
-    MINUS    shift, and go to state 35
-    NOT      shift, and go to state 36
-    PLUS     shift, and go to state 37
-    CHRLIT   shift, and go to state 40
-    REALLIT  shift, and go to state 41
-    INTLIT   shift, and go to state 42
-    ID       shift, and go to state 18
-
-    id_token  go to state 46
-    expr      go to state 121
+    $default  reduce using rule 61 (ge_token)
 
 
 State 86
 
-   52 expr: expr MINUS . expr
+   63 gt_token: GT .
 
-    LPAR     shift, and go to state 34
-    MINUS    shift, and go to state 35
-    NOT      shift, and go to state 36
-    PLUS     shift, and go to state 37
-    CHRLIT   shift, and go to state 40
-    REALLIT  shift, and go to state 41
-    INTLIT   shift, and go to state 42
-    ID       shift, and go to state 18
-
-    id_token  go to state 46
-    expr      go to state 122
+    $default  reduce using rule 63 (gt_token)
 
 
 State 87
 
-   55 expr: expr MOD . expr
+   60 le_token: LE .
 
-    LPAR     shift, and go to state 34
-    MINUS    shift, and go to state 35
-    NOT      shift, and go to state 36
-    PLUS     shift, and go to state 37
-    CHRLIT   shift, and go to state 40
-    REALLIT  shift, and go to state 41
-    INTLIT   shift, and go to state 42
-    ID       shift, and go to state 18
-
-    id_token  go to state 46
-    expr      go to state 123
+    $default  reduce using rule 60 (le_token)
 
 
 State 88
 
-   62 expr: expr NE . expr
+   62 lt_token: LT .
 
-    LPAR     shift, and go to state 34
-    MINUS    shift, and go to state 35
-    NOT      shift, and go to state 36
-    PLUS     shift, and go to state 37
-    CHRLIT   shift, and go to state 40
-    REALLIT  shift, and go to state 41
-    INTLIT   shift, and go to state 42
-    ID       shift, and go to state 18
-
-    id_token  go to state 46
-    expr      go to state 124
+    $default  reduce using rule 62 (lt_token)
 
 
 State 89
 
-   56 expr: expr OR . expr
+   52 mod_token: MOD .
 
-    LPAR     shift, and go to state 34
-    MINUS    shift, and go to state 35
-    NOT      shift, and go to state 36
-    PLUS     shift, and go to state 37
-    CHRLIT   shift, and go to state 40
-    REALLIT  shift, and go to state 41
-    INTLIT   shift, and go to state 42
-    ID       shift, and go to state 18
-
-    id_token  go to state 46
-    expr      go to state 125
+    $default  reduce using rule 52 (mod_token)
 
 
 State 90
 
-   51 expr: expr PLUS . expr
+   59 ne_token: NE .
 
-    LPAR     shift, and go to state 34
-    MINUS    shift, and go to state 35
-    NOT      shift, and go to state 36
-    PLUS     shift, and go to state 37
-    CHRLIT   shift, and go to state 40
-    REALLIT  shift, and go to state 41
-    INTLIT   shift, and go to state 42
-    ID       shift, and go to state 18
-
-    id_token  go to state 46
-    expr      go to state 126
+    $default  reduce using rule 59 (ne_token)
 
 
 State 91
+
+   53 or_token: OR .
+
+    $default  reduce using rule 53 (or_token)
+
+
+State 92
 
    44 statement: expr SEMI .
 
     $default  reduce using rule 44 (statement)
 
 
-State 92
+State 93
+
+   70 expr: expr plus_token . expr
+
+    LPAR     shift, and go to state 34
+    MINUS    shift, and go to state 35
+    NOT      shift, and go to state 36
+    PLUS     shift, and go to state 37
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
+    ID       shift, and go to state 18
+
+    id_token     go to state 46
+    plus_token   go to state 48
+    minus_token  go to state 49
+    not_token    go to state 50
+    expr         go to state 128
+
+
+State 94
+
+   71 expr: expr minus_token . expr
+
+    LPAR     shift, and go to state 34
+    MINUS    shift, and go to state 35
+    NOT      shift, and go to state 36
+    PLUS     shift, and go to state 37
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
+    ID       shift, and go to state 18
+
+    id_token     go to state 46
+    plus_token   go to state 48
+    minus_token  go to state 49
+    not_token    go to state 50
+    expr         go to state 129
+
+
+State 95
+
+   72 expr: expr mul_token . expr
+
+    LPAR     shift, and go to state 34
+    MINUS    shift, and go to state 35
+    NOT      shift, and go to state 36
+    PLUS     shift, and go to state 37
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
+    ID       shift, and go to state 18
+
+    id_token     go to state 46
+    plus_token   go to state 48
+    minus_token  go to state 49
+    not_token    go to state 50
+    expr         go to state 130
+
+
+State 96
+
+   73 expr: expr div_token . expr
+
+    LPAR     shift, and go to state 34
+    MINUS    shift, and go to state 35
+    NOT      shift, and go to state 36
+    PLUS     shift, and go to state 37
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
+    ID       shift, and go to state 18
+
+    id_token     go to state 46
+    plus_token   go to state 48
+    minus_token  go to state 49
+    not_token    go to state 50
+    expr         go to state 131
+
+
+State 97
+
+   74 expr: expr mod_token . expr
+
+    LPAR     shift, and go to state 34
+    MINUS    shift, and go to state 35
+    NOT      shift, and go to state 36
+    PLUS     shift, and go to state 37
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
+    ID       shift, and go to state 18
+
+    id_token     go to state 46
+    plus_token   go to state 48
+    minus_token  go to state 49
+    not_token    go to state 50
+    expr         go to state 132
+
+
+State 98
+
+   75 expr: expr or_token . expr
+
+    LPAR     shift, and go to state 34
+    MINUS    shift, and go to state 35
+    NOT      shift, and go to state 36
+    PLUS     shift, and go to state 37
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
+    ID       shift, and go to state 18
+
+    id_token     go to state 46
+    plus_token   go to state 48
+    minus_token  go to state 49
+    not_token    go to state 50
+    expr         go to state 133
+
+
+State 99
+
+   76 expr: expr and_token . expr
+
+    LPAR     shift, and go to state 34
+    MINUS    shift, and go to state 35
+    NOT      shift, and go to state 36
+    PLUS     shift, and go to state 37
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
+    ID       shift, and go to state 18
+
+    id_token     go to state 46
+    plus_token   go to state 48
+    minus_token  go to state 49
+    not_token    go to state 50
+    expr         go to state 134
+
+
+State 100
+
+   77 expr: expr bitwiseand_token . expr
+
+    LPAR     shift, and go to state 34
+    MINUS    shift, and go to state 35
+    NOT      shift, and go to state 36
+    PLUS     shift, and go to state 37
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
+    ID       shift, and go to state 18
+
+    id_token     go to state 46
+    plus_token   go to state 48
+    minus_token  go to state 49
+    not_token    go to state 50
+    expr         go to state 135
+
+
+State 101
+
+   78 expr: expr bitwiseor_token . expr
+
+    LPAR     shift, and go to state 34
+    MINUS    shift, and go to state 35
+    NOT      shift, and go to state 36
+    PLUS     shift, and go to state 37
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
+    ID       shift, and go to state 18
+
+    id_token     go to state 46
+    plus_token   go to state 48
+    minus_token  go to state 49
+    not_token    go to state 50
+    expr         go to state 136
+
+
+State 102
+
+   79 expr: expr bitwisexor_token . expr
+
+    LPAR     shift, and go to state 34
+    MINUS    shift, and go to state 35
+    NOT      shift, and go to state 36
+    PLUS     shift, and go to state 37
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
+    ID       shift, and go to state 18
+
+    id_token     go to state 46
+    plus_token   go to state 48
+    minus_token  go to state 49
+    not_token    go to state 50
+    expr         go to state 137
+
+
+State 103
+
+   80 expr: expr eq_token . expr
+
+    LPAR     shift, and go to state 34
+    MINUS    shift, and go to state 35
+    NOT      shift, and go to state 36
+    PLUS     shift, and go to state 37
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
+    ID       shift, and go to state 18
+
+    id_token     go to state 46
+    plus_token   go to state 48
+    minus_token  go to state 49
+    not_token    go to state 50
+    expr         go to state 138
+
+
+State 104
+
+   81 expr: expr ne_token . expr
+
+    LPAR     shift, and go to state 34
+    MINUS    shift, and go to state 35
+    NOT      shift, and go to state 36
+    PLUS     shift, and go to state 37
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
+    ID       shift, and go to state 18
+
+    id_token     go to state 46
+    plus_token   go to state 48
+    minus_token  go to state 49
+    not_token    go to state 50
+    expr         go to state 139
+
+
+State 105
+
+   82 expr: expr le_token . expr
+
+    LPAR     shift, and go to state 34
+    MINUS    shift, and go to state 35
+    NOT      shift, and go to state 36
+    PLUS     shift, and go to state 37
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
+    ID       shift, and go to state 18
+
+    id_token     go to state 46
+    plus_token   go to state 48
+    minus_token  go to state 49
+    not_token    go to state 50
+    expr         go to state 140
+
+
+State 106
+
+   83 expr: expr ge_token . expr
+
+    LPAR     shift, and go to state 34
+    MINUS    shift, and go to state 35
+    NOT      shift, and go to state 36
+    PLUS     shift, and go to state 37
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
+    ID       shift, and go to state 18
+
+    id_token     go to state 46
+    plus_token   go to state 48
+    minus_token  go to state 49
+    not_token    go to state 50
+    expr         go to state 141
+
+
+State 107
+
+   84 expr: expr lt_token . expr
+
+    LPAR     shift, and go to state 34
+    MINUS    shift, and go to state 35
+    NOT      shift, and go to state 36
+    PLUS     shift, and go to state 37
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
+    ID       shift, and go to state 18
+
+    id_token     go to state 46
+    plus_token   go to state 48
+    minus_token  go to state 49
+    not_token    go to state 50
+    expr         go to state 142
+
+
+State 108
+
+   85 expr: expr gt_token . expr
+
+    LPAR     shift, and go to state 34
+    MINUS    shift, and go to state 35
+    NOT      shift, and go to state 36
+    PLUS     shift, and go to state 37
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
+    ID       shift, and go to state 18
+
+    id_token     go to state 46
+    plus_token   go to state 48
+    minus_token  go to state 49
+    not_token    go to state 50
+    expr         go to state 143
+
+
+State 109
+
+   67 expr: expr assign_token . expr
+
+    LPAR     shift, and go to state 34
+    MINUS    shift, and go to state 35
+    NOT      shift, and go to state 36
+    PLUS     shift, and go to state 37
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
+    ID       shift, and go to state 18
+
+    id_token     go to state 46
+    plus_token   go to state 48
+    minus_token  go to state 49
+    not_token    go to state 50
+    expr         go to state 144
+
+
+State 110
+
+   68 expr: expr comma_token . expr
+
+    LPAR     shift, and go to state 34
+    MINUS    shift, and go to state 35
+    NOT      shift, and go to state 36
+    PLUS     shift, and go to state 37
+    CHRLIT   shift, and go to state 40
+    REALLIT  shift, and go to state 41
+    INTLIT   shift, and go to state 42
+    ID       shift, and go to state 18
+
+    id_token     go to state 46
+    plus_token   go to state 48
+    minus_token  go to state 49
+    not_token    go to state 50
+    expr         go to state 145
+
+
+State 111
 
    19 parameterDeclaration: typeSpec id_token .
 
     $default  reduce using rule 19 (parameterDeclaration)
 
 
-State 93
+State 112
 
    17 parameterList: parameterList COMMA . parameterDeclaration
 
@@ -1525,160 +1979,205 @@ State 93
     DOUBLE  shift, and go to state 5
     VOID    shift, and go to state 6
 
-    typeSpec              go to state 52
-    parameterDeclaration  go to state 127
+    typeSpec              go to state 55
+    parameterDeclaration  go to state 146
 
 
-State 94
+State 113
 
    15 functionDeclarator: id_token LPAR parameterList RPAR .
 
     $default  reduce using rule 15 (functionDeclarator)
 
 
-State 95
+State 114
 
    41 statement: WHILE LPAR expr . RPAR statement_error
-   48 expr: expr . ASSIGN expr
-   49     | expr . COMMA expr
-   51     | expr . PLUS expr
-   52     | expr . MINUS expr
-   53     | expr . MUL expr
-   54     | expr . DIV expr
-   55     | expr . MOD expr
-   56     | expr . OR expr
-   57     | expr . AND expr
-   58     | expr . BITWISEAND expr
-   59     | expr . BITWISEOR expr
-   60     | expr . BITWISEXOR expr
-   61     | expr . EQ expr
-   62     | expr . NE expr
-   63     | expr . LE expr
-   64     | expr . GE expr
-   65     | expr . LT expr
-   66     | expr . GT expr
+   67 expr: expr . assign_token expr
+   68     | expr . comma_token expr
+   70     | expr . plus_token expr
+   71     | expr . minus_token expr
+   72     | expr . mul_token expr
+   73     | expr . div_token expr
+   74     | expr . mod_token expr
+   75     | expr . or_token expr
+   76     | expr . and_token expr
+   77     | expr . bitwiseand_token expr
+   78     | expr . bitwiseor_token expr
+   79     | expr . bitwisexor_token expr
+   80     | expr . eq_token expr
+   81     | expr . ne_token expr
+   82     | expr . le_token expr
+   83     | expr . ge_token expr
+   84     | expr . lt_token expr
+   85     | expr . gt_token expr
 
-    BITWISEAND  shift, and go to state 73
-    BITWISEOR   shift, and go to state 74
-    BITWISEXOR  shift, and go to state 75
-    AND         shift, and go to state 76
-    ASSIGN      shift, and go to state 77
-    MUL         shift, and go to state 78
-    COMMA       shift, and go to state 79
-    DIV         shift, and go to state 80
-    EQ          shift, and go to state 81
-    GE          shift, and go to state 82
-    GT          shift, and go to state 83
-    LE          shift, and go to state 84
-    LT          shift, and go to state 85
-    MINUS       shift, and go to state 86
-    MOD         shift, and go to state 87
-    NE          shift, and go to state 88
-    OR          shift, and go to state 89
-    PLUS        shift, and go to state 90
-    RPAR        shift, and go to state 128
+    BITWISEAND  shift, and go to state 76
+    BITWISEOR   shift, and go to state 77
+    BITWISEXOR  shift, and go to state 78
+    AND         shift, and go to state 79
+    ASSIGN      shift, and go to state 80
+    MUL         shift, and go to state 81
+    COMMA       shift, and go to state 82
+    DIV         shift, and go to state 83
+    EQ          shift, and go to state 84
+    GE          shift, and go to state 85
+    GT          shift, and go to state 86
+    LE          shift, and go to state 87
+    LT          shift, and go to state 88
+    MINUS       shift, and go to state 35
+    MOD         shift, and go to state 89
+    NE          shift, and go to state 90
+    OR          shift, and go to state 91
+    PLUS        shift, and go to state 37
+    RPAR        shift, and go to state 147
+
+    plus_token        go to state 93
+    minus_token       go to state 94
+    mul_token         go to state 95
+    div_token         go to state 96
+    mod_token         go to state 97
+    or_token          go to state 98
+    and_token         go to state 99
+    bitwiseand_token  go to state 100
+    bitwiseor_token   go to state 101
+    bitwisexor_token  go to state 102
+    eq_token          go to state 103
+    ne_token          go to state 104
+    le_token          go to state 105
+    ge_token          go to state 106
+    lt_token          go to state 107
+    gt_token          go to state 108
+    assign_token      go to state 109
+    comma_token       go to state 110
 
 
-State 96
+State 115
 
    39 statement: IF LPAR expr . RPAR statement_error ELSE statement_error
    40          | IF LPAR expr . RPAR statement_error
-   48 expr: expr . ASSIGN expr
-   49     | expr . COMMA expr
-   51     | expr . PLUS expr
-   52     | expr . MINUS expr
-   53     | expr . MUL expr
-   54     | expr . DIV expr
-   55     | expr . MOD expr
-   56     | expr . OR expr
-   57     | expr . AND expr
-   58     | expr . BITWISEAND expr
-   59     | expr . BITWISEOR expr
-   60     | expr . BITWISEXOR expr
-   61     | expr . EQ expr
-   62     | expr . NE expr
-   63     | expr . LE expr
-   64     | expr . GE expr
-   65     | expr . LT expr
-   66     | expr . GT expr
+   67 expr: expr . assign_token expr
+   68     | expr . comma_token expr
+   70     | expr . plus_token expr
+   71     | expr . minus_token expr
+   72     | expr . mul_token expr
+   73     | expr . div_token expr
+   74     | expr . mod_token expr
+   75     | expr . or_token expr
+   76     | expr . and_token expr
+   77     | expr . bitwiseand_token expr
+   78     | expr . bitwiseor_token expr
+   79     | expr . bitwisexor_token expr
+   80     | expr . eq_token expr
+   81     | expr . ne_token expr
+   82     | expr . le_token expr
+   83     | expr . ge_token expr
+   84     | expr . lt_token expr
+   85     | expr . gt_token expr
 
-    BITWISEAND  shift, and go to state 73
-    BITWISEOR   shift, and go to state 74
-    BITWISEXOR  shift, and go to state 75
-    AND         shift, and go to state 76
-    ASSIGN      shift, and go to state 77
-    MUL         shift, and go to state 78
-    COMMA       shift, and go to state 79
-    DIV         shift, and go to state 80
-    EQ          shift, and go to state 81
-    GE          shift, and go to state 82
-    GT          shift, and go to state 83
-    LE          shift, and go to state 84
-    LT          shift, and go to state 85
-    MINUS       shift, and go to state 86
-    MOD         shift, and go to state 87
-    NE          shift, and go to state 88
-    OR          shift, and go to state 89
-    PLUS        shift, and go to state 90
-    RPAR        shift, and go to state 129
+    BITWISEAND  shift, and go to state 76
+    BITWISEOR   shift, and go to state 77
+    BITWISEXOR  shift, and go to state 78
+    AND         shift, and go to state 79
+    ASSIGN      shift, and go to state 80
+    MUL         shift, and go to state 81
+    COMMA       shift, and go to state 82
+    DIV         shift, and go to state 83
+    EQ          shift, and go to state 84
+    GE          shift, and go to state 85
+    GT          shift, and go to state 86
+    LE          shift, and go to state 87
+    LT          shift, and go to state 88
+    MINUS       shift, and go to state 35
+    MOD         shift, and go to state 89
+    NE          shift, and go to state 90
+    OR          shift, and go to state 91
+    PLUS        shift, and go to state 37
+    RPAR        shift, and go to state 148
+
+    plus_token        go to state 93
+    minus_token       go to state 94
+    mul_token         go to state 95
+    div_token         go to state 96
+    mod_token         go to state 97
+    or_token          go to state 98
+    and_token         go to state 99
+    bitwiseand_token  go to state 100
+    bitwiseor_token   go to state 101
+    bitwisexor_token  go to state 102
+    eq_token          go to state 103
+    ne_token          go to state 104
+    le_token          go to state 105
+    ge_token          go to state 106
+    lt_token          go to state 107
+    gt_token          go to state 108
+    assign_token      go to state 109
+    comma_token       go to state 110
 
 
-State 97
+State 116
 
    42 statement: RETURN expr SEMI .
 
     $default  reduce using rule 42 (statement)
 
 
-State 98
+State 117
 
    35 statement: LBRACE error RBRACE .
 
     $default  reduce using rule 35 (statement)
 
 
-State 99
+State 118
 
    47 statement_error: error SEMI .
 
     $default  reduce using rule 47 (statement_error)
 
 
-State 100
+State 119
 
    47 statement_error: error . SEMI
 
-    SEMI  shift, and go to state 99
+    SEMI  shift, and go to state 118
 
 
-State 101
+State 120
 
    34 statementList: statementList statement_error .
    36 statement: LBRACE statementList statement_error . RBRACE
 
-    RBRACE  shift, and go to state 130
+    RBRACE  shift, and go to state 149
 
     $default  reduce using rule 34 (statementList)
 
 
-State 102
+State 121
 
    37 statement: LBRACE statement_error RBRACE .
 
     $default  reduce using rule 37 (statement)
 
 
-State 103
+State 122
 
-   78 expr: LPAR error RPAR .
+   97 expr: LPAR error RPAR .
 
-    $default  reduce using rule 78 (expr)
+    $default  reduce using rule 97 (expr)
 
 
-State 104
+State 123
 
-   49 expr: expr COMMA . expr
-   50     | LPAR expr COMMA . expr RPAR
+   95 expr: LPAR expr RPAR .
+
+    $default  reduce using rule 95 (expr)
+
+
+State 124
+
+   68 expr: expr comma_token . expr
+   69     | LPAR expr comma_token . expr RPAR
 
     LPAR     shift, and go to state 34
     MINUS    shift, and go to state 35
@@ -1689,694 +2188,1051 @@ State 104
     INTLIT   shift, and go to state 42
     ID       shift, and go to state 18
 
-    id_token  go to state 46
-    expr      go to state 131
-
-
-State 105
-
-   76 expr: LPAR expr RPAR .
-
-    $default  reduce using rule 76 (expr)
-
-
-State 106
-
-   77 expr: id_token LPAR error . RPAR
-
-    RPAR  shift, and go to state 132
-
-
-State 107
-
-   70 expr: id_token LPAR RPAR .
-
-    $default  reduce using rule 70 (expr)
-
-
-State 108
-
-   48 expr: expr . ASSIGN expr
-   49     | expr . COMMA expr
-   51     | expr . PLUS expr
-   52     | expr . MINUS expr
-   53     | expr . MUL expr
-   54     | expr . DIV expr
-   55     | expr . MOD expr
-   56     | expr . OR expr
-   57     | expr . AND expr
-   58     | expr . BITWISEAND expr
-   59     | expr . BITWISEOR expr
-   60     | expr . BITWISEXOR expr
-   61     | expr . EQ expr
-   62     | expr . NE expr
-   63     | expr . LE expr
-   64     | expr . GE expr
-   65     | expr . LT expr
-   66     | expr . GT expr
-   71     | id_token LPAR expr . RPAR
-
-    BITWISEAND  shift, and go to state 73
-    BITWISEOR   shift, and go to state 74
-    BITWISEXOR  shift, and go to state 75
-    AND         shift, and go to state 76
-    ASSIGN      shift, and go to state 77
-    MUL         shift, and go to state 78
-    COMMA       shift, and go to state 79
-    DIV         shift, and go to state 80
-    EQ          shift, and go to state 81
-    GE          shift, and go to state 82
-    GT          shift, and go to state 83
-    LE          shift, and go to state 84
-    LT          shift, and go to state 85
-    MINUS       shift, and go to state 86
-    MOD         shift, and go to state 87
-    NE          shift, and go to state 88
-    OR          shift, and go to state 89
-    PLUS        shift, and go to state 90
-    RPAR        shift, and go to state 133
-
-
-State 109
-
-   48 expr: expr . ASSIGN expr
-   49     | expr . COMMA expr
-   51     | expr . PLUS expr
-   52     | expr . MINUS expr
-   53     | expr . MUL expr
-   54     | expr . DIV expr
-   55     | expr . MOD expr
-   56     | expr . OR expr
-   57     | expr . AND expr
-   58     | expr . BITWISEAND expr
-   58     | expr BITWISEAND expr .
-   59     | expr . BITWISEOR expr
-   60     | expr . BITWISEXOR expr
-   61     | expr . EQ expr
-   62     | expr . NE expr
-   63     | expr . LE expr
-   64     | expr . GE expr
-   65     | expr . LT expr
-   66     | expr . GT expr
-
-    MUL    shift, and go to state 78
-    DIV    shift, and go to state 80
-    EQ     shift, and go to state 81
-    GE     shift, and go to state 82
-    GT     shift, and go to state 83
-    LE     shift, and go to state 84
-    LT     shift, and go to state 85
-    MINUS  shift, and go to state 86
-    MOD    shift, and go to state 87
-    NE     shift, and go to state 88
-    PLUS   shift, and go to state 90
-
-    $default  reduce using rule 58 (expr)
-
-
-State 110
-
-   48 expr: expr . ASSIGN expr
-   49     | expr . COMMA expr
-   51     | expr . PLUS expr
-   52     | expr . MINUS expr
-   53     | expr . MUL expr
-   54     | expr . DIV expr
-   55     | expr . MOD expr
-   56     | expr . OR expr
-   57     | expr . AND expr
-   58     | expr . BITWISEAND expr
-   59     | expr . BITWISEOR expr
-   59     | expr BITWISEOR expr .
-   60     | expr . BITWISEXOR expr
-   61     | expr . EQ expr
-   62     | expr . NE expr
-   63     | expr . LE expr
-   64     | expr . GE expr
-   65     | expr . LT expr
-   66     | expr . GT expr
-
-    BITWISEAND  shift, and go to state 73
-    BITWISEXOR  shift, and go to state 75
-    MUL         shift, and go to state 78
-    DIV         shift, and go to state 80
-    EQ          shift, and go to state 81
-    GE          shift, and go to state 82
-    GT          shift, and go to state 83
-    LE          shift, and go to state 84
-    LT          shift, and go to state 85
-    MINUS       shift, and go to state 86
-    MOD         shift, and go to state 87
-    NE          shift, and go to state 88
-    PLUS        shift, and go to state 90
-
-    $default  reduce using rule 59 (expr)
-
-
-State 111
-
-   48 expr: expr . ASSIGN expr
-   49     | expr . COMMA expr
-   51     | expr . PLUS expr
-   52     | expr . MINUS expr
-   53     | expr . MUL expr
-   54     | expr . DIV expr
-   55     | expr . MOD expr
-   56     | expr . OR expr
-   57     | expr . AND expr
-   58     | expr . BITWISEAND expr
-   59     | expr . BITWISEOR expr
-   60     | expr . BITWISEXOR expr
-   60     | expr BITWISEXOR expr .
-   61     | expr . EQ expr
-   62     | expr . NE expr
-   63     | expr . LE expr
-   64     | expr . GE expr
-   65     | expr . LT expr
-   66     | expr . GT expr
-
-    BITWISEAND  shift, and go to state 73
-    MUL         shift, and go to state 78
-    DIV         shift, and go to state 80
-    EQ          shift, and go to state 81
-    GE          shift, and go to state 82
-    GT          shift, and go to state 83
-    LE          shift, and go to state 84
-    LT          shift, and go to state 85
-    MINUS       shift, and go to state 86
-    MOD         shift, and go to state 87
-    NE          shift, and go to state 88
-    PLUS        shift, and go to state 90
-
-    $default  reduce using rule 60 (expr)
-
-
-State 112
-
-   48 expr: expr . ASSIGN expr
-   49     | expr . COMMA expr
-   51     | expr . PLUS expr
-   52     | expr . MINUS expr
-   53     | expr . MUL expr
-   54     | expr . DIV expr
-   55     | expr . MOD expr
-   56     | expr . OR expr
-   57     | expr . AND expr
-   57     | expr AND expr .
-   58     | expr . BITWISEAND expr
-   59     | expr . BITWISEOR expr
-   60     | expr . BITWISEXOR expr
-   61     | expr . EQ expr
-   62     | expr . NE expr
-   63     | expr . LE expr
-   64     | expr . GE expr
-   65     | expr . LT expr
-   66     | expr . GT expr
-
-    BITWISEAND  shift, and go to state 73
-    BITWISEOR   shift, and go to state 74
-    BITWISEXOR  shift, and go to state 75
-    MUL         shift, and go to state 78
-    DIV         shift, and go to state 80
-    EQ          shift, and go to state 81
-    GE          shift, and go to state 82
-    GT          shift, and go to state 83
-    LE          shift, and go to state 84
-    LT          shift, and go to state 85
-    MINUS       shift, and go to state 86
-    MOD         shift, and go to state 87
-    NE          shift, and go to state 88
-    PLUS        shift, and go to state 90
-
-    $default  reduce using rule 57 (expr)
-
-
-State 113
-
-   48 expr: expr . ASSIGN expr
-   48     | expr ASSIGN expr .
-   49     | expr . COMMA expr
-   51     | expr . PLUS expr
-   52     | expr . MINUS expr
-   53     | expr . MUL expr
-   54     | expr . DIV expr
-   55     | expr . MOD expr
-   56     | expr . OR expr
-   57     | expr . AND expr
-   58     | expr . BITWISEAND expr
-   59     | expr . BITWISEOR expr
-   60     | expr . BITWISEXOR expr
-   61     | expr . EQ expr
-   62     | expr . NE expr
-   63     | expr . LE expr
-   64     | expr . GE expr
-   65     | expr . LT expr
-   66     | expr . GT expr
-
-    BITWISEAND  shift, and go to state 73
-    BITWISEOR   shift, and go to state 74
-    BITWISEXOR  shift, and go to state 75
-    AND         shift, and go to state 76
-    ASSIGN      shift, and go to state 77
-    MUL         shift, and go to state 78
-    DIV         shift, and go to state 80
-    EQ          shift, and go to state 81
-    GE          shift, and go to state 82
-    GT          shift, and go to state 83
-    LE          shift, and go to state 84
-    LT          shift, and go to state 85
-    MINUS       shift, and go to state 86
-    MOD         shift, and go to state 87
-    NE          shift, and go to state 88
-    OR          shift, and go to state 89
-    PLUS        shift, and go to state 90
-
-    $default  reduce using rule 48 (expr)
-
-
-State 114
-
-   48 expr: expr . ASSIGN expr
-   49     | expr . COMMA expr
-   51     | expr . PLUS expr
-   52     | expr . MINUS expr
-   53     | expr . MUL expr
-   53     | expr MUL expr .
-   54     | expr . DIV expr
-   55     | expr . MOD expr
-   56     | expr . OR expr
-   57     | expr . AND expr
-   58     | expr . BITWISEAND expr
-   59     | expr . BITWISEOR expr
-   60     | expr . BITWISEXOR expr
-   61     | expr . EQ expr
-   62     | expr . NE expr
-   63     | expr . LE expr
-   64     | expr . GE expr
-   65     | expr . LT expr
-   66     | expr . GT expr
-
-    $default  reduce using rule 53 (expr)
-
-
-State 115
-
-   48 expr: expr . ASSIGN expr
-   49     | expr . COMMA expr
-   49     | expr COMMA expr .
-   51     | expr . PLUS expr
-   52     | expr . MINUS expr
-   53     | expr . MUL expr
-   54     | expr . DIV expr
-   55     | expr . MOD expr
-   56     | expr . OR expr
-   57     | expr . AND expr
-   58     | expr . BITWISEAND expr
-   59     | expr . BITWISEOR expr
-   60     | expr . BITWISEXOR expr
-   61     | expr . EQ expr
-   62     | expr . NE expr
-   63     | expr . LE expr
-   64     | expr . GE expr
-   65     | expr . LT expr
-   66     | expr . GT expr
-
-    BITWISEAND  shift, and go to state 73
-    BITWISEOR   shift, and go to state 74
-    BITWISEXOR  shift, and go to state 75
-    AND         shift, and go to state 76
-    ASSIGN      shift, and go to state 77
-    MUL         shift, and go to state 78
-    DIV         shift, and go to state 80
-    EQ          shift, and go to state 81
-    GE          shift, and go to state 82
-    GT          shift, and go to state 83
-    LE          shift, and go to state 84
-    LT          shift, and go to state 85
-    MINUS       shift, and go to state 86
-    MOD         shift, and go to state 87
-    NE          shift, and go to state 88
-    OR          shift, and go to state 89
-    PLUS        shift, and go to state 90
-
-    $default  reduce using rule 49 (expr)
-
-
-State 116
-
-   48 expr: expr . ASSIGN expr
-   49     | expr . COMMA expr
-   51     | expr . PLUS expr
-   52     | expr . MINUS expr
-   53     | expr . MUL expr
-   54     | expr . DIV expr
-   54     | expr DIV expr .
-   55     | expr . MOD expr
-   56     | expr . OR expr
-   57     | expr . AND expr
-   58     | expr . BITWISEAND expr
-   59     | expr . BITWISEOR expr
-   60     | expr . BITWISEXOR expr
-   61     | expr . EQ expr
-   62     | expr . NE expr
-   63     | expr . LE expr
-   64     | expr . GE expr
-   65     | expr . LT expr
-   66     | expr . GT expr
-
-    $default  reduce using rule 54 (expr)
-
-
-State 117
-
-   48 expr: expr . ASSIGN expr
-   49     | expr . COMMA expr
-   51     | expr . PLUS expr
-   52     | expr . MINUS expr
-   53     | expr . MUL expr
-   54     | expr . DIV expr
-   55     | expr . MOD expr
-   56     | expr . OR expr
-   57     | expr . AND expr
-   58     | expr . BITWISEAND expr
-   59     | expr . BITWISEOR expr
-   60     | expr . BITWISEXOR expr
-   61     | expr . EQ expr
-   61     | expr EQ expr .
-   62     | expr . NE expr
-   63     | expr . LE expr
-   64     | expr . GE expr
-   65     | expr . LT expr
-   66     | expr . GT expr
-
-    MUL    shift, and go to state 78
-    DIV    shift, and go to state 80
-    GE     shift, and go to state 82
-    GT     shift, and go to state 83
-    LE     shift, and go to state 84
-    LT     shift, and go to state 85
-    MINUS  shift, and go to state 86
-    MOD    shift, and go to state 87
-    PLUS   shift, and go to state 90
-
-    $default  reduce using rule 61 (expr)
-
-
-State 118
-
-   48 expr: expr . ASSIGN expr
-   49     | expr . COMMA expr
-   51     | expr . PLUS expr
-   52     | expr . MINUS expr
-   53     | expr . MUL expr
-   54     | expr . DIV expr
-   55     | expr . MOD expr
-   56     | expr . OR expr
-   57     | expr . AND expr
-   58     | expr . BITWISEAND expr
-   59     | expr . BITWISEOR expr
-   60     | expr . BITWISEXOR expr
-   61     | expr . EQ expr
-   62     | expr . NE expr
-   63     | expr . LE expr
-   64     | expr . GE expr
-   64     | expr GE expr .
-   65     | expr . LT expr
-   66     | expr . GT expr
-
-    MUL    shift, and go to state 78
-    DIV    shift, and go to state 80
-    MINUS  shift, and go to state 86
-    MOD    shift, and go to state 87
-    PLUS   shift, and go to state 90
-
-    $default  reduce using rule 64 (expr)
-
-
-State 119
-
-   48 expr: expr . ASSIGN expr
-   49     | expr . COMMA expr
-   51     | expr . PLUS expr
-   52     | expr . MINUS expr
-   53     | expr . MUL expr
-   54     | expr . DIV expr
-   55     | expr . MOD expr
-   56     | expr . OR expr
-   57     | expr . AND expr
-   58     | expr . BITWISEAND expr
-   59     | expr . BITWISEOR expr
-   60     | expr . BITWISEXOR expr
-   61     | expr . EQ expr
-   62     | expr . NE expr
-   63     | expr . LE expr
-   64     | expr . GE expr
-   65     | expr . LT expr
-   66     | expr . GT expr
-   66     | expr GT expr .
-
-    MUL    shift, and go to state 78
-    DIV    shift, and go to state 80
-    MINUS  shift, and go to state 86
-    MOD    shift, and go to state 87
-    PLUS   shift, and go to state 90
-
-    $default  reduce using rule 66 (expr)
-
-
-State 120
-
-   48 expr: expr . ASSIGN expr
-   49     | expr . COMMA expr
-   51     | expr . PLUS expr
-   52     | expr . MINUS expr
-   53     | expr . MUL expr
-   54     | expr . DIV expr
-   55     | expr . MOD expr
-   56     | expr . OR expr
-   57     | expr . AND expr
-   58     | expr . BITWISEAND expr
-   59     | expr . BITWISEOR expr
-   60     | expr . BITWISEXOR expr
-   61     | expr . EQ expr
-   62     | expr . NE expr
-   63     | expr . LE expr
-   63     | expr LE expr .
-   64     | expr . GE expr
-   65     | expr . LT expr
-   66     | expr . GT expr
-
-    MUL    shift, and go to state 78
-    DIV    shift, and go to state 80
-    MINUS  shift, and go to state 86
-    MOD    shift, and go to state 87
-    PLUS   shift, and go to state 90
-
-    $default  reduce using rule 63 (expr)
-
-
-State 121
-
-   48 expr: expr . ASSIGN expr
-   49     | expr . COMMA expr
-   51     | expr . PLUS expr
-   52     | expr . MINUS expr
-   53     | expr . MUL expr
-   54     | expr . DIV expr
-   55     | expr . MOD expr
-   56     | expr . OR expr
-   57     | expr . AND expr
-   58     | expr . BITWISEAND expr
-   59     | expr . BITWISEOR expr
-   60     | expr . BITWISEXOR expr
-   61     | expr . EQ expr
-   62     | expr . NE expr
-   63     | expr . LE expr
-   64     | expr . GE expr
-   65     | expr . LT expr
-   65     | expr LT expr .
-   66     | expr . GT expr
-
-    MUL    shift, and go to state 78
-    DIV    shift, and go to state 80
-    MINUS  shift, and go to state 86
-    MOD    shift, and go to state 87
-    PLUS   shift, and go to state 90
-
-    $default  reduce using rule 65 (expr)
-
-
-State 122
-
-   48 expr: expr . ASSIGN expr
-   49     | expr . COMMA expr
-   51     | expr . PLUS expr
-   52     | expr . MINUS expr
-   52     | expr MINUS expr .
-   53     | expr . MUL expr
-   54     | expr . DIV expr
-   55     | expr . MOD expr
-   56     | expr . OR expr
-   57     | expr . AND expr
-   58     | expr . BITWISEAND expr
-   59     | expr . BITWISEOR expr
-   60     | expr . BITWISEXOR expr
-   61     | expr . EQ expr
-   62     | expr . NE expr
-   63     | expr . LE expr
-   64     | expr . GE expr
-   65     | expr . LT expr
-   66     | expr . GT expr
-
-    MUL  shift, and go to state 78
-    DIV  shift, and go to state 80
-    MOD  shift, and go to state 87
-
-    $default  reduce using rule 52 (expr)
-
-
-State 123
-
-   48 expr: expr . ASSIGN expr
-   49     | expr . COMMA expr
-   51     | expr . PLUS expr
-   52     | expr . MINUS expr
-   53     | expr . MUL expr
-   54     | expr . DIV expr
-   55     | expr . MOD expr
-   55     | expr MOD expr .
-   56     | expr . OR expr
-   57     | expr . AND expr
-   58     | expr . BITWISEAND expr
-   59     | expr . BITWISEOR expr
-   60     | expr . BITWISEXOR expr
-   61     | expr . EQ expr
-   62     | expr . NE expr
-   63     | expr . LE expr
-   64     | expr . GE expr
-   65     | expr . LT expr
-   66     | expr . GT expr
-
-    $default  reduce using rule 55 (expr)
-
-
-State 124
-
-   48 expr: expr . ASSIGN expr
-   49     | expr . COMMA expr
-   51     | expr . PLUS expr
-   52     | expr . MINUS expr
-   53     | expr . MUL expr
-   54     | expr . DIV expr
-   55     | expr . MOD expr
-   56     | expr . OR expr
-   57     | expr . AND expr
-   58     | expr . BITWISEAND expr
-   59     | expr . BITWISEOR expr
-   60     | expr . BITWISEXOR expr
-   61     | expr . EQ expr
-   62     | expr . NE expr
-   62     | expr NE expr .
-   63     | expr . LE expr
-   64     | expr . GE expr
-   65     | expr . LT expr
-   66     | expr . GT expr
-
-    MUL    shift, and go to state 78
-    DIV    shift, and go to state 80
-    GE     shift, and go to state 82
-    GT     shift, and go to state 83
-    LE     shift, and go to state 84
-    LT     shift, and go to state 85
-    MINUS  shift, and go to state 86
-    MOD    shift, and go to state 87
-    PLUS   shift, and go to state 90
-
-    $default  reduce using rule 62 (expr)
+    id_token     go to state 46
+    plus_token   go to state 48
+    minus_token  go to state 49
+    not_token    go to state 50
+    expr         go to state 150
 
 
 State 125
 
-   48 expr: expr . ASSIGN expr
-   49     | expr . COMMA expr
-   51     | expr . PLUS expr
-   52     | expr . MINUS expr
-   53     | expr . MUL expr
-   54     | expr . DIV expr
-   55     | expr . MOD expr
-   56     | expr . OR expr
-   56     | expr OR expr .
-   57     | expr . AND expr
-   58     | expr . BITWISEAND expr
-   59     | expr . BITWISEOR expr
-   60     | expr . BITWISEXOR expr
-   61     | expr . EQ expr
-   62     | expr . NE expr
-   63     | expr . LE expr
-   64     | expr . GE expr
-   65     | expr . LT expr
-   66     | expr . GT expr
+   96 expr: id_token LPAR error . RPAR
 
-    BITWISEAND  shift, and go to state 73
-    BITWISEOR   shift, and go to state 74
-    BITWISEXOR  shift, and go to state 75
-    AND         shift, and go to state 76
-    MUL         shift, and go to state 78
-    DIV         shift, and go to state 80
-    EQ          shift, and go to state 81
-    GE          shift, and go to state 82
-    GT          shift, and go to state 83
-    LE          shift, and go to state 84
-    LT          shift, and go to state 85
-    MINUS       shift, and go to state 86
-    MOD         shift, and go to state 87
-    NE          shift, and go to state 88
-    PLUS        shift, and go to state 90
-
-    $default  reduce using rule 56 (expr)
+    RPAR  shift, and go to state 151
 
 
 State 126
 
-   48 expr: expr . ASSIGN expr
-   49     | expr . COMMA expr
-   51     | expr . PLUS expr
-   51     | expr PLUS expr .
-   52     | expr . MINUS expr
-   53     | expr . MUL expr
-   54     | expr . DIV expr
-   55     | expr . MOD expr
-   56     | expr . OR expr
-   57     | expr . AND expr
-   58     | expr . BITWISEAND expr
-   59     | expr . BITWISEOR expr
-   60     | expr . BITWISEXOR expr
-   61     | expr . EQ expr
-   62     | expr . NE expr
-   63     | expr . LE expr
-   64     | expr . GE expr
-   65     | expr . LT expr
-   66     | expr . GT expr
+   89 expr: id_token LPAR RPAR .
 
-    MUL  shift, and go to state 78
-    DIV  shift, and go to state 80
-    MOD  shift, and go to state 87
-
-    $default  reduce using rule 51 (expr)
+    $default  reduce using rule 89 (expr)
 
 
 State 127
+
+   67 expr: expr . assign_token expr
+   68     | expr . comma_token expr
+   70     | expr . plus_token expr
+   71     | expr . minus_token expr
+   72     | expr . mul_token expr
+   73     | expr . div_token expr
+   74     | expr . mod_token expr
+   75     | expr . or_token expr
+   76     | expr . and_token expr
+   77     | expr . bitwiseand_token expr
+   78     | expr . bitwiseor_token expr
+   79     | expr . bitwisexor_token expr
+   80     | expr . eq_token expr
+   81     | expr . ne_token expr
+   82     | expr . le_token expr
+   83     | expr . ge_token expr
+   84     | expr . lt_token expr
+   85     | expr . gt_token expr
+   90     | id_token LPAR expr . RPAR
+
+    BITWISEAND  shift, and go to state 76
+    BITWISEOR   shift, and go to state 77
+    BITWISEXOR  shift, and go to state 78
+    AND         shift, and go to state 79
+    ASSIGN      shift, and go to state 80
+    MUL         shift, and go to state 81
+    COMMA       shift, and go to state 82
+    DIV         shift, and go to state 83
+    EQ          shift, and go to state 84
+    GE          shift, and go to state 85
+    GT          shift, and go to state 86
+    LE          shift, and go to state 87
+    LT          shift, and go to state 88
+    MINUS       shift, and go to state 35
+    MOD         shift, and go to state 89
+    NE          shift, and go to state 90
+    OR          shift, and go to state 91
+    PLUS        shift, and go to state 37
+    RPAR        shift, and go to state 152
+
+    plus_token        go to state 93
+    minus_token       go to state 94
+    mul_token         go to state 95
+    div_token         go to state 96
+    mod_token         go to state 97
+    or_token          go to state 98
+    and_token         go to state 99
+    bitwiseand_token  go to state 100
+    bitwiseor_token   go to state 101
+    bitwisexor_token  go to state 102
+    eq_token          go to state 103
+    ne_token          go to state 104
+    le_token          go to state 105
+    ge_token          go to state 106
+    lt_token          go to state 107
+    gt_token          go to state 108
+    assign_token      go to state 109
+    comma_token       go to state 110
+
+
+State 128
+
+   67 expr: expr . assign_token expr
+   68     | expr . comma_token expr
+   70     | expr . plus_token expr
+   70     | expr plus_token expr .
+   71     | expr . minus_token expr
+   72     | expr . mul_token expr
+   73     | expr . div_token expr
+   74     | expr . mod_token expr
+   75     | expr . or_token expr
+   76     | expr . and_token expr
+   77     | expr . bitwiseand_token expr
+   78     | expr . bitwiseor_token expr
+   79     | expr . bitwisexor_token expr
+   80     | expr . eq_token expr
+   81     | expr . ne_token expr
+   82     | expr . le_token expr
+   83     | expr . ge_token expr
+   84     | expr . lt_token expr
+   85     | expr . gt_token expr
+
+    MUL  shift, and go to state 81
+    DIV  shift, and go to state 83
+    MOD  shift, and go to state 89
+
+    $default  reduce using rule 70 (expr)
+
+    plus_token        go to state 93
+    minus_token       go to state 94
+    mul_token         go to state 95
+    div_token         go to state 96
+    mod_token         go to state 97
+    or_token          go to state 98
+    and_token         go to state 99
+    bitwiseand_token  go to state 100
+    bitwiseor_token   go to state 101
+    bitwisexor_token  go to state 102
+    eq_token          go to state 103
+    ne_token          go to state 104
+    le_token          go to state 105
+    ge_token          go to state 106
+    lt_token          go to state 107
+    gt_token          go to state 108
+    assign_token      go to state 109
+    comma_token       go to state 110
+
+
+State 129
+
+   67 expr: expr . assign_token expr
+   68     | expr . comma_token expr
+   70     | expr . plus_token expr
+   71     | expr . minus_token expr
+   71     | expr minus_token expr .
+   72     | expr . mul_token expr
+   73     | expr . div_token expr
+   74     | expr . mod_token expr
+   75     | expr . or_token expr
+   76     | expr . and_token expr
+   77     | expr . bitwiseand_token expr
+   78     | expr . bitwiseor_token expr
+   79     | expr . bitwisexor_token expr
+   80     | expr . eq_token expr
+   81     | expr . ne_token expr
+   82     | expr . le_token expr
+   83     | expr . ge_token expr
+   84     | expr . lt_token expr
+   85     | expr . gt_token expr
+
+    MUL  shift, and go to state 81
+    DIV  shift, and go to state 83
+    MOD  shift, and go to state 89
+
+    $default  reduce using rule 71 (expr)
+
+    plus_token        go to state 93
+    minus_token       go to state 94
+    mul_token         go to state 95
+    div_token         go to state 96
+    mod_token         go to state 97
+    or_token          go to state 98
+    and_token         go to state 99
+    bitwiseand_token  go to state 100
+    bitwiseor_token   go to state 101
+    bitwisexor_token  go to state 102
+    eq_token          go to state 103
+    ne_token          go to state 104
+    le_token          go to state 105
+    ge_token          go to state 106
+    lt_token          go to state 107
+    gt_token          go to state 108
+    assign_token      go to state 109
+    comma_token       go to state 110
+
+
+State 130
+
+   67 expr: expr . assign_token expr
+   68     | expr . comma_token expr
+   70     | expr . plus_token expr
+   71     | expr . minus_token expr
+   72     | expr . mul_token expr
+   72     | expr mul_token expr .
+   73     | expr . div_token expr
+   74     | expr . mod_token expr
+   75     | expr . or_token expr
+   76     | expr . and_token expr
+   77     | expr . bitwiseand_token expr
+   78     | expr . bitwiseor_token expr
+   79     | expr . bitwisexor_token expr
+   80     | expr . eq_token expr
+   81     | expr . ne_token expr
+   82     | expr . le_token expr
+   83     | expr . ge_token expr
+   84     | expr . lt_token expr
+   85     | expr . gt_token expr
+
+    $default  reduce using rule 72 (expr)
+
+    plus_token        go to state 93
+    minus_token       go to state 94
+    mul_token         go to state 95
+    div_token         go to state 96
+    mod_token         go to state 97
+    or_token          go to state 98
+    and_token         go to state 99
+    bitwiseand_token  go to state 100
+    bitwiseor_token   go to state 101
+    bitwisexor_token  go to state 102
+    eq_token          go to state 103
+    ne_token          go to state 104
+    le_token          go to state 105
+    ge_token          go to state 106
+    lt_token          go to state 107
+    gt_token          go to state 108
+    assign_token      go to state 109
+    comma_token       go to state 110
+
+
+State 131
+
+   67 expr: expr . assign_token expr
+   68     | expr . comma_token expr
+   70     | expr . plus_token expr
+   71     | expr . minus_token expr
+   72     | expr . mul_token expr
+   73     | expr . div_token expr
+   73     | expr div_token expr .
+   74     | expr . mod_token expr
+   75     | expr . or_token expr
+   76     | expr . and_token expr
+   77     | expr . bitwiseand_token expr
+   78     | expr . bitwiseor_token expr
+   79     | expr . bitwisexor_token expr
+   80     | expr . eq_token expr
+   81     | expr . ne_token expr
+   82     | expr . le_token expr
+   83     | expr . ge_token expr
+   84     | expr . lt_token expr
+   85     | expr . gt_token expr
+
+    $default  reduce using rule 73 (expr)
+
+    plus_token        go to state 93
+    minus_token       go to state 94
+    mul_token         go to state 95
+    div_token         go to state 96
+    mod_token         go to state 97
+    or_token          go to state 98
+    and_token         go to state 99
+    bitwiseand_token  go to state 100
+    bitwiseor_token   go to state 101
+    bitwisexor_token  go to state 102
+    eq_token          go to state 103
+    ne_token          go to state 104
+    le_token          go to state 105
+    ge_token          go to state 106
+    lt_token          go to state 107
+    gt_token          go to state 108
+    assign_token      go to state 109
+    comma_token       go to state 110
+
+
+State 132
+
+   67 expr: expr . assign_token expr
+   68     | expr . comma_token expr
+   70     | expr . plus_token expr
+   71     | expr . minus_token expr
+   72     | expr . mul_token expr
+   73     | expr . div_token expr
+   74     | expr . mod_token expr
+   74     | expr mod_token expr .
+   75     | expr . or_token expr
+   76     | expr . and_token expr
+   77     | expr . bitwiseand_token expr
+   78     | expr . bitwiseor_token expr
+   79     | expr . bitwisexor_token expr
+   80     | expr . eq_token expr
+   81     | expr . ne_token expr
+   82     | expr . le_token expr
+   83     | expr . ge_token expr
+   84     | expr . lt_token expr
+   85     | expr . gt_token expr
+
+    $default  reduce using rule 74 (expr)
+
+    plus_token        go to state 93
+    minus_token       go to state 94
+    mul_token         go to state 95
+    div_token         go to state 96
+    mod_token         go to state 97
+    or_token          go to state 98
+    and_token         go to state 99
+    bitwiseand_token  go to state 100
+    bitwiseor_token   go to state 101
+    bitwisexor_token  go to state 102
+    eq_token          go to state 103
+    ne_token          go to state 104
+    le_token          go to state 105
+    ge_token          go to state 106
+    lt_token          go to state 107
+    gt_token          go to state 108
+    assign_token      go to state 109
+    comma_token       go to state 110
+
+
+State 133
+
+   67 expr: expr . assign_token expr
+   68     | expr . comma_token expr
+   70     | expr . plus_token expr
+   71     | expr . minus_token expr
+   72     | expr . mul_token expr
+   73     | expr . div_token expr
+   74     | expr . mod_token expr
+   75     | expr . or_token expr
+   75     | expr or_token expr .
+   76     | expr . and_token expr
+   77     | expr . bitwiseand_token expr
+   78     | expr . bitwiseor_token expr
+   79     | expr . bitwisexor_token expr
+   80     | expr . eq_token expr
+   81     | expr . ne_token expr
+   82     | expr . le_token expr
+   83     | expr . ge_token expr
+   84     | expr . lt_token expr
+   85     | expr . gt_token expr
+
+    BITWISEAND  shift, and go to state 76
+    BITWISEOR   shift, and go to state 77
+    BITWISEXOR  shift, and go to state 78
+    AND         shift, and go to state 79
+    MUL         shift, and go to state 81
+    DIV         shift, and go to state 83
+    EQ          shift, and go to state 84
+    GE          shift, and go to state 85
+    GT          shift, and go to state 86
+    LE          shift, and go to state 87
+    LT          shift, and go to state 88
+    MINUS       shift, and go to state 35
+    MOD         shift, and go to state 89
+    NE          shift, and go to state 90
+    PLUS        shift, and go to state 37
+
+    $default  reduce using rule 75 (expr)
+
+    plus_token        go to state 93
+    minus_token       go to state 94
+    mul_token         go to state 95
+    div_token         go to state 96
+    mod_token         go to state 97
+    or_token          go to state 98
+    and_token         go to state 99
+    bitwiseand_token  go to state 100
+    bitwiseor_token   go to state 101
+    bitwisexor_token  go to state 102
+    eq_token          go to state 103
+    ne_token          go to state 104
+    le_token          go to state 105
+    ge_token          go to state 106
+    lt_token          go to state 107
+    gt_token          go to state 108
+    assign_token      go to state 109
+    comma_token       go to state 110
+
+
+State 134
+
+   67 expr: expr . assign_token expr
+   68     | expr . comma_token expr
+   70     | expr . plus_token expr
+   71     | expr . minus_token expr
+   72     | expr . mul_token expr
+   73     | expr . div_token expr
+   74     | expr . mod_token expr
+   75     | expr . or_token expr
+   76     | expr . and_token expr
+   76     | expr and_token expr .
+   77     | expr . bitwiseand_token expr
+   78     | expr . bitwiseor_token expr
+   79     | expr . bitwisexor_token expr
+   80     | expr . eq_token expr
+   81     | expr . ne_token expr
+   82     | expr . le_token expr
+   83     | expr . ge_token expr
+   84     | expr . lt_token expr
+   85     | expr . gt_token expr
+
+    BITWISEAND  shift, and go to state 76
+    BITWISEOR   shift, and go to state 77
+    BITWISEXOR  shift, and go to state 78
+    MUL         shift, and go to state 81
+    DIV         shift, and go to state 83
+    EQ          shift, and go to state 84
+    GE          shift, and go to state 85
+    GT          shift, and go to state 86
+    LE          shift, and go to state 87
+    LT          shift, and go to state 88
+    MINUS       shift, and go to state 35
+    MOD         shift, and go to state 89
+    NE          shift, and go to state 90
+    PLUS        shift, and go to state 37
+
+    $default  reduce using rule 76 (expr)
+
+    plus_token        go to state 93
+    minus_token       go to state 94
+    mul_token         go to state 95
+    div_token         go to state 96
+    mod_token         go to state 97
+    or_token          go to state 98
+    and_token         go to state 99
+    bitwiseand_token  go to state 100
+    bitwiseor_token   go to state 101
+    bitwisexor_token  go to state 102
+    eq_token          go to state 103
+    ne_token          go to state 104
+    le_token          go to state 105
+    ge_token          go to state 106
+    lt_token          go to state 107
+    gt_token          go to state 108
+    assign_token      go to state 109
+    comma_token       go to state 110
+
+
+State 135
+
+   67 expr: expr . assign_token expr
+   68     | expr . comma_token expr
+   70     | expr . plus_token expr
+   71     | expr . minus_token expr
+   72     | expr . mul_token expr
+   73     | expr . div_token expr
+   74     | expr . mod_token expr
+   75     | expr . or_token expr
+   76     | expr . and_token expr
+   77     | expr . bitwiseand_token expr
+   77     | expr bitwiseand_token expr .
+   78     | expr . bitwiseor_token expr
+   79     | expr . bitwisexor_token expr
+   80     | expr . eq_token expr
+   81     | expr . ne_token expr
+   82     | expr . le_token expr
+   83     | expr . ge_token expr
+   84     | expr . lt_token expr
+   85     | expr . gt_token expr
+
+    MUL    shift, and go to state 81
+    DIV    shift, and go to state 83
+    EQ     shift, and go to state 84
+    GE     shift, and go to state 85
+    GT     shift, and go to state 86
+    LE     shift, and go to state 87
+    LT     shift, and go to state 88
+    MINUS  shift, and go to state 35
+    MOD    shift, and go to state 89
+    NE     shift, and go to state 90
+    PLUS   shift, and go to state 37
+
+    $default  reduce using rule 77 (expr)
+
+    plus_token        go to state 93
+    minus_token       go to state 94
+    mul_token         go to state 95
+    div_token         go to state 96
+    mod_token         go to state 97
+    or_token          go to state 98
+    and_token         go to state 99
+    bitwiseand_token  go to state 100
+    bitwiseor_token   go to state 101
+    bitwisexor_token  go to state 102
+    eq_token          go to state 103
+    ne_token          go to state 104
+    le_token          go to state 105
+    ge_token          go to state 106
+    lt_token          go to state 107
+    gt_token          go to state 108
+    assign_token      go to state 109
+    comma_token       go to state 110
+
+
+State 136
+
+   67 expr: expr . assign_token expr
+   68     | expr . comma_token expr
+   70     | expr . plus_token expr
+   71     | expr . minus_token expr
+   72     | expr . mul_token expr
+   73     | expr . div_token expr
+   74     | expr . mod_token expr
+   75     | expr . or_token expr
+   76     | expr . and_token expr
+   77     | expr . bitwiseand_token expr
+   78     | expr . bitwiseor_token expr
+   78     | expr bitwiseor_token expr .
+   79     | expr . bitwisexor_token expr
+   80     | expr . eq_token expr
+   81     | expr . ne_token expr
+   82     | expr . le_token expr
+   83     | expr . ge_token expr
+   84     | expr . lt_token expr
+   85     | expr . gt_token expr
+
+    BITWISEAND  shift, and go to state 76
+    BITWISEXOR  shift, and go to state 78
+    MUL         shift, and go to state 81
+    DIV         shift, and go to state 83
+    EQ          shift, and go to state 84
+    GE          shift, and go to state 85
+    GT          shift, and go to state 86
+    LE          shift, and go to state 87
+    LT          shift, and go to state 88
+    MINUS       shift, and go to state 35
+    MOD         shift, and go to state 89
+    NE          shift, and go to state 90
+    PLUS        shift, and go to state 37
+
+    $default  reduce using rule 78 (expr)
+
+    plus_token        go to state 93
+    minus_token       go to state 94
+    mul_token         go to state 95
+    div_token         go to state 96
+    mod_token         go to state 97
+    or_token          go to state 98
+    and_token         go to state 99
+    bitwiseand_token  go to state 100
+    bitwiseor_token   go to state 101
+    bitwisexor_token  go to state 102
+    eq_token          go to state 103
+    ne_token          go to state 104
+    le_token          go to state 105
+    ge_token          go to state 106
+    lt_token          go to state 107
+    gt_token          go to state 108
+    assign_token      go to state 109
+    comma_token       go to state 110
+
+
+State 137
+
+   67 expr: expr . assign_token expr
+   68     | expr . comma_token expr
+   70     | expr . plus_token expr
+   71     | expr . minus_token expr
+   72     | expr . mul_token expr
+   73     | expr . div_token expr
+   74     | expr . mod_token expr
+   75     | expr . or_token expr
+   76     | expr . and_token expr
+   77     | expr . bitwiseand_token expr
+   78     | expr . bitwiseor_token expr
+   79     | expr . bitwisexor_token expr
+   79     | expr bitwisexor_token expr .
+   80     | expr . eq_token expr
+   81     | expr . ne_token expr
+   82     | expr . le_token expr
+   83     | expr . ge_token expr
+   84     | expr . lt_token expr
+   85     | expr . gt_token expr
+
+    BITWISEAND  shift, and go to state 76
+    MUL         shift, and go to state 81
+    DIV         shift, and go to state 83
+    EQ          shift, and go to state 84
+    GE          shift, and go to state 85
+    GT          shift, and go to state 86
+    LE          shift, and go to state 87
+    LT          shift, and go to state 88
+    MINUS       shift, and go to state 35
+    MOD         shift, and go to state 89
+    NE          shift, and go to state 90
+    PLUS        shift, and go to state 37
+
+    $default  reduce using rule 79 (expr)
+
+    plus_token        go to state 93
+    minus_token       go to state 94
+    mul_token         go to state 95
+    div_token         go to state 96
+    mod_token         go to state 97
+    or_token          go to state 98
+    and_token         go to state 99
+    bitwiseand_token  go to state 100
+    bitwiseor_token   go to state 101
+    bitwisexor_token  go to state 102
+    eq_token          go to state 103
+    ne_token          go to state 104
+    le_token          go to state 105
+    ge_token          go to state 106
+    lt_token          go to state 107
+    gt_token          go to state 108
+    assign_token      go to state 109
+    comma_token       go to state 110
+
+
+State 138
+
+   67 expr: expr . assign_token expr
+   68     | expr . comma_token expr
+   70     | expr . plus_token expr
+   71     | expr . minus_token expr
+   72     | expr . mul_token expr
+   73     | expr . div_token expr
+   74     | expr . mod_token expr
+   75     | expr . or_token expr
+   76     | expr . and_token expr
+   77     | expr . bitwiseand_token expr
+   78     | expr . bitwiseor_token expr
+   79     | expr . bitwisexor_token expr
+   80     | expr . eq_token expr
+   80     | expr eq_token expr .
+   81     | expr . ne_token expr
+   82     | expr . le_token expr
+   83     | expr . ge_token expr
+   84     | expr . lt_token expr
+   85     | expr . gt_token expr
+
+    MUL    shift, and go to state 81
+    DIV    shift, and go to state 83
+    GE     shift, and go to state 85
+    GT     shift, and go to state 86
+    LE     shift, and go to state 87
+    LT     shift, and go to state 88
+    MINUS  shift, and go to state 35
+    MOD    shift, and go to state 89
+    PLUS   shift, and go to state 37
+
+    $default  reduce using rule 80 (expr)
+
+    plus_token        go to state 93
+    minus_token       go to state 94
+    mul_token         go to state 95
+    div_token         go to state 96
+    mod_token         go to state 97
+    or_token          go to state 98
+    and_token         go to state 99
+    bitwiseand_token  go to state 100
+    bitwiseor_token   go to state 101
+    bitwisexor_token  go to state 102
+    eq_token          go to state 103
+    ne_token          go to state 104
+    le_token          go to state 105
+    ge_token          go to state 106
+    lt_token          go to state 107
+    gt_token          go to state 108
+    assign_token      go to state 109
+    comma_token       go to state 110
+
+
+State 139
+
+   67 expr: expr . assign_token expr
+   68     | expr . comma_token expr
+   70     | expr . plus_token expr
+   71     | expr . minus_token expr
+   72     | expr . mul_token expr
+   73     | expr . div_token expr
+   74     | expr . mod_token expr
+   75     | expr . or_token expr
+   76     | expr . and_token expr
+   77     | expr . bitwiseand_token expr
+   78     | expr . bitwiseor_token expr
+   79     | expr . bitwisexor_token expr
+   80     | expr . eq_token expr
+   81     | expr . ne_token expr
+   81     | expr ne_token expr .
+   82     | expr . le_token expr
+   83     | expr . ge_token expr
+   84     | expr . lt_token expr
+   85     | expr . gt_token expr
+
+    MUL    shift, and go to state 81
+    DIV    shift, and go to state 83
+    GE     shift, and go to state 85
+    GT     shift, and go to state 86
+    LE     shift, and go to state 87
+    LT     shift, and go to state 88
+    MINUS  shift, and go to state 35
+    MOD    shift, and go to state 89
+    PLUS   shift, and go to state 37
+
+    $default  reduce using rule 81 (expr)
+
+    plus_token        go to state 93
+    minus_token       go to state 94
+    mul_token         go to state 95
+    div_token         go to state 96
+    mod_token         go to state 97
+    or_token          go to state 98
+    and_token         go to state 99
+    bitwiseand_token  go to state 100
+    bitwiseor_token   go to state 101
+    bitwisexor_token  go to state 102
+    eq_token          go to state 103
+    ne_token          go to state 104
+    le_token          go to state 105
+    ge_token          go to state 106
+    lt_token          go to state 107
+    gt_token          go to state 108
+    assign_token      go to state 109
+    comma_token       go to state 110
+
+
+State 140
+
+   67 expr: expr . assign_token expr
+   68     | expr . comma_token expr
+   70     | expr . plus_token expr
+   71     | expr . minus_token expr
+   72     | expr . mul_token expr
+   73     | expr . div_token expr
+   74     | expr . mod_token expr
+   75     | expr . or_token expr
+   76     | expr . and_token expr
+   77     | expr . bitwiseand_token expr
+   78     | expr . bitwiseor_token expr
+   79     | expr . bitwisexor_token expr
+   80     | expr . eq_token expr
+   81     | expr . ne_token expr
+   82     | expr . le_token expr
+   82     | expr le_token expr .
+   83     | expr . ge_token expr
+   84     | expr . lt_token expr
+   85     | expr . gt_token expr
+
+    MUL    shift, and go to state 81
+    DIV    shift, and go to state 83
+    MINUS  shift, and go to state 35
+    MOD    shift, and go to state 89
+    PLUS   shift, and go to state 37
+
+    $default  reduce using rule 82 (expr)
+
+    plus_token        go to state 93
+    minus_token       go to state 94
+    mul_token         go to state 95
+    div_token         go to state 96
+    mod_token         go to state 97
+    or_token          go to state 98
+    and_token         go to state 99
+    bitwiseand_token  go to state 100
+    bitwiseor_token   go to state 101
+    bitwisexor_token  go to state 102
+    eq_token          go to state 103
+    ne_token          go to state 104
+    le_token          go to state 105
+    ge_token          go to state 106
+    lt_token          go to state 107
+    gt_token          go to state 108
+    assign_token      go to state 109
+    comma_token       go to state 110
+
+
+State 141
+
+   67 expr: expr . assign_token expr
+   68     | expr . comma_token expr
+   70     | expr . plus_token expr
+   71     | expr . minus_token expr
+   72     | expr . mul_token expr
+   73     | expr . div_token expr
+   74     | expr . mod_token expr
+   75     | expr . or_token expr
+   76     | expr . and_token expr
+   77     | expr . bitwiseand_token expr
+   78     | expr . bitwiseor_token expr
+   79     | expr . bitwisexor_token expr
+   80     | expr . eq_token expr
+   81     | expr . ne_token expr
+   82     | expr . le_token expr
+   83     | expr . ge_token expr
+   83     | expr ge_token expr .
+   84     | expr . lt_token expr
+   85     | expr . gt_token expr
+
+    MUL    shift, and go to state 81
+    DIV    shift, and go to state 83
+    MINUS  shift, and go to state 35
+    MOD    shift, and go to state 89
+    PLUS   shift, and go to state 37
+
+    $default  reduce using rule 83 (expr)
+
+    plus_token        go to state 93
+    minus_token       go to state 94
+    mul_token         go to state 95
+    div_token         go to state 96
+    mod_token         go to state 97
+    or_token          go to state 98
+    and_token         go to state 99
+    bitwiseand_token  go to state 100
+    bitwiseor_token   go to state 101
+    bitwisexor_token  go to state 102
+    eq_token          go to state 103
+    ne_token          go to state 104
+    le_token          go to state 105
+    ge_token          go to state 106
+    lt_token          go to state 107
+    gt_token          go to state 108
+    assign_token      go to state 109
+    comma_token       go to state 110
+
+
+State 142
+
+   67 expr: expr . assign_token expr
+   68     | expr . comma_token expr
+   70     | expr . plus_token expr
+   71     | expr . minus_token expr
+   72     | expr . mul_token expr
+   73     | expr . div_token expr
+   74     | expr . mod_token expr
+   75     | expr . or_token expr
+   76     | expr . and_token expr
+   77     | expr . bitwiseand_token expr
+   78     | expr . bitwiseor_token expr
+   79     | expr . bitwisexor_token expr
+   80     | expr . eq_token expr
+   81     | expr . ne_token expr
+   82     | expr . le_token expr
+   83     | expr . ge_token expr
+   84     | expr . lt_token expr
+   84     | expr lt_token expr .
+   85     | expr . gt_token expr
+
+    MUL    shift, and go to state 81
+    DIV    shift, and go to state 83
+    MINUS  shift, and go to state 35
+    MOD    shift, and go to state 89
+    PLUS   shift, and go to state 37
+
+    $default  reduce using rule 84 (expr)
+
+    plus_token        go to state 93
+    minus_token       go to state 94
+    mul_token         go to state 95
+    div_token         go to state 96
+    mod_token         go to state 97
+    or_token          go to state 98
+    and_token         go to state 99
+    bitwiseand_token  go to state 100
+    bitwiseor_token   go to state 101
+    bitwisexor_token  go to state 102
+    eq_token          go to state 103
+    ne_token          go to state 104
+    le_token          go to state 105
+    ge_token          go to state 106
+    lt_token          go to state 107
+    gt_token          go to state 108
+    assign_token      go to state 109
+    comma_token       go to state 110
+
+
+State 143
+
+   67 expr: expr . assign_token expr
+   68     | expr . comma_token expr
+   70     | expr . plus_token expr
+   71     | expr . minus_token expr
+   72     | expr . mul_token expr
+   73     | expr . div_token expr
+   74     | expr . mod_token expr
+   75     | expr . or_token expr
+   76     | expr . and_token expr
+   77     | expr . bitwiseand_token expr
+   78     | expr . bitwiseor_token expr
+   79     | expr . bitwisexor_token expr
+   80     | expr . eq_token expr
+   81     | expr . ne_token expr
+   82     | expr . le_token expr
+   83     | expr . ge_token expr
+   84     | expr . lt_token expr
+   85     | expr . gt_token expr
+   85     | expr gt_token expr .
+
+    MUL    shift, and go to state 81
+    DIV    shift, and go to state 83
+    MINUS  shift, and go to state 35
+    MOD    shift, and go to state 89
+    PLUS   shift, and go to state 37
+
+    $default  reduce using rule 85 (expr)
+
+    plus_token        go to state 93
+    minus_token       go to state 94
+    mul_token         go to state 95
+    div_token         go to state 96
+    mod_token         go to state 97
+    or_token          go to state 98
+    and_token         go to state 99
+    bitwiseand_token  go to state 100
+    bitwiseor_token   go to state 101
+    bitwisexor_token  go to state 102
+    eq_token          go to state 103
+    ne_token          go to state 104
+    le_token          go to state 105
+    ge_token          go to state 106
+    lt_token          go to state 107
+    gt_token          go to state 108
+    assign_token      go to state 109
+    comma_token       go to state 110
+
+
+State 144
+
+   67 expr: expr . assign_token expr
+   67     | expr assign_token expr .
+   68     | expr . comma_token expr
+   70     | expr . plus_token expr
+   71     | expr . minus_token expr
+   72     | expr . mul_token expr
+   73     | expr . div_token expr
+   74     | expr . mod_token expr
+   75     | expr . or_token expr
+   76     | expr . and_token expr
+   77     | expr . bitwiseand_token expr
+   78     | expr . bitwiseor_token expr
+   79     | expr . bitwisexor_token expr
+   80     | expr . eq_token expr
+   81     | expr . ne_token expr
+   82     | expr . le_token expr
+   83     | expr . ge_token expr
+   84     | expr . lt_token expr
+   85     | expr . gt_token expr
+
+    BITWISEAND  shift, and go to state 76
+    BITWISEOR   shift, and go to state 77
+    BITWISEXOR  shift, and go to state 78
+    AND         shift, and go to state 79
+    ASSIGN      shift, and go to state 80
+    MUL         shift, and go to state 81
+    DIV         shift, and go to state 83
+    EQ          shift, and go to state 84
+    GE          shift, and go to state 85
+    GT          shift, and go to state 86
+    LE          shift, and go to state 87
+    LT          shift, and go to state 88
+    MINUS       shift, and go to state 35
+    MOD         shift, and go to state 89
+    NE          shift, and go to state 90
+    OR          shift, and go to state 91
+    PLUS        shift, and go to state 37
+
+    $default  reduce using rule 67 (expr)
+
+    plus_token        go to state 93
+    minus_token       go to state 94
+    mul_token         go to state 95
+    div_token         go to state 96
+    mod_token         go to state 97
+    or_token          go to state 98
+    and_token         go to state 99
+    bitwiseand_token  go to state 100
+    bitwiseor_token   go to state 101
+    bitwisexor_token  go to state 102
+    eq_token          go to state 103
+    ne_token          go to state 104
+    le_token          go to state 105
+    ge_token          go to state 106
+    lt_token          go to state 107
+    gt_token          go to state 108
+    assign_token      go to state 109
+    comma_token       go to state 110
+
+
+State 145
+
+   67 expr: expr . assign_token expr
+   68     | expr . comma_token expr
+   68     | expr comma_token expr .
+   70     | expr . plus_token expr
+   71     | expr . minus_token expr
+   72     | expr . mul_token expr
+   73     | expr . div_token expr
+   74     | expr . mod_token expr
+   75     | expr . or_token expr
+   76     | expr . and_token expr
+   77     | expr . bitwiseand_token expr
+   78     | expr . bitwiseor_token expr
+   79     | expr . bitwisexor_token expr
+   80     | expr . eq_token expr
+   81     | expr . ne_token expr
+   82     | expr . le_token expr
+   83     | expr . ge_token expr
+   84     | expr . lt_token expr
+   85     | expr . gt_token expr
+
+    BITWISEAND  shift, and go to state 76
+    BITWISEOR   shift, and go to state 77
+    BITWISEXOR  shift, and go to state 78
+    AND         shift, and go to state 79
+    ASSIGN      shift, and go to state 80
+    MUL         shift, and go to state 81
+    DIV         shift, and go to state 83
+    EQ          shift, and go to state 84
+    GE          shift, and go to state 85
+    GT          shift, and go to state 86
+    LE          shift, and go to state 87
+    LT          shift, and go to state 88
+    MINUS       shift, and go to state 35
+    MOD         shift, and go to state 89
+    NE          shift, and go to state 90
+    OR          shift, and go to state 91
+    PLUS        shift, and go to state 37
+
+    $default  reduce using rule 68 (expr)
+
+    plus_token        go to state 93
+    minus_token       go to state 94
+    mul_token         go to state 95
+    div_token         go to state 96
+    mod_token         go to state 97
+    or_token          go to state 98
+    and_token         go to state 99
+    bitwiseand_token  go to state 100
+    bitwiseor_token   go to state 101
+    bitwisexor_token  go to state 102
+    eq_token          go to state 103
+    ne_token          go to state 104
+    le_token          go to state 105
+    ge_token          go to state 106
+    lt_token          go to state 107
+    gt_token          go to state 108
+    assign_token      go to state 109
+    comma_token       go to state 110
+
+
+State 146
 
    17 parameterList: parameterList COMMA parameterDeclaration .
 
     $default  reduce using rule 17 (parameterList)
 
 
-State 128
+State 147
 
    41 statement: WHILE LPAR expr RPAR . statement_error
 
-    error    shift, and go to state 100
+    error    shift, and go to state 119
     WHILE    shift, and go to state 30
     IF       shift, and go to state 31
     RETURN   shift, and go to state 32
@@ -2392,17 +3248,20 @@ State 128
     ID       shift, and go to state 18
 
     id_token         go to state 46
-    statement        go to state 62
-    statement_error  go to state 134
-    expr             go to state 48
+    statement        go to state 65
+    statement_error  go to state 153
+    plus_token       go to state 48
+    minus_token      go to state 49
+    not_token        go to state 50
+    expr             go to state 51
 
 
-State 129
+State 148
 
    39 statement: IF LPAR expr RPAR . statement_error ELSE statement_error
    40          | IF LPAR expr RPAR . statement_error
 
-    error    shift, and go to state 100
+    error    shift, and go to state 119
     WHILE    shift, and go to state 30
     IF       shift, and go to state 31
     RETURN   shift, and go to state 32
@@ -2418,106 +3277,128 @@ State 129
     ID       shift, and go to state 18
 
     id_token         go to state 46
-    statement        go to state 62
-    statement_error  go to state 135
-    expr             go to state 48
+    statement        go to state 65
+    statement_error  go to state 154
+    plus_token       go to state 48
+    minus_token      go to state 49
+    not_token        go to state 50
+    expr             go to state 51
 
 
-State 130
+State 149
 
    36 statement: LBRACE statementList statement_error RBRACE .
 
     $default  reduce using rule 36 (statement)
 
 
-State 131
+State 150
 
-   48 expr: expr . ASSIGN expr
-   49     | expr . COMMA expr
-   49     | expr COMMA expr .
-   50     | LPAR expr COMMA expr . RPAR
-   51     | expr . PLUS expr
-   52     | expr . MINUS expr
-   53     | expr . MUL expr
-   54     | expr . DIV expr
-   55     | expr . MOD expr
-   56     | expr . OR expr
-   57     | expr . AND expr
-   58     | expr . BITWISEAND expr
-   59     | expr . BITWISEOR expr
-   60     | expr . BITWISEXOR expr
-   61     | expr . EQ expr
-   62     | expr . NE expr
-   63     | expr . LE expr
-   64     | expr . GE expr
-   65     | expr . LT expr
-   66     | expr . GT expr
+   67 expr: expr . assign_token expr
+   68     | expr . comma_token expr
+   68     | expr comma_token expr .
+   69     | LPAR expr comma_token expr . RPAR
+   70     | expr . plus_token expr
+   71     | expr . minus_token expr
+   72     | expr . mul_token expr
+   73     | expr . div_token expr
+   74     | expr . mod_token expr
+   75     | expr . or_token expr
+   76     | expr . and_token expr
+   77     | expr . bitwiseand_token expr
+   78     | expr . bitwiseor_token expr
+   79     | expr . bitwisexor_token expr
+   80     | expr . eq_token expr
+   81     | expr . ne_token expr
+   82     | expr . le_token expr
+   83     | expr . ge_token expr
+   84     | expr . lt_token expr
+   85     | expr . gt_token expr
 
-    BITWISEAND  shift, and go to state 73
-    BITWISEOR   shift, and go to state 74
-    BITWISEXOR  shift, and go to state 75
-    AND         shift, and go to state 76
-    ASSIGN      shift, and go to state 77
-    MUL         shift, and go to state 78
-    DIV         shift, and go to state 80
-    EQ          shift, and go to state 81
-    GE          shift, and go to state 82
-    GT          shift, and go to state 83
-    LE          shift, and go to state 84
-    LT          shift, and go to state 85
-    MINUS       shift, and go to state 86
-    MOD         shift, and go to state 87
-    NE          shift, and go to state 88
-    OR          shift, and go to state 89
-    PLUS        shift, and go to state 90
-    RPAR        shift, and go to state 136
+    BITWISEAND  shift, and go to state 76
+    BITWISEOR   shift, and go to state 77
+    BITWISEXOR  shift, and go to state 78
+    AND         shift, and go to state 79
+    ASSIGN      shift, and go to state 80
+    MUL         shift, and go to state 81
+    DIV         shift, and go to state 83
+    EQ          shift, and go to state 84
+    GE          shift, and go to state 85
+    GT          shift, and go to state 86
+    LE          shift, and go to state 87
+    LT          shift, and go to state 88
+    MINUS       shift, and go to state 35
+    MOD         shift, and go to state 89
+    NE          shift, and go to state 90
+    OR          shift, and go to state 91
+    PLUS        shift, and go to state 37
+    RPAR        shift, and go to state 155
 
-    $default  reduce using rule 49 (expr)
+    $default  reduce using rule 68 (expr)
+
+    plus_token        go to state 93
+    minus_token       go to state 94
+    mul_token         go to state 95
+    div_token         go to state 96
+    mod_token         go to state 97
+    or_token          go to state 98
+    and_token         go to state 99
+    bitwiseand_token  go to state 100
+    bitwiseor_token   go to state 101
+    bitwisexor_token  go to state 102
+    eq_token          go to state 103
+    ne_token          go to state 104
+    le_token          go to state 105
+    ge_token          go to state 106
+    lt_token          go to state 107
+    gt_token          go to state 108
+    assign_token      go to state 109
+    comma_token       go to state 110
 
 
-State 132
+State 151
 
-   77 expr: id_token LPAR error RPAR .
+   96 expr: id_token LPAR error RPAR .
 
-    $default  reduce using rule 77 (expr)
-
-
-State 133
-
-   71 expr: id_token LPAR expr RPAR .
-
-    $default  reduce using rule 71 (expr)
+    $default  reduce using rule 96 (expr)
 
 
-State 134
+State 152
+
+   90 expr: id_token LPAR expr RPAR .
+
+    $default  reduce using rule 90 (expr)
+
+
+State 153
 
    41 statement: WHILE LPAR expr RPAR statement_error .
 
     $default  reduce using rule 41 (statement)
 
 
-State 135
+State 154
 
    39 statement: IF LPAR expr RPAR statement_error . ELSE statement_error
    40          | IF LPAR expr RPAR statement_error .
 
-    ELSE  shift, and go to state 137
+    ELSE  shift, and go to state 156
 
     $default  reduce using rule 40 (statement)
 
 
-State 136
+State 155
 
-   50 expr: LPAR expr COMMA expr RPAR .
+   69 expr: LPAR expr comma_token expr RPAR .
 
-    $default  reduce using rule 50 (expr)
+    $default  reduce using rule 69 (expr)
 
 
-State 137
+State 156
 
    39 statement: IF LPAR expr RPAR statement_error ELSE . statement_error
 
-    error    shift, and go to state 100
+    error    shift, and go to state 119
     WHILE    shift, and go to state 30
     IF       shift, and go to state 31
     RETURN   shift, and go to state 32
@@ -2533,12 +3414,15 @@ State 137
     ID       shift, and go to state 18
 
     id_token         go to state 46
-    statement        go to state 62
-    statement_error  go to state 138
-    expr             go to state 48
+    statement        go to state 65
+    statement_error  go to state 157
+    plus_token       go to state 48
+    minus_token      go to state 49
+    not_token        go to state 50
+    expr             go to state 51
 
 
-State 138
+State 157
 
    39 statement: IF LPAR expr RPAR statement_error ELSE statement_error .
 
