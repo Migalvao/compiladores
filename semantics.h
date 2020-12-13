@@ -30,6 +30,6 @@ void check_while(table * tab, program * node, char * func_type);
 void check_if(table * tab, program * node, char * func_type);
 void check_return(table * tab, program * node, char * func_type);
 void check_statlist(table * tab, program * node, char * func_type);
-data_type check_expression(table * tab, program * node);
+//data_type check_expression(table * tab, program * node);
 char * string_to_operator(char * str);
 int compare_types(char * first, char * second);

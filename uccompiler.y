@@ -25,7 +25,7 @@ char type_string[10];
 %type <nonterminal> declaratorsList declarator statementList expr program id_token statement statement_error
 %type <nonterminal> plus_token minus_token mul_token div_token mod_token and_token or_token bitwiseand_token
 %type <nonterminal> bitwiseor_token bitwisexor_token eq_token ne_token le_token lt_token gt_token ge_token 
-%type <nonterminal> assign_token not_token comma_token
+%type <nonterminal> assign_token not_token comma_token return_token
 %type <terminal> error
  
 %union{
@@ -178,8 +178,8 @@ statement:  LBRACE error RBRACE                                                 
         |  IF LPAR expr RPAR statement_error ELSE statement_error               {if($5){ $3 -> next = $5; } else { $3 -> next = insert_element("Null", NULL);} if($7){ $3 -> next -> next = $7; } else { $3 -> next -> next = insert_element("Null", NULL);} $$ = insert_element("If", $3);}
         |  IF LPAR expr RPAR statement_error                                    {if($5){ $3 -> next = $5; } else { $3 -> next = insert_element("Null", NULL);} $3 -> next -> next = insert_element("Null", NULL); $$ = insert_element("If", $3);}
         |  WHILE LPAR expr RPAR statement_error                                 {if($5){ $3 -> next = $5; } else { $3 -> next = insert_element("Null", NULL);} $$ = insert_element("While", $3);}
-        |  RETURN expr SEMI                                                     {$$ = insert_element("Return", $2);}
-        |  RETURN SEMI                                                          {$$ = insert_element("Return", insert_element("Null", NULL));}
+        |  return_token %prec RETURN expr SEMI                                               {$1->children = $2, $$ = $1;}
+        |  return_token %prec RETURN SEMI                                                    {$1->children = insert_element("Null", NULL),$$ = $1;}
         |  expr SEMI                                                            {$$ = $1;}     
         |  SEMI                                                                 {$$ = NULL;}  
         ;
@@ -188,6 +188,9 @@ statement_error: statement                                                      
                 | error SEMI                                                    {$$ = insert_element("Erro", NULL); is_error = true; /*ERRO*/ } 
                 ;
 
+
+return_token: RETURN                                                              {$$ = insert_element(strdup("Return"), NULL);}
+        ;
 
 plus_token: PLUS                                                                    {$$ = insert_element(strdup("Add"), NULL);}
         ;

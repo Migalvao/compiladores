@@ -147,6 +147,53 @@ var_declaration * search_variable(char * id, table * tab){
     }
     return NULL;
 }
+/*
+table_element_type * search_symbol(char * id, table * tab){
+    bool func = false;
+    bool var = false;
+    
+    //procurar no global scope, so ai e que ha funçoes
+    function = search_function(node->children, symtab);
+
+    //printf("RUBEN CALL\n");
+
+    if(function){
+        func = true;
+    }
+
+    variable = search_variable(node->children->type, tab);
+
+    if(!variable){
+        //procurar no global scope
+        variable = search_variable(node->children->type, symtab);
+    }
+    else{
+        var = true;
+    }
+
+    if(variable){
+        var = true;
+    }
+
+    if(func == false && var == false){
+        //CHECK CALL
+        sprintf(help, "Unknown symbol %s", node->children->children->type);
+        print_error(help, node->children->line, node->children->column);
+        node -> type = strdup("Call - undef");
+        return undefined_t;
+
+        //CHECK VAR
+        sprintf(help, "Unknown symbol %s", node->children->type);
+        print_error(help, node->children->line, node->children->column);
+
+        sprintf(help, "Id(%s) - undef", node->children->type);
+        free(node->children);
+        node->children = NULL;
+        node->type = strdup(help);
+        return undefined_t;
+    }
+}
+*/
 
 void print_tables(){
     table * aux = symtab;
