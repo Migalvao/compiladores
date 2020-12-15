@@ -9,6 +9,7 @@
 int indent = 0;
 extern int line, column;
 extern char * yytext;
+extern bool is_error;
 
 program * insert_element(char * type,  program * children){
 
@@ -141,5 +142,6 @@ void print_ast_noted(program * my_program){
 }
 
 void print_error(char * text, int l, int c){
+    is_error = true;
     printf("Line %d, col %d: %s\n", l, c, text);
 }
