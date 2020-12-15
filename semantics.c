@@ -937,8 +937,8 @@ data_type check_operation(table *tab, program *node)
 
         sprintf(help, "Operator %s cannot be applied to types %s, %s", string_to_operator(node->type), data_type_to_string(type_child1), data_type_to_string(type_child2));
 
-        if (strcmp(node->type, "Store") != 0 || type_child2 != void_t)
-            print_error(help, node->line, node->column);
+        //if (strcmp(node->type, "Store") != 0 || type_child2 != void_t)
+        print_error(help, node->line, node->column);
 
         if (strcmp(node->type, "Store") == 0)
         {
