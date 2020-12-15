@@ -8,12 +8,8 @@
 
 int indent = 0;
 extern int line, column;
-<<<<<<< HEAD
 extern char * yytext;
 extern bool is_error;
-=======
-extern char *yytext;
->>>>>>> 862be7849bdf2f807882801f5d04a90e97644e4f
 
 program *insert_element(char *type, program *children)
 {
@@ -171,12 +167,7 @@ void print_ast_noted(program *my_program)
         print_ast_noted(my_program->next);
 }
 
-<<<<<<< HEAD
 void print_error(char * text, int l, int c){
     is_error = true;
-=======
-void print_error(char *text, int l, int c)
-{
->>>>>>> 862be7849bdf2f807882801f5d04a90e97644e4f
     printf("Line %d, col %d: %s\n", l, c, text);
 }
