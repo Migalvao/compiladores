@@ -8,11 +8,12 @@ int				    [0-9]+
     #include <stdbool.h>
     #include "structures.h"
     #include "semantics.h"
+    #include "gen_code.h"
     #include "functions.h"
     #include "symbol_table.h"
     #include "y.tab.h"
 
-    bool l = false, e1 = false, t = false, e2 = false, s = false, comment_error = false;
+    bool l = false, e1 = false, t = false, e2 = false, s = false, comment_error = false, e3 = false;
     int line = 1, column = 1, unfinished_line, unfinished_column;
     extern program * myprogram;
     extern table * symtab;
@@ -100,6 +101,8 @@ int main(int argc, char *argv[])
         e2 = true;
     } else if(argc >= 2 && strcmp(argv[1], "-s") == 0){
         s = true;
+    } else if(argc >= 2 && strcmp(argv[1], "-e3") == 0){
+        e3 = true;
     }
 
     if(!l && !e1){
@@ -113,7 +116,7 @@ int main(int argc, char *argv[])
         print_ast(myprogram);
     }
 
-    if((s || (!l && !e1 && !t && !e2)) && myprogram && !is_error){
+    if((s || (!l && !e1 && !t && !e2) || e3) && myprogram && !is_error){
         //fazer analise sintatica
         check_program(myprogram);
         
@@ -121,6 +124,9 @@ int main(int argc, char *argv[])
             //imprimir tabelas de simbolos e nova AST 
             print_tables();
             print_ast_noted(myprogram);
+        }
+        else if(e3 && !is_error){
+            start_program(myprogram);
         }
     }
 
