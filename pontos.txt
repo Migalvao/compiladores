@@ -1,6 +1,6 @@
-A - 555/600
+A - 600/600
 B - Symbol Tables - Variable Declaration 60/60
 C - Symbol Tables - Function Declaration/Definition 140/140
 D - Annotated AST - valid programs 200/200
 E - Semantic Errors - Declarations and Function Definitions 80/80
-F - Semantic Errors - Expressions and Statements 75/120
+F - Semantic Errors - Expressions and Statements 120/120
