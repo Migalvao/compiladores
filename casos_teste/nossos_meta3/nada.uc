@@ -99,3 +99,24 @@ int v(void) {
 
     f,p,argc;
 }
+
+void g0(void);
+int A1;
+short B1;
+char C0;
+int f0(int, short, char, double);
+
+int main_principal(void)
+{
+    while(g0){}
+    
+    f0(A1, B1, C0, g0());
+}
+
+int muitos_returns(void){
+    return 1;
+    return 1.1;
+    return 'a';
+    return;
+    return g0;
+}

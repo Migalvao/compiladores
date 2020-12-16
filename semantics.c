@@ -439,7 +439,6 @@ void check_func_definition(program *node)
             //ERRO, FUNÇAO JA FOI DEFINIDA
             sprintf(string, "Symbol %s already defined", node->children->next->children->type);
             print_error(string, node->children->next->line, node->children->next->column);
-            //printf("Function %s already defined!", node ->children->next->children->type);
             return;
         }
         else
@@ -610,8 +609,12 @@ void check_while(table *tab, program *node, char *func_type)
     program *expr = node->children;
 
     type = check_expression(tab, expr);
-
-    if (type == double_t || type == undefined_t || type == void_t)
+    if (type == function_t)
+    {
+        sprintf(string, "Conflicting types (got %s, expected int)", function);
+        print_error(string, node->children->line, node->children->column);
+    }
+    else if (type == double_t || type == undefined_t || type == void_t)
     {
         sprintf(string, "Conflicting types (got %s, expected int)", data_type_to_string(type));
         print_error(string, node->children->line, node->children->column);
@@ -629,8 +632,17 @@ void check_return(table *tab, program *node, char *func_type)
 {
     char string[3 * STRING_SIZE], help[STRING_SIZE];
     program *expr = node->children;
+    strcpy(help, func_type);
+    *help = tolower(*help);
     data_type type = check_expression(tab, expr);
-    //FALTAM VERIFICAÇOES!
+
+    if (type == function_t)
+    {
+        sprintf(string, "Conflicting types (got %s, expected %s)", function, help);
+        print_error(string, node->children->line, node->children->column);
+        return;
+    }
+
     //verificar se existe erro invalid use of void
     if ((strcmp(func_type, "Void") == 0) && strcmp(node->children->type, "Null") != 0 && type != void_t)
     {
@@ -641,8 +653,6 @@ void check_return(table *tab, program *node, char *func_type)
 
     if (node->children)
     {
-        strcpy(help, func_type);
-        *help = tolower(*help);
         if (compare_types(data_type_to_string(type), help) == 1)
         {
             sprintf(string, "Conflicting types (got %s, expected %s)", data_type_to_string(type), help);
@@ -670,51 +680,31 @@ void check_statlist(table *tab, program *node, char *func_type)
 
 data_type check_expression(table *tab, program *node)
 {
-    char string[STRING_SIZE];
     if (strcmp(node->type, "Call") == 0)
     {
-        //printf("call, %s\n", node->type);
         return check_call(tab, node);
     }
     else if (strcmp(node->type, "IntLit") == 0)
     {
-        //printf("intlit, %s\n", node->type);
-        sprintf(string, "IntLit(%s) - int", node->children->type);
-        node->type = strdup(string);
-        free(node->children);
-        node->children = NULL;
-
+        note_tree(node, "int");
         return int_t;
     }
     else if (strcmp(node->type, "ChrLit") == 0)
     {
-        //printf("chrlit, %s\n", node->type);
-        sprintf(string, "ChrLit(%s) - int", node->children->type);
-        node->type = strdup(string);
-        free(node->children);
-        node->children = NULL;
-
+        note_tree(node, "int");
         return int_t;
     }
     else if (strcmp(node->type, "RealLit") == 0)
     {
-        //printf("reallit, %s\n", node->type);
-        sprintf(string, "RealLit(%s) - double", node->children->type);
-        node->type = strdup(string);
-        free(node->children);
-        node->children = NULL;
-
+        note_tree(node, "double");
         return double_t;
     }
     else if (strcmp(node->type, "Id") == 0)
     {
-        //printf("id, %s\n", node->type);
         return check_var(tab, node);
     }
     else if (strcmp(node->type, "Erro") == 0)
     {
-        //printf("erro\n");
-        //Ignorar erro
         return undefined_t;
     }
     else if (strcmp(node->type, "Not") == 0)
@@ -784,17 +774,13 @@ data_type check_not(table *tab, program *node)
         if (strcmp(node->type, "Not") == 0)
         {
 
-            sprintf(help, "%s - %s", node->type, data_type_to_string(int_t));
-            node->type = strdup(help);
-
+            note_tree(node, "int");
             return int_t;
         }
         else
         {
 
-            sprintf(help, "%s - %s", node->type, data_type_to_string(undefined_t));
-            node->type = strdup(help);
-
+            note_tree(node, "undef");
             return undefined_t;
         }
     }
@@ -807,17 +793,14 @@ data_type check_not(table *tab, program *node)
 
         if (strcmp(node->type, "Not") == 0)
         {
-            sprintf(help, "%s - %s", node->type, data_type_to_string(int_t));
-            node->type = strdup(help);
 
+            note_tree(node, "int");
             return int_t;
         }
         else
         {
 
-            sprintf(help, "%s - %s", node->type, data_type_to_string(undefined_t));
-            node->type = strdup(help);
-
+            note_tree(node, "undef");
             return undefined_t;
         }
     }
@@ -828,17 +811,13 @@ data_type check_not(table *tab, program *node)
             sprintf(help, "Operator %s cannot be applied to type %s", string_to_operator(node->type), data_type_to_string(type));
             print_error(help, node->line, node->column);
         }
-        sprintf(help, "%s - %s", node->type, data_type_to_string(int_t));
-        node->type = strdup(help);
-
+        note_tree(node, "int");
         return int_t;
     }
 
     else
     {
-        sprintf(help, "%s - %s", node->type, data_type_to_string(type));
-        node->type = strdup(help);
-
+        note_tree(node, data_type_to_string(type));
         return type;
     }
 }
@@ -863,8 +842,7 @@ data_type check_binary_operation(table *tab, program *node)
 
     if (error)
     {
-        sprintf(help, "%s - %s", node->type, data_type_to_string(int_t));
-        node->type = strdup(help);
+        note_tree(node, "int");
         //Operaçoes binarias dao sempre int
         return int_t;
     }
@@ -876,8 +854,7 @@ data_type check_binary_operation(table *tab, program *node)
         print_error(help, node->line, node->column);
     }
 
-    sprintf(help, "%s - %s", node->type, data_type_to_string(int_t));
-    node->type = strdup(help);
+    note_tree(node, "int");
     //Operaçoes binarias dao sempre int
     return int_t;
 }
@@ -902,8 +879,7 @@ data_type check_comparison(table *tab, program *node)
         }
     }
 
-    sprintf(help, "%s - %s", node->type, data_type_to_string(int_t));
-    node->type = strdup(help);
+    note_tree(node, "int");
     //Operaçoes binarias dao sempre int
     return int_t;
 }
@@ -927,8 +903,7 @@ data_type check_operation(table *tab, program *node)
 
     if (error)
     {
-        sprintf(help, "%s - %s", node->type, data_type_to_string(undefined_t));
-        node->type = strdup(help);
+        note_tree(node, "undef");
         return undefined_t;
     }
 
@@ -942,20 +917,17 @@ data_type check_operation(table *tab, program *node)
 
         if (strcmp(node->type, "Store") == 0)
         {
-            if (*child1->type != 'I' || *(child1->type + 1) != 'd')
+            if (strcmp(child1->type, "Id") != 0)
             {
                 //O q esta a esquerda nao é Id
                 sprintf(help, "Lvalue required");
                 print_error(help, child1->line, child1->column);
             }
-            sprintf(help, "%s - %s", node->type, data_type_to_string(type_child1));
-            node->type = strdup(help);
+            note_tree(node, data_type_to_string(type_child1));
             return type_child1;
         }
 
-        sprintf(help, "%s - undef", node->type);
-        node->type = strdup(help);
-
+        note_tree(node, "undef");
         return undefined_t;
     }
 
@@ -963,7 +935,7 @@ data_type check_operation(table *tab, program *node)
     {
         if (strcmp(node->type, "Store") == 0)
         {
-            if (*child1->type != 'I' || *(child1->type + 1) != 'd')
+            if (strcmp(child1->type, "Id") != 0)
             {
                 //O q esta a esquerda nao é Id
                 sprintf(help, "Lvalue required");
@@ -977,16 +949,12 @@ data_type check_operation(table *tab, program *node)
                 print_error(help, node->line, node->column);
             }
 
-            sprintf(help, "%s - %s", node->type, data_type_to_string(type_child1));
-            node->type = strdup(help);
-
+            note_tree(node, data_type_to_string(type_child1));
             return type_child1;
         }
         else
         {
-            sprintf(help, "%s - %s", node->type, data_type_to_string(double_t));
-            node->type = strdup(help);
-
+            note_tree(node, "double");
             return double_t;
         }
     }
@@ -994,22 +962,18 @@ data_type check_operation(table *tab, program *node)
     {
         if (strcmp(node->type, "Store") == 0)
         {
-            if (*child1->type != 'I' || *(child1->type + 1) != 'd')
+            if (strcmp(child1->type, "Id") != 0)
             {
                 //O q esta a esquerda nao é Id
                 sprintf(help, "Lvalue required");
                 print_error(help, child1->line, child1->column);
             }
-            sprintf(help, "%s - %s", node->type, data_type_to_string(type_child1));
-            node->type = strdup(help);
-
+            note_tree(node, data_type_to_string(type_child1));
             return type_child1;
         }
         else
         {
-            sprintf(help, "%s - %s", node->type, data_type_to_string(int_t));
-            node->type = strdup(help);
-
+            note_tree(node, "int");
             return int_t;
         }
     }
@@ -1017,22 +981,18 @@ data_type check_operation(table *tab, program *node)
     {
         if (strcmp(node->type, "Store") == 0)
         {
-            if (*child1->type != 'I' || *(child1->type + 1) != 'd')
+            if (strcmp(child1->type, "Id") != 0)
             {
                 //O q esta a esquerda nao é Id
                 sprintf(help, "Lvalue required");
                 print_error(help, child1->line, child1->column);
             }
-            sprintf(help, "%s - %s", node->type, data_type_to_string(type_child1));
-            node->type = strdup(help);
-
+            note_tree(node, data_type_to_string(type_child1));
             return type_child1;
         }
         else
         {
-            sprintf(help, "%s - %s", node->type, data_type_to_string(short_t));
-            node->type = strdup(help);
-
+            note_tree(node, "short");
             return short_t;
         }
     }
@@ -1040,21 +1000,17 @@ data_type check_operation(table *tab, program *node)
     {
         if (strcmp(node->type, "Store") == 0)
         {
-            if (*child1->type != 'I' || *(child1->type + 1) != 'd')
+            if (strcmp(child1->type, "Id") != 0)
             {
                 //O q esta a esquerda nao é Id
                 sprintf(help, "Lvalue required");
                 print_error(help, child1->line, child1->column);
             }
-            sprintf(help, "%s - %s", node->type, data_type_to_string(type_child1));
-            node->type = strdup(help);
-
+            note_tree(node, data_type_to_string(type_child1));
             return type_child1;
         }
         //char
-        sprintf(help, "%s - %s", node->type, data_type_to_string(type_child1));
-        node->type = strdup(help);
-
+        note_tree(node, data_type_to_string(type_child1));
         return type_child1;
     }
 }
@@ -1079,8 +1035,7 @@ data_type check_commas(table *tab, program *node)
 
     if (error)
     {
-        sprintf(help, "Comma - %s", data_type_to_string(undefined_t));
-        node->type = strdup(help);
+        note_tree(node, "undef");
         return undefined_t;
     }
 
@@ -1089,15 +1044,11 @@ data_type check_commas(table *tab, program *node)
         sprintf(string, "Operator %s cannot be applied to types %s, %s", string_to_operator(node->type), data_type_to_string(type_child1), data_type_to_string(type_child2));
         print_error(string, node->line, node->column);
 
-        sprintf(help, "Comma - %s", data_type_to_string(undefined_t));
-        node->type = strdup(help);
-
+        note_tree(node, "undef");
         return undefined_t;
     }
 
-    sprintf(help, "Comma - %s", data_type_to_string(type_child2));
-    node->type = strdup(help);
-
+    note_tree(node, data_type_to_string(type_child2));
     return type_child2;
 }
 
@@ -1154,19 +1105,17 @@ data_type check_call(table *tab, program *node)
     {
         if ((var = search_variable(node->children->children->type, tab)) || (var = search_variable(node->children->children->type, symtab)))
         {
-            sprintf(help, "Call - %s", var->type);
-            node->type = strdup(help);
-            sprintf(help, "Id(%s) - %s", node->children->children->type, var->type);
+            note_tree(node, var->type);
+            note_tree(node->children->children, var->type);
         }
         else
         {
             sprintf(help, "Unknown symbol %s", node->children->children->type);
             print_error(help, node->children->line, node->children->column);
-            node->type = strdup("Call - undef");
-            sprintf(help, "Id(%s) - undef", node->children->children->type);
-        }
 
-        node->children->type = strdup(help);
+            note_tree(node, "undef");
+            note_tree(node->children, "undef");
+        }
 
         aux_node = node->children->next;
         while (aux_node)
@@ -1181,14 +1130,10 @@ data_type check_call(table *tab, program *node)
             print_error(help, node->children->line, node->children->column);
         }
 
-        free(node->children->children);
-        node->children->children = NULL;
         return undefined_t;
     }
 
-    //reescrever "Call"
-    sprintf(help, "Call - %s", function->type);
-    node->type = strdup(help);
+    note_tree(node, function->type);
 
     //reescrever ID - precisamos do ID, o return value e os tipos dos parametros
     param = function->parameters;
@@ -1202,8 +1147,8 @@ data_type check_call(table *tab, program *node)
         param = param->next;
     }
 
-    sprintf(help2, "Id(%s) - %s(%s)", node->children->children->type, function->type, help);
-    node->children->type = strdup(help2);
+    sprintf(help2, "%s(%s)", function->type, help);
+    note_tree(node->children, help2);
 
     //verificar parametros
     aux_node = node->children->next; //parametros do input
@@ -1278,10 +1223,7 @@ data_type check_call(table *tab, program *node)
                 if (strcmp(aux_node->type, "Id") == 0)
                 {
                     //parametro é um ID
-                    sprintf(help, "Id(%s) - %s", aux_node->children->type, data_type_to_string(type));
-                    aux_node->type = strdup(help);
-                    free(aux_node->children);
-                    aux_node->children = NULL;
+                    note_tree(aux_node->children, data_type_to_string(type));
                 }
                 aux_node = aux_node->next;
                 i_param++;
@@ -1295,9 +1237,6 @@ data_type check_call(table *tab, program *node)
         sprintf(help2, "Wrong number of arguments to function %s (got %d, required %d)", node->children->children->type, i_param, e_param);
         print_error(help2, node->children->line, node->children->column);
     }
-
-    free(node->children->children);
-    node->children->children = NULL;
 
     return string_to_data_type(function->type);
 }
@@ -1326,29 +1265,18 @@ data_type check_var(table *tab, program *node)
         {
             function_declarator(help, function, func->parameters, func->type);
 
-            sprintf(help, "Id(%s) - %s", node->children->type, function);
-            free(node->children);
-            node->children = NULL;
-            node->type = strdup(help);
-
+            note_tree(node, function);
             return function_t;
         }
 
         sprintf(help, "Unknown symbol %s", node->children->type);
         print_error(help, node->children->line, node->children->column);
 
-        sprintf(help, "Id(%s) - undef", node->children->type);
-        free(node->children);
-        node->children = NULL;
-        node->type = strdup(help);
+        note_tree(node, "undef");
         return undefined_t;
     }
 
-    sprintf(help, "Id(%s) - %s", node->children->type, variable->type);
-    free(node->children);
-    node->children = NULL;
-    node->type = strdup(help);
-
+    note_tree(node, variable->type);
     return string_to_data_type(variable->type);
 }
 
@@ -1471,9 +1399,20 @@ int compare_types(char *first, char *second)
             return 0;
         }
     }
-    else if (strcmp(first, "double") == 0 || strcmp(first, "void") == 0)
+    else if (strcmp(first, "double") == 0)
     {
         if (strcmp(second, "int") == 0 || strcmp(second, "char") == 0 || strcmp(second, "short") == 0 || strcmp(second, "undef") == 0)
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    else if (strcmp(first, "void") == 0)
+    {
+        if (strcmp(second, "int") == 0 || strcmp(second, "char") == 0 || strcmp(second, "short") == 0 || strcmp(second, "undef") == 0 || strcmp(second, "double") == 0)
         {
             return 1;
         }
@@ -1526,4 +1465,11 @@ bool check_function_type(char *help, char *help2, program *node, data_type type1
     {
         return false;
     }
+}
+
+void note_tree(program *node, char *notation)
+{
+    char *help = strdup(notation);
+    *help = tolower(*help);
+    node->annotation = strdup(help);
 }

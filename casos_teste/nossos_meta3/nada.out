@@ -40,6 +40,11 @@ Line 100, col 7: Unknown symbol p
 Line 100, col 6: Operator , cannot be applied to types int(int), undef
 Line 100, col 9: Unknown symbol argc
 Line 100, col 8: Operator , cannot be applied to types undef, undef
+Line 111, col 11: Conflicting types (got void(void), expected int)
+Line 113, col 20: Conflicting types (got void, expected double)
+Line 118, col 12: Conflicting types (got double, expected int)
+Line 120, col 5: Conflicting types (got void, expected int)
+Line 121, col 12: Conflicting types (got void(void), expected int)
 ===== Global Symbol Table =====
 putchar	int(int)
 getchar	int(void)
@@ -66,6 +71,13 @@ main4	int(int,double,char)
 f	int(int)
 k	int
 v	int(void)
+g0	void(void)
+A1	int
+B1	short
+C0	char
+f0	int(int,short,char,double)
+main_principal	int(void)
+muitos_returns	int(void)
 
 ===== Function l Symbol Table =====
 return	short
@@ -131,6 +143,12 @@ return	int
 z	int	param
 
 ===== Function v Symbol Table =====
+return	int
+
+===== Function main_principal Symbol Table =====
+return	int
+
+===== Function muitos_returns Symbol Table =====
 return	int
 
 Program
@@ -532,3 +550,64 @@ Program
 ..........Id(f) - int(int)
 ..........Id(p) - undef
 ........Id(argc) - undef
+..FuncDeclaration
+....Void
+....Id(g0)
+....ParamList
+......ParamDeclaration
+........Void
+..Declaration
+....Int
+....Id(A1)
+..Declaration
+....Short
+....Id(B1)
+..Declaration
+....Char
+....Id(C0)
+..FuncDeclaration
+....Int
+....Id(f0)
+....ParamList
+......ParamDeclaration
+........Int
+......ParamDeclaration
+........Short
+......ParamDeclaration
+........Char
+......ParamDeclaration
+........Double
+..FuncDefinition
+....Int
+....Id(main_principal)
+....ParamList
+......ParamDeclaration
+........Void
+....FuncBody
+......While
+........Id(g0) - void(void)
+........Null
+......Call - int
+........Id(f0) - int(int,short,char,double)
+........Id(A1) - int
+........Id(B1) - short
+........Id(C0) - char
+........Call - void
+..........Id(g0) - void(void)
+..FuncDefinition
+....Int
+....Id(muitos_returns)
+....ParamList
+......ParamDeclaration
+........Void
+....FuncBody
+......Return
+........IntLit(1) - int
+......Return
+........RealLit(1.1) - double
+......Return
+........ChrLit('a') - int
+......Return
+........Null
+......Return
+........Id(g0) - void(void)

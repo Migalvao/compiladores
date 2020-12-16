@@ -43,3 +43,4 @@ void check_statlist(table *tab, program *node, char *func_type);
 char *string_to_operator(char *str);
 int compare_types(char *first, char *second);
 bool check_function_type(char *help, char *help2, program *node, data_type type1, data_type type2);
+void note_tree(program *node, char *notation);
