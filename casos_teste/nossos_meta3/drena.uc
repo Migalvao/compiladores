@@ -6,6 +6,21 @@ void esse(void){
     a = 2;
     char c = 'z';
 
+    if(a == 1){
+        //int b;
+    }
+    else{
+        a = 5;
+    }
+
+    if(a > b){
+        
+    }
+
+    while(a == 1 || a < 5){
+
+    }
+
     putchar(c);
 }
 
