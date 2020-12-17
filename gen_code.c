@@ -161,6 +161,26 @@ void function_body(program *func_body)
         else if (strcmp(body->type, "Call") == 0)
         {
             printf("Call\n");
+            printf("call %s @%s(", var_type(body->annotation), body->children->children->type);
+
+            if (body->children->next)
+            {
+                program *param;
+                param = body->children->next;
+
+                printf("%s %s", var_type(param->annotation), param->children->type);
+
+                if (param->next)
+                {
+                    param = param->next;
+                    while (param)
+                    {
+                        printf(", %s %s", var_type(param->annotation), param->type);
+                        param = param->next;
+                    }
+                }
+            }
+            printf(")\n");
         }
         else if (strcmp(body->type, "If") == 0)
         {
@@ -197,14 +217,38 @@ char *expression(program *expr)
 
     else if (strcmp(expr->type, "Store") == 0)
     {
-        printf("Store\n");
-        //printf("%%%s", body->children->type);
+        printf("store %%%s %s, %%%s %s\n", var_type(expr->children->next->annotation), expression(expr->children->next), var_type(expr->children->annotation), expr->children->type);
+        sprintf(value, "%s", expr->children->type);
+        return strdup(value);
     }
 
     else if (strcmp(expr->type, "Call") == 0)
     {
         // call i32 @sum(i32 1, i32 2, i32 3)
         printf("call\n");
+        printf("call %s @%s(", var_type(expr->annotation), expr->children->children->type);
+
+        if (expr->children->next)
+        {
+            program *param;
+            param = expr->children->next;
+
+            printf("%s %s", var_type(param->annotation), param->children->type);
+
+            if (param->next)
+            {
+                param = param->next;
+                while (param)
+                {
+                    printf(", %s %s", var_type(param->annotation), param->type);
+                    param = param->next;
+                }
+            }
+        }
+        printf(")\n");
+
+        sprintf(value, "%s", expr->children->type);
+        return strdup(value);
     }
     else if (strcmp(expr->type, "Or") == 0)
     {
@@ -286,7 +330,7 @@ char *expression(program *expr)
         printf("Mod\n");
     }
 
-    print_tab(tab_indent);
+    return NULL;
 }
 
 char *var_type(char *type)
