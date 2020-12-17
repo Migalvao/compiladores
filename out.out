@@ -1,0 +1,19 @@
+define i32 @main() {
+	%i = alloca i32, allign 4
+	%0 = add i32 5 5
+	store i32 %0, i32* %i
+	%t = alloca double, allign 8
+	%1 = add i32 5 5
+	store double %1, double* %t
+	Store
+%t = i32 IntLit
+		Store
+%t = i32 IntLit
+	Store
+%i = i32 IntLit
+	Store
+%t = double RealLit
+	While
+		ret i32 0
+
+}

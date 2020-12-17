@@ -12,7 +12,7 @@ void function_def(program *node);
 void function_dec(program *node);
 void function_body(program *body);
 char *var_type(char *type);
-char *expression(program *expr);
+char *expression(program *expr, bool to_double);
 void declaration(program *node);
 int charlit_to_int(char *string);
 int intlit_to_int(char *string);

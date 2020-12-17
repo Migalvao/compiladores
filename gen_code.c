@@ -153,10 +153,10 @@ void function_body(program *func_body)
         else if (strcmp(body->type, "Return") == 0)
         {
             print_tab(tab_indent);
-            strcpy(string, expression(body->children));
+            //TODO verificar tipo
+            strcpy(string, expression(body->children, false));
 
             printf("ret %s %s\n", var_type(body->children->annotation), string);
-            //FALTAM MERDAS(ainda nao sei bem cm fazer pq pode chamar declaraçao de funcao, soma, sub, mod......)
         }
         else if (strcmp(body->type, "Call") == 0)
         {
@@ -175,24 +175,40 @@ void function_body(program *func_body)
     }
 }
 
-char *expression(program *expr)
+char *expression(program *expr, bool to_double)
 {
     char value[VALUE_SIZE];
 
     if (strcmp(expr->type, "ChrLit") == 0)
     {
-        sprintf(value, "%d", charlit_to_int(expr->children->type));
-        return strdup(value);
+        if (to_double)
+        {
+            sprintf(value, "%d.0", charlit_to_int(expr->children->type));
+            return strdup(value);
+        }
+        else
+        {
+            sprintf(value, "%d", charlit_to_int(expr->children->type));
+            return strdup(value);
+        }
     }
     else if (strcmp(expr->type, "IntLit") == 0)
     {
-        sprintf(value, "%s", expr->children->type);
-        return strdup(value);
+        if (to_double)
+        {
+            sprintf(value, "%s.0", expr->children->type);
+            return strdup(value);
+        }
+        else
+        {
+            sprintf(value, "%s", expr->children->type);
+            return strdup(value);
+        }
     }
     else if (strcmp(expr->type, "Id") == 0)
     {
-        printf("Id");
-        //printf("%%%s = add %s 0, %%%s\n", node->children->next->children->type, var_type(node->children->type), expr->children->type);
+        sprintf(value, "%%%s", expr->children->type);
+        return strdup(value);
     }
 
     else if (strcmp(expr->type, "Store") == 0)
@@ -265,25 +281,79 @@ char *expression(program *expr)
     }
     else if (strcmp(expr->type, "Add") == 0)
     {
-        printf("%%%d = add %s %s %s\n", num_registo, var_type(expr->annotation), expression(expr->children), expression(expr->children->next));
-        sprintf(value, "%%%d", num_registo++);
-        return strdup(value);
+        if (strcmp(expr->annotation, "double") == 0)
+        {
+            printf("%%%d = fadd %s %s %s\n", num_registo, var_type(expr->annotation), expression(expr->children, true), expression(expr->children->next, true));
+            sprintf(value, "%%%d", num_registo++);
+            return strdup(value);
+        }
+        else
+        {
+            printf("%%%d = add %s %s %s\n", num_registo, var_type(expr->annotation), expression(expr->children, false), expression(expr->children->next, false));
+            sprintf(value, "%%%d", num_registo++);
+            return strdup(value);
+        }
     }
     else if (strcmp(expr->type, "Sub") == 0)
     {
-        printf("Sub\n");
+        if (strcmp(expr->annotation, "double") == 0)
+        {
+            printf("%%%d = fsub %s %s %s\n", num_registo, var_type(expr->annotation), expression(expr->children, true), expression(expr->children->next, true));
+            sprintf(value, "%%%d", num_registo++);
+            return strdup(value);
+        }
+        else
+        {
+            printf("%%%d = sub %s %s %s\n", num_registo, var_type(expr->annotation), expression(expr->children, false), expression(expr->children->next, false));
+            sprintf(value, "%%%d", num_registo++);
+            return strdup(value);
+        }
     }
     else if (strcmp(expr->type, "Mul") == 0)
     {
-        printf("Mul\n");
+        if (strcmp(expr->annotation, "double") == 0)
+        {
+            printf("%%%d = fmul %s %s %s\n", num_registo, var_type(expr->annotation), expression(expr->children, true), expression(expr->children->next, true));
+            sprintf(value, "%%%d", num_registo++);
+            return strdup(value);
+        }
+        else
+        {
+            printf("%%%d = mul %s %s %s\n", num_registo, var_type(expr->annotation), expression(expr->children, false), expression(expr->children->next, false));
+            sprintf(value, "%%%d", num_registo++);
+            return strdup(value);
+        }
     }
     else if (strcmp(expr->type, "Div") == 0)
     {
-        printf("Div\n");
+        if (strcmp(expr->annotation, "double") == 0)
+        {
+            //divisao de floats
+            printf("%%%d = fdiv %s %s %s\n", num_registo, var_type(expr->annotation), expression(expr->children, true), expression(expr->children->next, true));
+            sprintf(value, "%%%d", num_registo++);
+            return strdup(value);
+        }
+        else
+        {
+            printf("%%%d = sdiv %s %s %s\n", num_registo, var_type(expr->annotation), expression(expr->children, false), expression(expr->children->next, false));
+            sprintf(value, "%%%d", num_registo++);
+            return strdup(value);
+        }
     }
     else if (strcmp(expr->type, "Mod") == 0)
     {
-        printf("Mod\n");
+        if (strcmp(expr->annotation, "double") == 0)
+        {
+            printf("%%%d = frem %s %s %s\n", num_registo, var_type(expr->annotation), expression(expr->children, true), expression(expr->children->next, true));
+            sprintf(value, "%%%d", num_registo++);
+            return strdup(value);
+        }
+        else
+        {
+            printf("%%%d = srem %s %s %s\n", num_registo, var_type(expr->annotation), expression(expr->children, false), expression(expr->children->next, false));
+            sprintf(value, "%%%d", num_registo++);
+            return strdup(value);
+        }
     }
 
     print_tab(tab_indent);
@@ -296,7 +366,7 @@ char *var_type(char *type)
     {
         return ("i32");
     }
-    else if (strcmp(type, "void") == 0 || strcmp(type, "Void"))
+    else if (strcmp(type, "void") == 0 || strcmp(type, "Void") == 0)
     {
         //nao sei ainda o q e suposto imprimir
         return ("void");
@@ -330,6 +400,7 @@ void declaration(program *node)
     //node->children->next->next    é o valor
     //printf("%s\n", node->children->next->next->type);
     char type[10], expr[50];
+
     strcpy(type, var_type(node->children->type));
     printf("%%%s = alloca %s, allign %d\n", node->children->next->children->type, type, size(node->children->type));
 
@@ -337,10 +408,17 @@ void declaration(program *node)
     {
         //tmb temos um valor para guardar
         print_tab(tab_indent);
-        strcpy(expr, expression(node->children->next->next));
+        if (strcmp(node->children->type, "Double") == 0)
+        {
+            strcpy(expr, expression(node->children->next->next, true));
+        }
+        else
+        {
+            strcpy(expr, expression(node->children->next->next, false));
+        }
 
         print_tab(tab_indent);
-        printf("store %s %s, %s* %%%s\n", var_type(node->children->next->next->annotation), expr, type, node->children->next->children->type);
+        printf("store %s %s, %s* %%%s\n", type, expr, type, node->children->next->children->type);
     }
 }
 

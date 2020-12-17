@@ -6,6 +6,7 @@ main	int(void)
 ===== Function main Symbol Table =====
 return	int
 i	char
+t	double
 
 Program
 ..FuncDefinition
@@ -18,7 +19,42 @@ Program
 ......Declaration
 ........Char
 ........Id(i)
-........ChrLit('A') - int
+........Add - int
+..........IntLit(5) - int
+..........IntLit(5) - int
+......Declaration
+........Double
+........Id(t)
+........Add - int
+..........IntLit(5) - int
+..........IntLit(5) - int
+......Store - double
+........Id(t) - double
+........Div - int
+..........IntLit(5) - int
+..........IntLit(5) - int
+......Comma - int
+........Store - double
+..........Id(t) - double
+..........IntLit(5) - int
+........Div - int
+..........IntLit(1) - int
+..........IntLit(3) - int
+......Store - double
+........Id(t) - double
+........Mod - int
+..........IntLit(3) - int
+..........IntLit(2) - int
+......Store - char
+........Id(i) - char
+........Sub - int
+..........IntLit(5) - int
+..........IntLit(6) - int
+......Store - double
+........Id(t) - double
+........Sub - double
+..........RealLit(5.3) - double
+..........RealLit(3.2) - double
 ......While
 ........Le - int
 ..........Id(i) - char
