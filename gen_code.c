@@ -4,15 +4,7 @@ int num_registo, tab_indent = 0;
 
 void start_program(program *prog)
 {
-    program *my_program;
-    if (strcmp(prog->type, "Program") == 0)
-    {
-        my_program = prog->children;
-    }
-    else
-    {
-        my_program = prog;
-    }
+    program *my_program = prog->children;
 
     while (my_program)
     {
@@ -268,47 +260,80 @@ char *expression(program *expr, bool to_double)
     else if (strcmp(expr->type, "Or") == 0)
     {
         printf("Or\n");
+        printf("%%%d = or %s %s, %s\n", num_registo, var_type(expr->annotation), expression(expr->children, false), expression(expr->children->next, false));
+        sprintf(value, "%%%d", num_registo++);
+        return strdup(value);
     }
     else if (strcmp(expr->type, "And") == 0)
     {
         printf("And\n");
+        printf("%%%d = and %s %s, %s\n", num_registo, var_type(expr->annotation), expression(expr->children, false), expression(expr->children->next, false));
+        sprintf(value, "%%%d", num_registo++);
+        return strdup(value);
     }
     else if (strcmp(expr->type, "BitwiseAnd") == 0)
     {
         printf("BitWiseAnd");
+        printf("%%%d = and %s %s, %s\n", num_registo, var_type(expr->annotation), expression(expr->children, false), expression(expr->children->next, false));
+        sprintf(value, "%%%d", num_registo++);
+        return strdup(value);
     }
     else if (strcmp(expr->type, "BitwiseOr") == 0)
     {
         printf("BitwiseOr\n");
+        printf("%%%d = or %s %s, %s\n", num_registo, var_type(expr->annotation), expression(expr->children, false), expression(expr->children->next, false));
+        sprintf(value, "%%%d", num_registo++);
+        return strdup(value);
     }
     else if (strcmp(expr->type, "BitwiseXor") == 0)
     {
         printf("BitwiseXor\n");
+        printf("%%%d = xor %s %s, %s\n", num_registo, var_type(expr->annotation), expression(expr->children, false), expression(expr->children->next, false));
+        sprintf(value, "%%%d", num_registo++);
+        return strdup(value);
     }
 
     else if (strcmp(expr->type, "Eq") == 0)
     {
         printf("Eq\n");
+        printf("%%%d = icmp eq %s %s, %s", num_registo, var_type(expr->annotation), expression(expr->children, false), expression(expr->children->next, false));
+        sprintf(value, "%%%d", num_registo++);
+        return strdup(value);
     }
     else if (strcmp(expr->type, "Ne") == 0)
     {
         printf("Ne\n");
+        printf("%%%d = icmp ne %s %s, %s", num_registo, var_type(expr->annotation), expression(expr->children, false), expression(expr->children->next, false));
+        sprintf(value, "%%%d", num_registo++);
+        return strdup(value);
     }
     else if (strcmp(expr->type, "Le") == 0)
     {
         printf("Le\n");
+        printf("%%%d = icmp sle %s %s, %s", num_registo, var_type(expr->annotation), expression(expr->children, false), expression(expr->children->next, false));
+        sprintf(value, "%%%d", num_registo++);
+        return strdup(value);
     }
     else if (strcmp(expr->type, "Ge") == 0)
     {
         printf("Ge\n");
+        printf("%%%d = icmp sge %s %s, %s", num_registo, var_type(expr->annotation), expression(expr->children, false), expression(expr->children->next, false));
+        sprintf(value, "%%%d", num_registo++);
+        return strdup(value);
     }
     else if (strcmp(expr->type, "Lt") == 0)
     {
         printf("Lt\n");
+        printf("%%%d = icmp slt %s %s, %s", num_registo, var_type(expr->annotation), expression(expr->children, false), expression(expr->children->next, false));
+        sprintf(value, "%%%d", num_registo++);
+        return strdup(value);
     }
     else if (strcmp(expr->type, "Gt") == 0)
     {
         printf("Gt\n");
+        printf("%%%d = icmp sgt %s %s, %s", num_registo, var_type(expr->annotation), expression(expr->children, false), expression(expr->children->next, false));
+        sprintf(value, "%%%d", num_registo++);
+        return strdup(value);
     }
     else if (strcmp(expr->type, "Not") == 0)
     {
@@ -317,10 +342,34 @@ char *expression(program *expr, bool to_double)
     else if (strcmp(expr->type, "Plus") == 0)
     {
         printf("Plus\n");
+        if (strcmp(expr->annotation, "double") == 0)
+        {
+            printf("%%%d = fadd %s %s 0\n", num_registo, var_type(expr->annotation), expression(expr->children, true));
+            sprintf(value, "%%%d", num_registo++);
+            return strdup(value);
+        }
+        else
+        {
+            printf("%%%d = add %s %s 0\n", num_registo, var_type(expr->annotation), expression(expr->children, false));
+            sprintf(value, "%%%d", num_registo++);
+            return strdup(value);
+        }
     }
     else if (strcmp(expr->type, "Minus") == 0)
     {
         printf("Minus\n");
+        if (strcmp(expr->annotation, "double") == 0)
+        {
+            printf("%%%d = fsub %s 0 %s\n", num_registo, var_type(expr->annotation), expression(expr->children, true));
+            sprintf(value, "%%%d", num_registo++);
+            return strdup(value);
+        }
+        else
+        {
+            printf("%%%d = sub %s 0 %s\n", num_registo, var_type(expr->annotation), expression(expr->children, false));
+            sprintf(value, "%%%d", num_registo++);
+            return strdup(value);
+        }
     }
     else if (strcmp(expr->type, "Add") == 0)
     {

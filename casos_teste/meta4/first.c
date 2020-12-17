@@ -2,6 +2,9 @@ int main(void)
 {
   char i = 5 + 5;
   double t = 5 + 5;
+  int a = 5;
+  int b;
+  b = !a;
   t = 5 / 5;
   t = 5.1 / 3;
   t = 3 % 2;
