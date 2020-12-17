@@ -1,11 +1,6 @@
-#include <string.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-#include "structures.h"
-#include "symbol_table.h"
-#include "functions.h"
 #include "gen_code.h"
+
+int num_registo, tab_indent = 0;
 
 void start_program(program *prog)
 {
@@ -21,8 +16,8 @@ void start_program(program *prog)
 
     while (my_program)
     {
-        printf("\n\nNEW FUNCTION\n\n");
-        printf("%s\n", prog->type);
+        //printf("\n\nNEW FUNCTION\n\n");
+        //printf("%s\n", prog->type);
 
         //ACHO Q ISTO NAO VAI SER PRECISO
         /*else if(strcmp(my_program->type, "RealComma") == 0){
@@ -30,7 +25,7 @@ void start_program(program *prog)
             if(my_program->children)
                 print_ast_noted(my_program->children);
         }*/
-        printf("                        %s\n", my_program->type);
+        //printf("                        %s\n", my_program->type);
         if (strcmp(my_program->type, "FuncDefinition") == 0)
         {
             function_def(my_program);
@@ -47,7 +42,7 @@ void start_program(program *prog)
         /*if(my_program->children){
             ;
         }*/
-        printf("\n\nEND FUNCTION\n");
+        printf("\n}");
         my_program = my_program->next;
     }
 }
@@ -62,25 +57,7 @@ void function_def(program *node)
 
     //DEFINIÇAO DE FUNCAO
     program *param;
-
-    printf("define ");
-    //IF PARA SABER O TIPO DA FUNCAO!
-    if (strcmp(node->children->type, "Int") == 0 || strcmp(node->children->type, "Char") == 0 || strcmp(node->children->type, "Short") == 0)
-    {
-        printf("i32 ");
-    }
-    else if (strcmp(node->children->type, "Void") == 0)
-    {
-        //nao sei ainda o q e suposto imprimir
-        printf("void ");
-    }
-    //DOUBLE
-    else
-    {
-        printf("double ");
-    }
-
-    printf("@%s(", node->children->next->type);
+    printf("define %s @%s(", var_type(node->children->type), node->children->next->children->type);
 
     if (strcmp(node->children->next->next->type, "ParamList") == 0)
     {
@@ -103,7 +80,7 @@ void function_def(program *node)
         }
     }
 
-    //printf("FAUSTO  %s\n", node->children->next->next->next->type);
+    tab_indent++;
     function_body(node->children->next->next->next);
 }
 
@@ -111,24 +88,7 @@ void function_dec(program *node)
 {
     program *param;
     //DECLARAÇAO DE FUNCAO
-    printf("define ");
-    //IF PARA SABER O TIPO DA FUNCAO!
-    if (strcmp(node->children->type, "Int") == 0 || strcmp(node->children->type, "Char") == 0 || strcmp(node->children->type, "Short") == 0)
-    {
-        printf("i32 ");
-    }
-    else if (strcmp(node->children->type, "Void") == 0)
-    {
-        //nao sei ainda o q e suposto imprimir
-        printf("void ");
-    }
-    //DOUBLE
-    else
-    {
-        printf("double ");
-    }
-
-    printf("@%s(", node->children->next->children->type);
+    printf("define %s @%s(", var_type(node->children->type), node->children->next->children->children->type);
 
     if (strcmp(node->children->next->next->type, "ParamList") == 0)
     {
@@ -154,131 +114,163 @@ void function_dec(program *node)
 
 void function_body(program *func_body)
 {
-    printf("BODY\n");
+    //printf("BODY\n");
     program *body = func_body->children;
+    num_registo = 0;
 
     while (body)
     {
-        //printf("RUBEN %s\n", body->type);
-        //printf("---------%s\n", body->type);
+        print_tab(tab_indent);
 
-        //Store
-        if (body->type[0] == 'S' && body->type[1] == 't')
-        {
-            printf("Store\n");
-            //printf("%%%s", body->children->type);
-        }
         //Declaration
-        else if (body->type[0] == 'D' && body->type[1] == 'e')
+        if (strcmp(body->type, "Declaration") == 0)
         {
-            printf("Declaration\n");
+            declaration(body);
         }
         //Return
-        else if (body->type[0] == 'R' && body->type[1] == 'e')
+        else if (strcmp(body->type, "Return") == 0)
         {
             printf("Return\n");
         }
-        else if (body->type[0] == 'C' && body->type[1] == 'a')
+        else if (strcmp(body->type, "Call") == 0)
         {
             printf("Call\n");
         }
-        else if (body->type[0] == 'I' && body->type[1] == 'f')
+        else if (strcmp(body->type, "If") == 0)
         {
             printf("If\n");
         }
-        else if (body->type[0] == 'W' && body->type[1] == 'h')
+        else if (strcmp(body->type, "While") == 0)
         {
             printf("While\n");
-        }
-        else if (body->type[0] == 'A' && body->type[1] == 'd')
-        {
-            printf("Add\n");
-        }
-        else if (body->type[0] == 'S' && body->type[1] == 'u')
-        {
-            printf("Sub\n");
-        }
-        else if (body->type[0] == 'M' && body->type[1] == 'u')
-        {
-            printf("Mul\n");
-        }
-        else if (body->type[0] == 'D' && body->type[1] == 'i')
-        {
-            printf("Div\n");
-        }
-        else if (body->type[0] == 'M' && body->type[1] == 'o')
-        {
-            printf("Mod\n");
         }
 
         body = body->next;
     }
 }
 
-void expression(program *expr)
+char *expression(program *expr)
 {
-    if (expr->type[0] == 'O' && expr->type[1] == 'r')
+    char value[VALUE_SIZE];
+
+    if (strcmp(expr->type, "ChrLit") == 0)
+    {
+        sprintf(value, "%d", charlit_to_int(expr->children->type));
+        return strdup(value);
+    }
+    else if (strcmp(expr->type, "IntLit") == 0)
+    {
+        sprintf(value, "%s", expr->children->type);
+        return strdup(value);
+    }
+    else if (strcmp(expr->type, "Id") == 0)
+    {
+        printf("Id");
+        //printf("%%%s = add %s 0, %%%s\n", node->children->next->children->type, var_type(node->children->type), expr->children->type);
+    }
+
+    else if (strcmp(expr->type, "Store") == 0)
+    {
+        printf("Store\n");
+        //printf("%%%s", body->children->type);
+    }
+
+    else if (strcmp(expr->type, "Call") == 0)
+    {
+        // call i32 @sum(i32 1, i32 2, i32 3)
+        printf("call\n");
+    }
+    else if (strcmp(expr->type, "Or") == 0)
     {
         printf("Or\n");
     }
-    else if (expr->type[0] == 'A' && expr->type[1] == 'n')
+    else if (strcmp(expr->type, "And") == 0)
     {
         printf("And\n");
     }
-    else if (expr->type[0] == 'B' && expr->type[1] == 'i')
+    else if (strcmp(expr->type, "BitwiseAnd") == 0)
     {
-        printf("BitWise");
-        if (expr->type[7] == 'A' && expr->type[8] == 'n')
-        {
-            printf("And\n");
-        }
-        else if (expr->type[7] == 'O' && expr->type[8] == 'r')
-        {
-            printf("Or\n");
-        }
-        else if (expr->type[7] == 'X' && expr->type[8] == 'o')
-        {
-            printf("Xor\n");
-        }
+        printf("BitWiseAnd");
     }
-    else if (expr->type[0] == 'E' && expr->type[1] == 'q')
+    else if (strcmp(expr->type, "BitwiseOr") == 0)
+    {
+        printf("BitwiseOr\n");
+    }
+    else if (strcmp(expr->type, "BitwiseXor") == 0)
+    {
+        printf("BitwiseXor\n");
+    }
+
+    else if (strcmp(expr->type, "Eq") == 0)
     {
         printf("Eq\n");
     }
-    else if (expr->type[0] == 'N' && expr->type[1] == 'e')
+    else if (strcmp(expr->type, "Ne") == 0)
     {
         printf("Ne\n");
     }
-    else if (expr->type[0] == 'L' && expr->type[1] == 'e')
+    else if (strcmp(expr->type, "Le") == 0)
     {
         printf("Le\n");
     }
-    else if (expr->type[0] == 'G' && expr->type[1] == 'e')
+    else if (strcmp(expr->type, "Ge") == 0)
     {
         printf("Ge\n");
     }
-    else if (expr->type[0] == 'L' && expr->type[1] == 't')
+    else if (strcmp(expr->type, "Lt") == 0)
     {
         printf("Lt\n");
     }
-    else if (expr->type[0] == 'G' && expr->type[1] == 't')
+    else if (strcmp(expr->type, "Gt") == 0)
     {
         printf("Gt\n");
     }
-    else if (expr->type[0] == 'N' && expr->type[1] == 'o')
+    else if (strcmp(expr->type, "Not") == 0)
     {
         printf("Not\n");
     }
+    else if (strcmp(expr->type, "Plus") == 0)
+    {
+        printf("Plus\n");
+    }
+    else if (strcmp(expr->type, "Minus") == 0)
+    {
+        printf("Minus\n");
+    }
+    else if (strcmp(expr->type, "Add") == 0)
+    {
+        printf("%%%d = add %s %s %s\n", num_registo, var_type(expr->annotation), expression(expr->children), expression(expr->children->next));
+        sprintf(value, "%%%d", num_registo++);
+        return strdup(value);
+    }
+    else if (strcmp(expr->type, "Sub") == 0)
+    {
+        printf("Sub\n");
+    }
+    else if (strcmp(expr->type, "Mul") == 0)
+    {
+        printf("Mul\n");
+    }
+    else if (strcmp(expr->type, "Div") == 0)
+    {
+        printf("Div\n");
+    }
+    else if (strcmp(expr->type, "Mod") == 0)
+    {
+        printf("Mod\n");
+    }
+
+    print_tab(tab_indent);
 }
 
 char *var_type(char *type)
 {
     //IF PARA SABER O TIPO DA FUNCAO!
-    if (strcmp(type, "Int") == 0 || strcmp(type, "Char") == 0 || strcmp(type, "Short") == 0)
+    if (strcmp(type, "int") == 0 || strcmp(type, "char") == 0 || strcmp(type, "short") == 0 || strcmp(type, "Int") == 0 || strcmp(type, "Char") == 0 || strcmp(type, "Short") == 0)
     {
         return ("i32");
     }
-    else if (strcmp(type, "Void") == 0)
+    else if (strcmp(type, "void") == 0 || strcmp(type, "Void"))
     {
         //nao sei ainda o q e suposto imprimir
         return ("void");
@@ -288,4 +280,87 @@ char *var_type(char *type)
     {
         return ("double");
     }
+}
+
+int size(char *type)
+{
+    //IF PARA SABER O TIPO DA FUNCAO!
+    if (strcmp(type, "int") == 0 || strcmp(type, "char") == 0 || strcmp(type, "short") == 0 || strcmp(type, "Int") == 0 || strcmp(type, "Char") == 0 || strcmp(type, "Short") == 0)
+    {
+        return 4;
+    }
+    //DOUBLE
+    else
+    {
+        return 8;
+    }
+}
+
+void declaration(program *node)
+{
+    //node                          é Declaration
+    //node->children                é char/int/double
+    //node->children->next          é id
+    //node->children->next->next    é o valor
+    //printf("%s\n", node->children->next->next->type);
+    char type[10], expr[50];
+    strcpy(type, var_type(node->children->type));
+    printf("%%%s = alloca %s, allign %d\n", node->children->next->children->type, type, size(node->children->type));
+
+    if (node->children->next->next)
+    {
+        //tmb temos um valor para guardar
+        print_tab(tab_indent);
+        strcpy(expr, expression(node->children->next->next));
+
+        print_tab(tab_indent);
+        printf("store %s %s, %s* %%%s\n", var_type(node->children->next->next->annotation), expr, type, node->children->next->children->type);
+    }
+}
+
+int charlit_to_int(char *string)
+{
+    if (strlen(string) == 3)
+    {
+        return string[1];
+    }
+    else if (strcmp("'\\n'", string) == 0)
+    {
+        return '\n';
+    }
+    else if (strcmp("'\\t'", string) == 0)
+    {
+        return '\t';
+    }
+    else if (strcmp("'\\\\'", string) == 0)
+    {
+        return '\\';
+    }
+    else if (strcmp("'\\''", string) == 0)
+    {
+        return '\'';
+    }
+    else if (strcmp("'\\\"'", string) == 0)
+    {
+        return '\"';
+    }
+    else
+    {
+        // \000
+        // '0' - 48 = 0
+        return 64 * (string[2] - 48) + 8 * (string[3] - 48) + (string[4] - 48);
+    }
+}
+
+int intlit_to_int(char *string)
+{
+    int value;
+    sscanf(string, "%d", &value);
+    return value;
+}
+
+void print_tab(int local_indent)
+{
+    for (int i = 0; i < local_indent; i++)
+        printf("\t");
 }
