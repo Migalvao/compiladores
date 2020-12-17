@@ -1,8 +1,0 @@
-define i32 @main() {
-	%i = alloca i32, allign 4
-	%0 = add i32 5 5
-	store i32 %0, i32* %i
-	While
-	Return
-
-}

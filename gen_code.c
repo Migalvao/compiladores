@@ -61,7 +61,6 @@ void function_def(program *node)
 
     if (strcmp(node->children->next->next->type, "ParamList") == 0)
     {
-        //printf("tem parametros\n");
         param = node->children->next->next->children;
         //Este if ve se existe parametros ou nao na funcao (node->children->next->next->children->children->type = tipo de parametro)
         if (strcmp(node->children->next->next->children->children->type, "Void") == 0)
@@ -71,11 +70,19 @@ void function_def(program *node)
         }
         else
         {
-            while (param != NULL)
+            printf("%s %s", var_type(param->children->type), param->children->next->type);
+
+            param = param->next;
+
+            if (param)
             {
-                printf("%s %s, ", var_type(param->children->type), param->children->next->type);
-                param = param->next;
+                while (param)
+                {
+                    printf(", %s %s", var_type(param->children->type), param->children->next->type);
+                    param = param->next;
+                }
             }
+
             printf(") {\n");
         }
     }
@@ -92,22 +99,29 @@ void function_dec(program *node)
 
     if (strcmp(node->children->next->next->type, "ParamList") == 0)
     {
-        //printf("tem parametros\n");
         param = node->children->next->next->children;
         //Este if ve se existe parametros ou nao na funcao (node->children->next->next->children->children->type = tipo de parametro)
         if (strcmp(node->children->next->next->children->children->type, "Void") == 0)
         {
             //printf("via");
-            printf(");\n");
+            printf(") {\n");
         }
         else
         {
-            while (param != NULL)
+            printf("%s %s", var_type(param->children->type), param->children->next->type);
+
+            param = param->next;
+
+            if (param)
             {
-                printf("%s %s, ", var_type(param->children->type), param->children->next->type);
-                param = param->next;
+                while (param)
+                {
+                    printf(", %s %s", var_type(param->children->type), param->children->next->type);
+                    param = param->next;
+                }
             }
-            printf(");\n");
+
+            printf(") {\n");
         }
     }
 }
@@ -117,11 +131,19 @@ void function_body(program *func_body)
     //printf("BODY\n");
     program *body = func_body->children;
     num_registo = 0;
+    char string[50];
 
     while (body)
     {
         print_tab(tab_indent);
 
+        //Store
+        if (strcmp(body->type, "Store") == 0)
+        {
+            printf("Store\n");
+            *(body->children->children->type) = tolower(*(body->children->children->type));
+            printf("%%%s = %s %s\n", body->children->children->type, var_type(body->children->next->annotation), body->children->next->children->type);
+        }
         //Declaration
         if (strcmp(body->type, "Declaration") == 0)
         {
@@ -130,7 +152,11 @@ void function_body(program *func_body)
         //Return
         else if (strcmp(body->type, "Return") == 0)
         {
-            printf("Return\n");
+            print_tab(tab_indent);
+            strcpy(string, expression(body->children));
+
+            printf("ret %s %s\n", var_type(body->children->annotation), string);
+            //FALTAM MERDAS(ainda nao sei bem cm fazer pq pode chamar declaraçao de funcao, soma, sub, mod......)
         }
         else if (strcmp(body->type, "Call") == 0)
         {

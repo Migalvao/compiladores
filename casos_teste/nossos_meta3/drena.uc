@@ -2,8 +2,9 @@ void ruben(int a, double b);
 void antonio(void);
 
 void esse(void){
-    int a;
+    int a, b;
     a = 2;
+    b = a + 2;
     char c = 'z';
 
     if(a == 1){
