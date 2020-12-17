@@ -63,28 +63,10 @@ void function_def(program *node)
     //DEFINIÇAO DE FUNCAO
     program *param;
 
-    printf("define ");
-    //IF PARA SABER O TIPO DA FUNCAO!
-    if (strcmp(node->children->type, "Int") == 0 || strcmp(node->children->type, "Char") == 0 || strcmp(node->children->type, "Short") == 0)
-    {
-        printf("i32 ");
-    }
-    else if (strcmp(node->children->type, "Void") == 0)
-    {
-        //nao sei ainda o q e suposto imprimir
-        printf("void ");
-    }
-    //DOUBLE
-    else
-    {
-        printf("double ");
-    }
-
-    printf("@%s(", node->children->next->type);
+    printf("define %s @%s(", var_type(node->children->type), node->children->next->children->type);
 
     if (strcmp(node->children->next->next->type, "ParamList") == 0)
     {
-        //printf("tem parametros\n");
         param = node->children->next->next->children;
         //Este if ve se existe parametros ou nao na funcao (node->children->next->next->children->children->type = tipo de parametro)
         if (strcmp(node->children->next->next->children->children->type, "Void") == 0)
@@ -94,11 +76,19 @@ void function_def(program *node)
         }
         else
         {
-            while (param != NULL)
+            printf("%s %s", var_type(param->children->type), param->children->next->type);
+
+            param = param->next;
+
+            if (param)
             {
-                printf("%s %s, ", var_type(param->children->type), param->children->next->type);
-                param = param->next;
+                while (param)
+                {
+                    printf(", %s %s", var_type(param->children->type), param->children->next->type);
+                    param = param->next;
+                }
             }
+
             printf(") {\n");
         }
     }
@@ -111,43 +101,33 @@ void function_dec(program *node)
 {
     program *param;
     //DECLARAÇAO DE FUNCAO
-    printf("define ");
-    //IF PARA SABER O TIPO DA FUNCAO!
-    if (strcmp(node->children->type, "Int") == 0 || strcmp(node->children->type, "Char") == 0 || strcmp(node->children->type, "Short") == 0)
-    {
-        printf("i32 ");
-    }
-    else if (strcmp(node->children->type, "Void") == 0)
-    {
-        //nao sei ainda o q e suposto imprimir
-        printf("void ");
-    }
-    //DOUBLE
-    else
-    {
-        printf("double ");
-    }
-
-    printf("@%s(", node->children->next->children->type);
+    printf("define %s @%s(", var_type(node->children->type), node->children->next->children->type);
 
     if (strcmp(node->children->next->next->type, "ParamList") == 0)
     {
-        //printf("tem parametros\n");
         param = node->children->next->next->children;
         //Este if ve se existe parametros ou nao na funcao (node->children->next->next->children->children->type = tipo de parametro)
         if (strcmp(node->children->next->next->children->children->type, "Void") == 0)
         {
             //printf("via");
-            printf(");\n");
+            printf(") {\n");
         }
         else
         {
-            while (param != NULL)
+            printf("%s %s", var_type(param->children->type), param->children->next->type);
+
+            param = param->next;
+
+            if (param)
             {
-                printf("%s %s, ", var_type(param->children->type), param->children->next->type);
-                param = param->next;
+                while (param)
+                {
+                    printf(", %s %s", var_type(param->children->type), param->children->next->type);
+                    param = param->next;
+                }
             }
-            printf(");\n");
+
+            printf(") {\n");
         }
     }
 }
@@ -163,10 +143,11 @@ void function_body(program *func_body)
         //printf("---------%s\n", body->type);
 
         //Store
-        if (body->type[0] == 'S' && body->type[1] == 't')
+        if (strcmp(body->type, "Store") == 0)
         {
             printf("Store\n");
-            //printf("%%%s", body->children->type);
+            *(body->children->children->type) = tolower(*(body->children->children->type));
+            printf("%%%s = %s %s\n", body->children->children->type, var_type(body->children->next->annotation), body->children->next->children->type);
         }
         //Declaration
         else if (body->type[0] == 'D' && body->type[1] == 'e')
@@ -174,11 +155,13 @@ void function_body(program *func_body)
             printf("Declaration\n");
         }
         //Return
-        else if (body->type[0] == 'R' && body->type[1] == 'e')
+        else if (strcmp(body->type, "Return") == 0)
         {
             printf("Return\n");
+            printf("ret %s %%%s\n", var_type(body->children->annotation), body->children->children->type);
+            //FALTAM MERDAS(ainda nao sei bem cm fazer pq pode chamar declaraçao de funcao, soma, sub, mod......)
         }
-        else if (body->type[0] == 'C' && body->type[1] == 'a')
+        else if (strcmp(body->type, "Call") == 0)
         {
             printf("Call\n");
         }
@@ -274,11 +257,11 @@ void expression(program *expr)
 char *var_type(char *type)
 {
     //IF PARA SABER O TIPO DA FUNCAO!
-    if (strcmp(type, "Int") == 0 || strcmp(type, "Char") == 0 || strcmp(type, "Short") == 0)
+    if (strcmp(type, "int") == 0 || strcmp(type, "char") == 0 || strcmp(type, "short") == 0 || strcmp(type, "Int") == 0 || strcmp(type, "Char") == 0 || strcmp(type, "Short") == 0)
     {
         return ("i32");
     }
-    else if (strcmp(type, "Void") == 0)
+    else if (strcmp(type, "void") == 0 || strcmp(type, "Void"))
     {
         //nao sei ainda o q e suposto imprimir
         return ("void");
