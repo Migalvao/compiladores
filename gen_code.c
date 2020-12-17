@@ -4,28 +4,12 @@ int num_registo, tab_indent = 0;
 
 void start_program(program *prog)
 {
-    program *my_program;
-    if (strcmp(prog->type, "Program") == 0)
-    {
-        my_program = prog->children;
-    }
-    else
-    {
-        my_program = prog;
-    }
+    program *my_program = prog->children;
+
+    printf("declare i32 @putchar(i8* nocapture) nounwind\n");
 
     while (my_program)
     {
-        //printf("\n\nNEW FUNCTION\n\n");
-        //printf("%s\n", prog->type);
-
-        //ACHO Q ISTO NAO VAI SER PRECISO
-        /*else if(strcmp(my_program->type, "RealComma") == 0){
-            printf(", ");
-            if(my_program->children)
-                print_ast_noted(my_program->children);
-        }*/
-        //printf("                        %s\n", my_program->type);
         if (strcmp(my_program->type, "FuncDefinition") == 0)
         {
             function_def(my_program);
@@ -37,11 +21,9 @@ void start_program(program *prog)
         //DECLARATION
         else
         {
+            //declaraçao global
         }
 
-        /*if(my_program->children){
-            ;
-        }*/
         printf("\n}");
         my_program = my_program->next;
     }
@@ -140,9 +122,13 @@ void function_body(program *func_body)
         //Store
         if (strcmp(body->type, "Store") == 0)
         {
-            printf("Store\n");
-            *(body->children->children->type) = tolower(*(body->children->children->type));
-            printf("%%%s = %s %s\n", body->children->children->type, var_type(body->children->next->annotation), body->children->next->children->type);
+            if (strcmp(body->annotation, "double") == 0)
+                strcpy(string, expression(body->children->next, true));
+            else
+                strcpy(string, expression(body->children->next, false));
+
+            print_tab(tab_indent);
+            printf("store %s %s, %s* %%%s\n", var_type(body->annotation), string, var_type(body->children->annotation), body->children->children->type);
         }
         //Declaration
         if (strcmp(body->type, "Declaration") == 0)
@@ -152,10 +138,10 @@ void function_body(program *func_body)
         //Return
         else if (strcmp(body->type, "Return") == 0)
         {
-            print_tab(tab_indent);
             //TODO verificar tipo
             strcpy(string, expression(body->children, false));
 
+            print_tab(tab_indent);
             printf("ret %s %s\n", var_type(body->children->annotation), string);
         }
         else if (strcmp(body->type, "Call") == 0)
@@ -225,15 +211,22 @@ char *expression(program *expr, bool to_double)
             return strdup(value);
         }
     }
+    else if (strcmp(expr->type, "RealLit") == 0)
+    {
+        sprintf(value, "%s", expr->children->type);
+        return strdup(value);
+    }
     else if (strcmp(expr->type, "Id") == 0)
     {
         sprintf(value, "%%%s", expr->children->type);
+        //TODO dar load
         return strdup(value);
     }
 
     else if (strcmp(expr->type, "Store") == 0)
     {
-        printf("store %%%s %s, %%%s %s\n", var_type(expr->children->next->annotation), expression(expr->children->next), var_type(expr->children->annotation), expr->children->type);
+        print_tab(tab_indent);
+        printf("store %s %s, %s* %%%s\n", var_type(expr->annotation), expression(expr->children->next, false), var_type(expr->children->annotation), expr->children->children->type);
         sprintf(value, "%s", expr->children->type);
         return strdup(value);
     }
@@ -335,6 +328,10 @@ char *expression(program *expr, bool to_double)
         {
             printf("%%%d = add %s %s %s\n", num_registo, var_type(expr->annotation), expression(expr->children, false), expression(expr->children->next, false));
             sprintf(value, "%%%d", num_registo++);
+            if (to_double)
+            {
+                i32_to_double(value);
+            }
             return strdup(value);
         }
     }
@@ -350,6 +347,10 @@ char *expression(program *expr, bool to_double)
         {
             printf("%%%d = sub %s %s %s\n", num_registo, var_type(expr->annotation), expression(expr->children, false), expression(expr->children->next, false));
             sprintf(value, "%%%d", num_registo++);
+            if (to_double)
+            {
+                i32_to_double(value);
+            }
             return strdup(value);
         }
     }
@@ -365,6 +366,10 @@ char *expression(program *expr, bool to_double)
         {
             printf("%%%d = mul %s %s %s\n", num_registo, var_type(expr->annotation), expression(expr->children, false), expression(expr->children->next, false));
             sprintf(value, "%%%d", num_registo++);
+            if (to_double)
+            {
+                i32_to_double(value);
+            }
             return strdup(value);
         }
     }
@@ -381,6 +386,10 @@ char *expression(program *expr, bool to_double)
         {
             printf("%%%d = sdiv %s %s %s\n", num_registo, var_type(expr->annotation), expression(expr->children, false), expression(expr->children->next, false));
             sprintf(value, "%%%d", num_registo++);
+            if (to_double)
+            {
+                i32_to_double(value);
+            }
             return strdup(value);
         }
     }
@@ -396,6 +405,10 @@ char *expression(program *expr, bool to_double)
         {
             printf("%%%d = srem %s %s %s\n", num_registo, var_type(expr->annotation), expression(expr->children, false), expression(expr->children->next, false));
             sprintf(value, "%%%d", num_registo++);
+            if (to_double)
+            {
+                i32_to_double(value);
+            }
             return strdup(value);
         }
     }
@@ -455,14 +468,15 @@ void declaration(program *node)
         if (strcmp(node->children->type, "Double") == 0)
         {
             strcpy(expr, expression(node->children->next->next, true));
+            print_tab(tab_indent);
+            printf("store %s %s, %s* %%%s\n", type, expr, type, node->children->next->children->type);
         }
         else
         {
             strcpy(expr, expression(node->children->next->next, false));
+            print_tab(tab_indent);
+            printf("store %s %s, %s* %%%s\n", type, expr, type, node->children->next->children->type);
         }
-
-        print_tab(tab_indent);
-        printf("store %s %s, %s* %%%s\n", type, expr, type, node->children->next->children->type);
     }
 }
 
@@ -511,4 +525,11 @@ void print_tab(int local_indent)
 {
     for (int i = 0; i < local_indent; i++)
         printf("\t");
+}
+
+void i32_to_double(char *value)
+{
+    print_tab(tab_indent);
+    sprintf(value, "%%%d", num_registo++);
+    printf("%s = sext i32 %%%d to double\n", value, num_registo - 2);
 }
