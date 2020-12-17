@@ -141,8 +141,7 @@ void function_body(program *func_body)
         if (strcmp(body->type, "Store") == 0)
         {
             printf("Store\n");
-            *(body->children->children->type) = tolower(*(body->children->children->type));
-            printf("%%%s = %s %s\n", body->children->children->type, var_type(body->children->next->annotation), body->children->next->children->type);
+            printf("store %%%s %s, %%%s %s\n", var_type(body->children->next->annotation), expression(body->children->next, false), var_type(body->children->annotation), body->children->children->type);
         }
         //Declaration
         if (strcmp(body->type, "Declaration") == 0)
@@ -233,7 +232,7 @@ char *expression(program *expr, bool to_double)
 
     else if (strcmp(expr->type, "Store") == 0)
     {
-        printf("store %%%s %s, %%%s %s\n", var_type(expr->children->next->annotation), expression(expr->children->next), var_type(expr->children->annotation), expr->children->type);
+        printf("store %%%s %s, %%%s %s\n", var_type(expr->children->next->annotation), expression(expr->children->next, false), var_type(expr->children->annotation), expr->children->type);
         sprintf(value, "%s", expr->children->type);
         return strdup(value);
     }
