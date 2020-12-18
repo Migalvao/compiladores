@@ -1,18 +1,22 @@
 int main(void)
 {
-  char i = 60 + 5;
-  double t = 5 * 5.2;
+  char i = 'A';
   int a = 10;
-  int b;
-  putchar(i);
-  putchar(a);
-  //b = !a;
-  //b = a == 10;
 
-  /*while (i <= 'Z')
+  while (i <= 'Z')
   {
     putchar(i);
     i = i + 1;
-  }*/
+  }
+  putchar('\n');
+
+  putchar('\n');
+
+  if (a)
+    putchar('T');
+  else
+    putchar('F');
+
+  putchar('\n');
   return 0;
 }

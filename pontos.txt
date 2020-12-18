@@ -1,6 +1,7 @@
-A - 0/600
-B - Printing, variable declaration, assignment, unary minus - 0/100
+A - 100/600
+B - Printing, variable declaration, assignment, unary minus - 100/100
 C - Arithmetic, relational and logical expressions - 0/100
 D - Statements if and while, and comma expressions - 0/100
 E - Calls, return, expressions, side-effects - 0/100
 F - bigmod, division by hand, fibonacci, gcd, first, primes, factorial 0/200
+718bbq

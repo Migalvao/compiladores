@@ -1,5 +1,5 @@
-; ModuleID = 'first.c'
-source_filename = "first.c"
+; ModuleID = 'casos_teste/meta4/first.c'
+source_filename = "casos_teste/meta4/first.c"
 target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32:64-S128"
 target triple = "x86_64-pc-linux-gnu"
 
@@ -11,39 +11,47 @@ define dso_local i32 @main() #0 {
   %4 = alloca i32, align 4
   %5 = alloca i32, align 4
   store i32 0, i32* %1, align 4
-  store i8 10, i8* %2, align 1
-  store double 1.000000e+01, double* %3, align 8
-  store i32 5, i32* %4, align 4
-  %6 = load i32, i32* %4, align 4
-  %7 = icmp ne i32 %6, 0
-  %8 = xor i1 %7, true
-  %9 = zext i1 %8 to i32
-  store i32 %9, i32* %5, align 4
-  store double 1.000000e+00, double* %3, align 8
-  store double 1.700000e+00, double* %3, align 8
-  store double 1.000000e+00, double* %3, align 8
-  store i8 -1, i8* %2, align 1
-  store double 0x4000CCCCCCCCCCCC, double* %3, align 8
-  br label %10
+  store i8 65, i8* %2, align 1
+  store double 2.600000e+01, double* %3, align 8
+  store i32 10, i32* %4, align 4
+  %6 = load i8, i8* %2, align 1
+  %7 = sext i8 %6 to i32
+  %8 = call i32 (i32, ...) bitcast (i32 (...)* @putchar to i32 (i32, ...)*)(i32 %7)
+  %9 = load i32, i32* %4, align 4
+  %10 = call i32 (i32, ...) bitcast (i32 (...)* @putchar to i32 (i32, ...)*)(i32 %9)
+  br label %11
 
-10:                                               ; preds = %14, %0
-  %11 = load i8, i8* %2, align 1
-  %12 = sext i8 %11 to i32
-  %13 = icmp sle i32 %12, 90
-  br i1 %13, label %14, label %22
+11:                                               ; preds = %15, %0
+  %12 = load i8, i8* %2, align 1
+  %13 = sext i8 %12 to i32
+  %14 = icmp sle i32 %13, 90
+  br i1 %14, label %15, label %23
 
-14:                                               ; preds = %10
-  %15 = load i8, i8* %2, align 1
-  %16 = sext i8 %15 to i32
-  %17 = call i32 (i32, ...) bitcast (i32 (...)* @putchar to i32 (i32, ...)*)(i32 %16)
-  %18 = load i8, i8* %2, align 1
-  %19 = sext i8 %18 to i32
-  %20 = add nsw i32 %19, 1
-  %21 = trunc i32 %20 to i8
-  store i8 %21, i8* %2, align 1
-  br label %10
+15:                                               ; preds = %11
+  %16 = load i8, i8* %2, align 1
+  %17 = sext i8 %16 to i32
+  %18 = call i32 (i32, ...) bitcast (i32 (...)* @putchar to i32 (i32, ...)*)(i32 %17)
+  %19 = load i8, i8* %2, align 1
+  %20 = sext i8 %19 to i32
+  %21 = add nsw i32 %20, 1
+  %22 = trunc i32 %21 to i8
+  store i8 %22, i8* %2, align 1
+  br label %11
 
-22:                                               ; preds = %10
+23:                                               ; preds = %11
+  %24 = load i32, i32* %4, align 4
+  %25 = icmp ne i32 %24, 0
+  br i1 %25, label %26, label %28
+
+26:                                               ; preds = %23
+  %27 = call i32 (i32, ...) bitcast (i32 (...)* @putchar to i32 (i32, ...)*)(i32 84)
+  br label %30
+
+28:                                               ; preds = %23
+  %29 = call i32 (i32, ...) bitcast (i32 (...)* @putchar to i32 (i32, ...)*)(i32 70)
+  br label %30
+
+30:                                               ; preds = %28, %26
   ret i32 0
 }
 
