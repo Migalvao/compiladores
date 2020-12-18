@@ -19,3 +19,4 @@ int intlit_to_int(char *string);
 int size(char *type);
 void print_tab(int local_indent);
 void i32_to_double(char *value);
+void check_gen_while(program *node);
