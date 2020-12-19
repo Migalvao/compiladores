@@ -1,4 +1,4 @@
-int main(void)
+/*int main(void)
 {
   char i = 5 + 5;
   double t = 5 + 5;
@@ -16,4 +16,6 @@ int main(void)
     i = i + 1;
   }
   return 0;
-}
+}*/
+
+int main(int 1);
