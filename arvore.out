@@ -1,14 +1,27 @@
 ===== Global Symbol Table =====
 putchar	int(int)
 getchar	int(void)
+a	int
+b	int
+c	double
 main	int(void)
 
 ===== Function main Symbol Table =====
 return	int
-i	char
-t	double
+d	char
 
 Program
+..Declaration
+....Int
+....Id(a)
+..Declaration
+....Int
+....Id(b)
+....IntLit(10) - int
+..Declaration
+....Double
+....Id(c)
+....RealLit(5.1) - double
 ..FuncDefinition
 ....Int
 ....Id(main)
@@ -18,55 +31,42 @@ Program
 ....FuncBody
 ......Declaration
 ........Char
-........Id(i)
-........Add - int
-..........IntLit(5) - int
-..........IntLit(5) - int
-......Declaration
-........Double
-........Id(t)
-........Add - int
-..........IntLit(5) - int
-..........IntLit(5) - int
-......Store - double
-........Id(t) - double
-........Div - int
-..........IntLit(5) - int
-..........IntLit(5) - int
-......Comma - int
-........Store - double
-..........Id(t) - double
-..........IntLit(5) - int
-........Div - int
-..........IntLit(1) - int
-..........IntLit(3) - int
-......Store - double
-........Id(t) - double
-........Mod - int
-..........IntLit(3) - int
-..........IntLit(2) - int
+........Id(d)
 ......Store - char
-........Id(i) - char
-........Sub - int
-..........IntLit(5) - int
-..........IntLit(6) - int
+........Id(d) - char
+........ChrLit('h') - int
+......Call - int
+........Id(putchar) - int(int)
+........Id(d) - char
+......Call - int
+........Id(putchar) - int(int)
+........ChrLit('\n') - int
+......Store - int
+........Id(b) - int
+........ChrLit('F') - int
+......Call - int
+........Id(putchar) - int(int)
+........Id(b) - int
+......Call - int
+........Id(putchar) - int(int)
+........ChrLit('\n') - int
+......Store - int
+........Id(a) - int
+........IntLit(10) - int
+......Store - int
+........Id(b) - int
+........Minus - int
+..........IntLit(15) - int
 ......Store - double
-........Id(t) - double
-........Sub - double
-..........RealLit(5.3) - double
-..........RealLit(3.2) - double
-......While
-........Le - int
-..........Id(i) - char
-..........ChrLit('Z') - int
-........StatList
-..........Call - int
-............Id(putchar) - int(int)
-............Id(i) - char
-..........Store - char
-............Id(i) - char
-............Add - int
-..............Id(i) - char
-..............IntLit(1) - int
+........Id(c) - double
+........Plus - double
+..........RealLit(6.2) - double
+......Store - double
+........Id(c) - double
+........Store - int
+..........Id(b) - int
+..........Store - int
+............Id(a) - int
+............IntLit(1) - int
 ......Return
 ........IntLit(0) - int

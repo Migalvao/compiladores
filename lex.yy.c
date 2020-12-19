@@ -2203,7 +2203,7 @@ int main(int argc, char *argv[])
             print_tables();
             print_ast_noted(myprogram);
         }
-        else if(e3 && !is_error){
+        else if(!e3 && !is_error){
             start_program(myprogram);
         }
     }

@@ -122,7 +122,6 @@ table *search_table(char *name)
 {
     //DA NULL SE NAO EXISTIR
     table *aux = symtab;
-
     while (aux != NULL)
     {
         if (strcmp(aux->name, name) == 0)
