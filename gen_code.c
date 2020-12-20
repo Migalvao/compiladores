@@ -233,6 +233,10 @@ bool function_body(program *func_body)
             {
                 strcpy(string, expression(body->children, true, false));
             }
+            else if (strcmp(type, "void") == 0)
+            {
+                strcpy(string, "");
+            }
             else
             {
                 strcpy(string, expression(body->children, false, true));
@@ -508,7 +512,7 @@ char *expression(program *expr, bool to_double, bool to_i32)
                 {
                     i32_to_double(value);
                 }
-                else if (!to_i32)
+                else if (!to_i32 && !to_double)
                 {
                     i32_to_i1(value);
                 }
@@ -985,6 +989,8 @@ char *expression(program *expr, bool to_double, bool to_i32)
     }
     else if (strcmp(expr->type, "Comma") == 0 || strcmp(expr->type, "RealComma") == 0)
     {
+        expression(expr->children, false, false);
+
         if (strcmp(expr->annotation, "double") == 0)
         {
             strcpy(value, expression(expr->children->next, true, false));

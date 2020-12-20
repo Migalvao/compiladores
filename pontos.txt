@@ -1,9 +1,9 @@
-A - 519/600
+A - 539/600
 B - Printing, variable declaration, assignment, unary minus - 100/100
 C - Arithmetic, relational and logical expressions - 80/100
-D - Statements if and while, and comma expressions - 90/100
-E - Calls, return, expressions, side-effects - 60/100
-F - bigmod, division by hand, fibonacci, gcd, first, primes, factorial 189/200
+D - Statements if and while, and comma expressions - 100/100
+E - Calls, return, expressions, side-effects - 70/100
+F - bigmod, division by hand, fibonacci, gcd, first, primes, factorial 200/200
 
 
 AND/OR -> so verificar o seugndo em funçao do resultado do primeiro
