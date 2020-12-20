@@ -1,5 +1,5 @@
 int a;
-int b = 10;
+int b = 10 + 5 + 4 * 3;
 double c = 5.1;
 
 int main(void)

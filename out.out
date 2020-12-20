@@ -1,37 +1,7 @@
-declare i32 @putchar(i32 nocapture) nounwind
-@a = global i32 0, align 4
-@b = global i32 10, align 4
-@c = global double 5.1, align 8
+declare i32 @putchar(i32)
+declare i32 @getchar()
 define i32 @main() {
-	%d = alloca i32, align 4
-			store i32 104, i32* %d
-		%1 = load i32, i32* %d
-%2 = call i32 @putchar(i32 %1)
-		%3 = call i32 @putchar(i32 10)
-			store i32 70, i32* @b
-		%4 = load i32, i32* @b
-%5 = call i32 @putchar(i32 %4)
-		%6 = call i32 @putchar(i32 10)
-			store i32 10, i32* @a
-			%7 = sub i32 0, 15
-	store i32 %7, i32* @b
-			%8 = fadd double 6.2, 0.0
-	store double %8, double* @c
-				store i32 1, i32* @a
-store i32 1, i32* @b
-		store i32 1, i32* @a
-		store double 1.0, double* @c
-			store i32 120, i32* %d
-		%9 = load i32, i32* %d
-%10 = call i32 @putchar(i32 %9)
-		%11 = call i32 @putchar(i32 10)
-			store i32 48, i32* %d
-		%12 = load i32, i32* %d
-%13 = call i32 @putchar(i32 %12)
-		%14 = call i32 @putchar(i32 10)
-			store i32 0, i32* %d
-		%15 = load i32, i32* %d
-%16 = call i32 @putchar(i32 %15)
-		%17 = call i32 @putchar(i32 10)
+%1 = alloca i32, align 4
+store i32 0, i32* %1, align 4
 			ret i32 0
 }
