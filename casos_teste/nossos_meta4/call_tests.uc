@@ -1,6 +1,9 @@
 int fabio = 80;
+int renata = fabio +2;
 
 int a(void){
+    putchar(renata);
+    putchar('\n');
     putchar(fabio);
     putchar('\n');
     fabio = fabio + 5;
