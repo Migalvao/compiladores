@@ -1,0 +1,321 @@
+declare i32 @putchar(i32)
+declare i32 @getchar()
+define i32 @main() {
+	%counter = alloca i32, align 4
+		store i32 0, i32* %counter
+	%a = alloca i32, align 4
+		store i32 3, i32* %a
+	%b = alloca i32, align 4
+		store i32 5, i32* %b
+	%d = alloca i32, align 4
+		store i32 65, i32* %d
+	br label %while-1
+
+while-1:
+		%1 = load i32, i32* %counter
+	%2 = icmp slt i32 %1, 10
+br i1 %2, label %whilebody-1, label %whileafter-1
+
+whilebody-1:
+			store i32 65, i32* %d
+		%3 = load i32, i32* %counter
+	store i32 %3, i32* %a
+			%4 = load i32, i32* %a
+	%5 = load i32, i32* %b
+%6 = and i32 %4, %5
+%7 = icmp ne i32 %6, 0
+br i1 %7, label %iftrue-1, label %iffalse-1
+
+iftrue-1:
+		%8 = call i32 @putchar(i32 97)
+br label %ifafter-1
+
+iffalse-1:
+		br label %ifafter-1
+
+ifafter-1:
+			%9 = load i32, i32* %d
+	%10 = add i32 %9, 1
+	store i32 %10, i32* %d
+			%11 = load i32, i32* %a
+	%12 = load i32, i32* %b
+%13 = or i32 %11, %12
+%14 = icmp ne i32 %13, 0
+br i1 %14, label %iftrue-2, label %iffalse-2
+
+iftrue-2:
+		%15 = call i32 @putchar(i32 98)
+br label %ifafter-2
+
+iffalse-2:
+		br label %ifafter-2
+
+ifafter-2:
+			%16 = load i32, i32* %d
+	%17 = add i32 %16, 1
+	store i32 %17, i32* %d
+			%18 = load i32, i32* %a
+	%19 = load i32, i32* %b
+%20 = xor i32 %18, %19
+%21 = icmp ne i32 %20, 0
+br i1 %21, label %iftrue-3, label %iffalse-3
+
+iftrue-3:
+		%22 = call i32 @putchar(i32 99)
+br label %ifafter-3
+
+iffalse-3:
+		br label %ifafter-3
+
+ifafter-3:
+			%23 = load i32, i32* %d
+	%24 = add i32 %23, 1
+	store i32 %24, i32* %d
+			%25 = load i32, i32* %a
+	%26 = load i32, i32* %b
+%27 = and i32 %25, %26
+%28 = icmp ne i32 %27, 0
+br i1 %28, label %iftrue-4, label %iffalse-4
+
+iftrue-4:
+		%29 = call i32 @putchar(i32 100)
+br label %ifafter-4
+
+iffalse-4:
+		br label %ifafter-4
+
+ifafter-4:
+			%30 = load i32, i32* %d
+	%31 = add i32 %30, 1
+	store i32 %31, i32* %d
+			%32 = load i32, i32* %a
+	%33 = load i32, i32* %b
+%34 = mul i32 %32, %33
+%35 = icmp ne i32 %34, 0
+br i1 %35, label %iftrue-5, label %iffalse-5
+
+iftrue-5:
+		%36 = call i32 @putchar(i32 101)
+br label %ifafter-5
+
+iffalse-5:
+		br label %ifafter-5
+
+ifafter-5:
+			%37 = load i32, i32* %d
+	%38 = add i32 %37, 1
+	store i32 %38, i32* %d
+			%39 = load i32, i32* %b
+%40 = icmp ne i32 %39, 0
+br i1 %40, label %iftrue-6, label %iffalse-6
+
+iftrue-6:
+		%41 = call i32 @putchar(i32 102)
+br label %ifafter-6
+
+iffalse-6:
+		br label %ifafter-6
+
+ifafter-6:
+			%42 = load i32, i32* %d
+	%43 = add i32 %42, 1
+	store i32 %43, i32* %d
+			%44 = load i32, i32* %a
+	%45 = load i32, i32* %b
+%46 = sdiv i32 %44, %45
+%47 = icmp ne i32 %46, 0
+br i1 %47, label %iftrue-7, label %iffalse-7
+
+iftrue-7:
+		%48 = call i32 @putchar(i32 103)
+br label %ifafter-7
+
+iffalse-7:
+		br label %ifafter-7
+
+ifafter-7:
+			%49 = load i32, i32* %d
+	%50 = add i32 %49, 1
+	store i32 %50, i32* %d
+			%51 = load i32, i32* %a
+	%52 = load i32, i32* %b
+%53 = icmp eq i32 %51, %52
+	%54 = sext i1 %53 to i32
+%55 = icmp ne i32 %54, 0
+br i1 %55, label %iftrue-8, label %iffalse-8
+
+iftrue-8:
+		%56 = call i32 @putchar(i32 104)
+br label %ifafter-8
+
+iffalse-8:
+		br label %ifafter-8
+
+ifafter-8:
+			%57 = load i32, i32* %d
+	%58 = add i32 %57, 1
+	store i32 %58, i32* %d
+			%59 = load i32, i32* %a
+	%60 = load i32, i32* %b
+%61 = icmp sge i32 %59, %60
+	%62 = sext i1 %61 to i32
+%63 = icmp ne i32 %62, 0
+br i1 %63, label %iftrue-9, label %iffalse-9
+
+iftrue-9:
+		%64 = call i32 @putchar(i32 105)
+br label %ifafter-9
+
+iffalse-9:
+		br label %ifafter-9
+
+ifafter-9:
+			%65 = load i32, i32* %d
+	%66 = add i32 %65, 1
+	store i32 %66, i32* %d
+			%67 = load i32, i32* %a
+	%68 = load i32, i32* %b
+%69 = icmp sgt i32 %67, %68
+	%70 = sext i1 %69 to i32
+%71 = icmp ne i32 %70, 0
+br i1 %71, label %iftrue-10, label %iffalse-10
+
+iftrue-10:
+		%72 = call i32 @putchar(i32 106)
+br label %ifafter-10
+
+iffalse-10:
+		br label %ifafter-10
+
+ifafter-10:
+			%73 = load i32, i32* %d
+	%74 = add i32 %73, 1
+	store i32 %74, i32* %d
+			%75 = load i32, i32* %a
+	%76 = load i32, i32* %b
+%77 = icmp sle i32 %75, %76
+	%78 = sext i1 %77 to i32
+%79 = icmp ne i32 %78, 0
+br i1 %79, label %iftrue-11, label %iffalse-11
+
+iftrue-11:
+		%80 = call i32 @putchar(i32 107)
+br label %ifafter-11
+
+iffalse-11:
+		br label %ifafter-11
+
+ifafter-11:
+			%81 = load i32, i32* %d
+	%82 = add i32 %81, 1
+	store i32 %82, i32* %d
+			%83 = load i32, i32* %a
+	%84 = load i32, i32* %b
+%85 = icmp slt i32 %83, %84
+	%86 = sext i1 %85 to i32
+%87 = icmp ne i32 %86, 0
+br i1 %87, label %iftrue-12, label %iffalse-12
+
+iftrue-12:
+		%88 = call i32 @putchar(i32 108)
+br label %ifafter-12
+
+iffalse-12:
+		br label %ifafter-12
+
+ifafter-12:
+			%89 = load i32, i32* %d
+	%90 = add i32 %89, 1
+	store i32 %90, i32* %d
+			%91 = load i32, i32* %a
+	%92 = load i32, i32* %b
+%93 = sub i32 %91, %92
+%94 = icmp ne i32 %93, 0
+br i1 %94, label %iftrue-13, label %iffalse-13
+
+iftrue-13:
+		%95 = call i32 @putchar(i32 109)
+br label %ifafter-13
+
+iffalse-13:
+		br label %ifafter-13
+
+ifafter-13:
+			%96 = load i32, i32* %d
+	%97 = add i32 %96, 1
+	store i32 %97, i32* %d
+			%98 = load i32, i32* %a
+	%99 = load i32, i32* %b
+%100 = srem i32 %98, %99
+%101 = icmp ne i32 %100, 0
+br i1 %101, label %iftrue-14, label %iffalse-14
+
+iftrue-14:
+		%102 = call i32 @putchar(i32 110)
+br label %ifafter-14
+
+iffalse-14:
+		br label %ifafter-14
+
+ifafter-14:
+			%103 = load i32, i32* %d
+	%104 = add i32 %103, 1
+	store i32 %104, i32* %d
+			%105 = load i32, i32* %a
+	%106 = load i32, i32* %b
+%107 = icmp ne i32 %105, %106
+	%108 = sext i1 %107 to i32
+%109 = icmp ne i32 %108, 0
+br i1 %109, label %iftrue-15, label %iffalse-15
+
+iftrue-15:
+		%110 = call i32 @putchar(i32 111)
+br label %ifafter-15
+
+iffalse-15:
+		br label %ifafter-15
+
+ifafter-15:
+			%111 = load i32, i32* %d
+	%112 = add i32 %111, 1
+	store i32 %112, i32* %d
+			%113 = load i32, i32* %a
+	%114 = load i32, i32* %b
+%115 = or i32 %113, %114
+%116 = icmp ne i32 %115, 0
+br i1 %116, label %iftrue-16, label %iffalse-16
+
+iftrue-16:
+		%117 = call i32 @putchar(i32 112)
+br label %ifafter-16
+
+iffalse-16:
+		br label %ifafter-16
+
+ifafter-16:
+			%118 = load i32, i32* %d
+	%119 = add i32 %118, 1
+	store i32 %119, i32* %d
+			%120 = load i32, i32* %a
+	%121 = load i32, i32* %b
+%122 = and i32 %120, %121
+%123 = icmp ne i32 %122, 0
+br i1 %123, label %iftrue-17, label %iffalse-17
+
+iftrue-17:
+		%124 = call i32 @putchar(i32 113)
+br label %ifafter-17
+
+iffalse-17:
+		br label %ifafter-17
+
+ifafter-17:
+			%125 = load i32, i32* %counter
+	%126 = add i32 %125, 1
+	store i32 %126, i32* %counter
+		%127 = call i32 @putchar(i32 10)
+br label %while-1
+
+whileafter-1:
+ret i32 0
+}

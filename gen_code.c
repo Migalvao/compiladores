@@ -343,7 +343,7 @@ bool function_body(program *func_body)
 
 char *expression(program *expr, bool to_double, bool to_i32)
 {
-    char value[VALUE_SIZE], string[100], params[300];
+    char value[VALUE_SIZE], string[100], params[300], string2[10];
     func_declaration *func_call;
 
     print_tab(tab_indent);
@@ -408,6 +408,10 @@ char *expression(program *expr, bool to_double, bool to_i32)
             {
                 i32_to_double(value);
             }
+            else if (!to_double && !to_i32)
+            {
+                i32_to_i1(value);
+            }
         }
         else
         {
@@ -417,6 +421,10 @@ char *expression(program *expr, bool to_double, bool to_i32)
             if (to_double && strcmp(var_type(expr->annotation), "double") != 0)
             {
                 i32_to_double(value);
+            }
+            else if (!to_double && !to_i32)
+            {
+                i32_to_i1(value);
             }
         }
 
@@ -442,6 +450,11 @@ char *expression(program *expr, bool to_double, bool to_i32)
         {
             sprintf(value, "%s", expression(expr->children->next, true, false));
         }
+        /*
+        else if (!to_i32)
+        {
+            sprintf(value, "%s", expression(expr->children->next, false, false));
+        }*/
 
         return strdup(value);
     }
@@ -495,6 +508,10 @@ char *expression(program *expr, bool to_double, bool to_i32)
                 {
                     i32_to_double(value);
                 }
+                else if (!to_i32)
+                {
+                    i32_to_i1(value);
+                }
                 return strdup(value);
             }
             else
@@ -510,6 +527,16 @@ char *expression(program *expr, bool to_double, bool to_i32)
             {
                 printf("%%%d = call %s @%s()\n", num_registo, var_type(expr->annotation), expr->children->children->type);
                 sprintf(value, "%%%d", num_registo++);
+
+                if (strcmp(var_type(expr->annotation), "i32") == 0 && to_double)
+                {
+                    i32_to_double(value);
+                }
+                else if (!to_i32)
+                {
+                    i32_to_i1(value);
+                }
+
                 return strdup(value);
             }
             else
@@ -521,51 +548,81 @@ char *expression(program *expr, bool to_double, bool to_i32)
     }
     else if (strcmp(expr->type, "Or") == 0)
     {
-        printf("%%%d = or %s %s, %s\n", num_registo, var_type(expr->annotation), expression(expr->children, false, false), expression(expr->children->next, false, false));
+        strcpy(string, expression(expr->children, false, true));
+        strcpy(string2, expression(expr->children->next, false, true));
+        printf("%%%d = or %s %s, %s\n", num_registo, var_type(expr->annotation), string, string2);
         sprintf(value, "%%%d", num_registo++);
         if (to_double)
         {
             i32_to_double(value);
+        }
+        else if (!to_i32)
+        {
+            i32_to_i1(value);
         }
         return strdup(value);
     }
     else if (strcmp(expr->type, "And") == 0)
     {
-        printf("%%%d = and %s %s, %s\n", num_registo, var_type(expr->annotation), expression(expr->children, false, false), expression(expr->children->next, false, false));
+        strcpy(string, expression(expr->children, false, true));
+        strcpy(string2, expression(expr->children->next, false, true));
+        printf("%%%d = and %s %s, %s\n", num_registo, var_type(expr->annotation), string, string2);
         sprintf(value, "%%%d", num_registo++);
         if (to_double)
         {
             i32_to_double(value);
+        }
+        else if (!to_i32)
+        {
+            i32_to_i1(value);
         }
         return strdup(value);
     }
     else if (strcmp(expr->type, "BitWiseAnd") == 0)
     {
-        printf("%%%d = and %s %s, %s\n", num_registo, var_type(expr->annotation), expression(expr->children, false, false), expression(expr->children->next, false, false));
+        strcpy(string, expression(expr->children, false, true));
+        strcpy(string2, expression(expr->children->next, false, true));
+        printf("%%%d = and %s %s, %s\n", num_registo, var_type(expr->annotation), string, string2);
         sprintf(value, "%%%d", num_registo++);
         if (to_double)
         {
             i32_to_double(value);
+        }
+        else if (!to_i32)
+        {
+            i32_to_i1(value);
         }
         return strdup(value);
     }
     else if (strcmp(expr->type, "BitWiseOr") == 0)
     {
-        printf("%%%d = or %s %s, %s\n", num_registo, var_type(expr->annotation), expression(expr->children, false, false), expression(expr->children->next, false, false));
+        strcpy(string, expression(expr->children, false, true));
+        strcpy(string2, expression(expr->children->next, false, true));
+        printf("%%%d = or %s %s, %s\n", num_registo, var_type(expr->annotation), string, string2);
         sprintf(value, "%%%d", num_registo++);
         if (to_double)
         {
             i32_to_double(value);
         }
+        else if (!to_i32)
+        {
+            i32_to_i1(value);
+        }
         return strdup(value);
     }
     else if (strcmp(expr->type, "BitWiseXor") == 0)
     {
-        printf("%%%d = xor %s %s, %s\n", num_registo, var_type(expr->annotation), expression(expr->children, false, false), expression(expr->children->next, false, false));
+        strcpy(string, expression(expr->children, false, true));
+        strcpy(string2, expression(expr->children->next, false, true));
+        printf("%%%d = xor %s %s, %s\n", num_registo, var_type(expr->annotation), string, string2);
         sprintf(value, "%%%d", num_registo++);
         if (to_double)
         {
             i32_to_double(value);
+        }
+        else if (!to_i32)
+        {
+            i32_to_i1(value);
         }
         return strdup(value);
     }
@@ -574,11 +631,15 @@ char *expression(program *expr, bool to_double, bool to_i32)
     {
         if (strcmp(expr->children->annotation, "double") == 0 || strcmp(expr->children->next->annotation, "double") == 0)
         {
-            printf("%%%d = fcmp oeq double %s, %s\n", num_registo, expression(expr->children, true, false), expression(expr->children->next, true, false));
+            strcpy(string, expression(expr->children, true, false));
+            strcpy(string2, expression(expr->children->next, true, false));
+            printf("%%%d = fcmp oeq double %s, %s\n", num_registo, string, string2);
         }
         else
         {
-            printf("%%%d = icmp eq i32 %s, %s\n", num_registo, expression(expr->children, false, true), expression(expr->children->next, false, true));
+            strcpy(string, expression(expr->children, false, true));
+            strcpy(string2, expression(expr->children->next, false, true));
+            printf("%%%d = icmp eq i32 %s, %s\n", num_registo, string, string2);
         }
         sprintf(value, "%%%d", num_registo++);
         if (to_i32)
@@ -595,11 +656,15 @@ char *expression(program *expr, bool to_double, bool to_i32)
     {
         if (strcmp(expr->children->annotation, "double") == 0 || strcmp(expr->children->next->annotation, "double") == 0)
         {
-            printf("%%%d = fcmp one double %s, %s\n", num_registo, expression(expr->children, true, false), expression(expr->children->next, true, false));
+            strcpy(string, expression(expr->children, true, false));
+            strcpy(string2, expression(expr->children->next, true, false));
+            printf("%%%d = fcmp one double %s, %s\n", num_registo, string, string2);
         }
         else
         {
-            printf("%%%d = icmp ne i32 %s, %s\n", num_registo, expression(expr->children, false, true), expression(expr->children->next, false, true));
+            strcpy(string, expression(expr->children, false, true));
+            strcpy(string2, expression(expr->children->next, false, true));
+            printf("%%%d = icmp ne i32 %s, %s\n", num_registo, string, string2);
         }
 
         sprintf(value, "%%%d", num_registo++);
@@ -617,11 +682,15 @@ char *expression(program *expr, bool to_double, bool to_i32)
     {
         if (strcmp(expr->children->annotation, "double") == 0 || strcmp(expr->children->next->annotation, "double") == 0)
         {
-            printf("%%%d = fcmp ole double %s, %s\n", num_registo, expression(expr->children, true, false), expression(expr->children->next, true, false));
+            strcpy(string, expression(expr->children, true, false));
+            strcpy(string2, expression(expr->children->next, true, false));
+            printf("%%%d = fcmp ole double %s, %s\n", num_registo, string, string2);
         }
         else
         {
-            printf("%%%d = icmp sle i32 %s, %s\n", num_registo, expression(expr->children, false, true), expression(expr->children->next, false, true));
+            strcpy(string, expression(expr->children, false, true));
+            strcpy(string2, expression(expr->children->next, false, true));
+            printf("%%%d = icmp sle i32 %s, %s\n", num_registo, string, string2);
         }
 
         sprintf(value, "%%%d", num_registo++);
@@ -639,11 +708,15 @@ char *expression(program *expr, bool to_double, bool to_i32)
     {
         if (strcmp(expr->children->annotation, "double") == 0 || strcmp(expr->children->next->annotation, "double") == 0)
         {
-            printf("%%%d = fcmp oge double %s, %s\n", num_registo, expression(expr->children, true, false), expression(expr->children->next, true, false));
+            strcpy(string, expression(expr->children, true, false));
+            strcpy(string2, expression(expr->children->next, true, false));
+            printf("%%%d = fcmp oge double %s, %s\n", num_registo, string, string2);
         }
         else
         {
-            printf("%%%d = icmp sge i32 %s, %s\n", num_registo, expression(expr->children, false, true), expression(expr->children->next, false, true));
+            strcpy(string, expression(expr->children, false, true));
+            strcpy(string2, expression(expr->children->next, false, true));
+            printf("%%%d = icmp sge i32 %s, %s\n", num_registo, string, string2);
         }
 
         sprintf(value, "%%%d", num_registo++);
@@ -661,11 +734,15 @@ char *expression(program *expr, bool to_double, bool to_i32)
     {
         if (strcmp(expr->children->annotation, "double") == 0 || strcmp(expr->children->next->annotation, "double") == 0)
         {
-            printf("%%%d = fcmp olt double %s, %s\n", num_registo, expression(expr->children, true, false), expression(expr->children->next, true, false));
+            strcpy(string, expression(expr->children, true, false));
+            strcpy(string2, expression(expr->children->next, true, false));
+            printf("%%%d = fcmp olt double %s, %s\n", num_registo, string, string2);
         }
         else
         {
-            printf("%%%d = icmp slt i32 %s, %s\n", num_registo, expression(expr->children, false, true), expression(expr->children->next, false, true));
+            strcpy(string, expression(expr->children, false, true));
+            strcpy(string2, expression(expr->children->next, false, true));
+            printf("%%%d = icmp slt i32 %s, %s\n", num_registo, string, string2);
         }
 
         sprintf(value, "%%%d", num_registo++);
@@ -683,11 +760,15 @@ char *expression(program *expr, bool to_double, bool to_i32)
     {
         if (strcmp(expr->children->annotation, "double") == 0 || strcmp(expr->children->next->annotation, "double") == 0)
         {
-            printf("%%%d = fcmp ogt double %s, %s\n", num_registo, expression(expr->children, true, false), expression(expr->children->next, true, false));
+            strcpy(string, expression(expr->children, true, false));
+            strcpy(string2, expression(expr->children->next, true, false));
+            printf("%%%d = fcmp ogt double %s, %s\n", num_registo, string, string2);
         }
         else
         {
-            printf("%%%d = icmp sgt i32 %s, %s\n", num_registo, expression(expr->children, false, true), expression(expr->children->next, false, true));
+            strcpy(string, expression(expr->children, false, true));
+            strcpy(string2, expression(expr->children->next, false, true));
+            printf("%%%d = icmp sgt i32 %s, %s\n", num_registo, string, string2);
         }
 
         sprintf(value, "%%%d", num_registo++);
@@ -703,11 +784,16 @@ char *expression(program *expr, bool to_double, bool to_i32)
     }
     else if (strcmp(expr->type, "Not") == 0)
     {
-        printf("%%%d = xor i32 %s, 1\n", num_registo, expression(expr->children, false, true));
+        strcpy(string, expression(expr->children, false, true));
+        printf("%%%d = xor i32 %s, 1\n", num_registo, string);
         sprintf(value, "%%%d", num_registo++);
         if (to_double)
         {
             i32_to_double(value);
+        }
+        else if (!to_i32)
+        {
+            i32_to_i1(value);
         }
         return strdup(value);
     }
@@ -715,17 +801,23 @@ char *expression(program *expr, bool to_double, bool to_i32)
     {
         if (strcmp(expr->annotation, "double") == 0)
         {
-            printf("%%%d = fadd %s %s, 0.0\n", num_registo, var_type(expr->annotation), expression(expr->children, true, false));
+            strcpy(string, expression(expr->children, true, false));
+            printf("%%%d = fadd %s %s, 0.0\n", num_registo, var_type(expr->annotation), string);
             sprintf(value, "%%%d", num_registo++);
             return strdup(value);
         }
         else
         {
-            printf("%%%d = add %s %s, 0\n", num_registo, var_type(expr->annotation), expression(expr->children, false, false));
+            strcpy(string, expression(expr->children, false, true));
+            printf("%%%d = add %s %s, 0\n", num_registo, var_type(expr->annotation), string);
             sprintf(value, "%%%d", num_registo++);
             if (to_double)
             {
                 i32_to_double(value);
+            }
+            else if (!to_i32)
+            {
+                i32_to_i1(value);
             }
             return strdup(value);
         }
@@ -734,17 +826,23 @@ char *expression(program *expr, bool to_double, bool to_i32)
     {
         if (strcmp(expr->annotation, "double") == 0)
         {
-            printf("%%%d = fsub %s 0.0, %s\n", num_registo, var_type(expr->annotation), expression(expr->children, true, false));
+            strcpy(string, expression(expr->children, true, false));
+            printf("%%%d = fsub %s 0.0, %s\n", num_registo, var_type(expr->annotation), string);
             sprintf(value, "%%%d", num_registo++);
             return strdup(value);
         }
         else
         {
-            printf("%%%d = sub %s 0, %s\n", num_registo, var_type(expr->annotation), expression(expr->children, false, false));
+            strcpy(string, expression(expr->children, false, true));
+            printf("%%%d = sub %s 0, %s\n", num_registo, var_type(expr->annotation), string);
             sprintf(value, "%%%d", num_registo++);
             if (to_double)
             {
                 i32_to_double(value);
+            }
+            else if (!to_i32)
+            {
+                i32_to_i1(value);
             }
             return strdup(value);
         }
@@ -753,17 +851,25 @@ char *expression(program *expr, bool to_double, bool to_i32)
     {
         if (strcmp(expr->annotation, "double") == 0)
         {
-            printf("%%%d = fadd %s %s, %s\n", num_registo, var_type(expr->annotation), expression(expr->children, true, false), expression(expr->children->next, true, false));
+            strcpy(string, expression(expr->children, true, false));
+            strcpy(string2, expression(expr->children->next, true, false));
+            printf("%%%d = fadd %s %s, %s\n", num_registo, var_type(expr->annotation), string, string2);
             sprintf(value, "%%%d", num_registo++);
             return strdup(value);
         }
         else
         {
-            printf("%%%d = add %s %s, %s\n", num_registo, var_type(expr->annotation), expression(expr->children, false, true), expression(expr->children->next, false, true));
+            strcpy(string, expression(expr->children, false, true));
+            strcpy(string2, expression(expr->children->next, false, true));
+            printf("%%%d = add %s %s, %s\n", num_registo, var_type(expr->annotation), string, string2);
             sprintf(value, "%%%d", num_registo++);
             if (to_double)
             {
                 i32_to_double(value);
+            }
+            else if (!to_i32)
+            {
+                i32_to_i1(value);
             }
             return strdup(value);
         }
@@ -772,17 +878,25 @@ char *expression(program *expr, bool to_double, bool to_i32)
     {
         if (strcmp(expr->annotation, "double") == 0)
         {
-            printf("%%%d = fsub %s %s, %s\n", num_registo, var_type(expr->annotation), expression(expr->children, true, false), expression(expr->children->next, true, false));
+            strcpy(string, expression(expr->children, true, false));
+            strcpy(string2, expression(expr->children->next, true, false));
+            printf("%%%d = fsub %s %s, %s\n", num_registo, var_type(expr->annotation), string, string2);
             sprintf(value, "%%%d", num_registo++);
             return strdup(value);
         }
         else
         {
-            printf("%%%d = sub %s %s, %s\n", num_registo, var_type(expr->annotation), expression(expr->children, false, true), expression(expr->children->next, false, true));
+            strcpy(string, expression(expr->children, false, true));
+            strcpy(string2, expression(expr->children->next, false, true));
+            printf("%%%d = sub %s %s, %s\n", num_registo, var_type(expr->annotation), string, string2);
             sprintf(value, "%%%d", num_registo++);
             if (to_double)
             {
                 i32_to_double(value);
+            }
+            else if (!to_i32)
+            {
+                i32_to_i1(value);
             }
             return strdup(value);
         }
@@ -791,17 +905,25 @@ char *expression(program *expr, bool to_double, bool to_i32)
     {
         if (strcmp(expr->annotation, "double") == 0)
         {
-            printf("%%%d = fmul %s %s, %s\n", num_registo, var_type(expr->annotation), expression(expr->children, true, false), expression(expr->children->next, true, false));
+            strcpy(string, expression(expr->children, true, false));
+            strcpy(string2, expression(expr->children->next, true, false));
+            printf("%%%d = fmul %s %s, %s\n", num_registo, var_type(expr->annotation), string, string2);
             sprintf(value, "%%%d", num_registo++);
             return strdup(value);
         }
         else
         {
-            printf("%%%d = mul %s %s, %s\n", num_registo, var_type(expr->annotation), expression(expr->children, false, true), expression(expr->children->next, false, true));
+            strcpy(string, expression(expr->children, false, true));
+            strcpy(string2, expression(expr->children->next, false, true));
+            printf("%%%d = mul %s %s, %s\n", num_registo, var_type(expr->annotation), string, string2);
             sprintf(value, "%%%d", num_registo++);
             if (to_double)
             {
                 i32_to_double(value);
+            }
+            else if (!to_i32)
+            {
+                i32_to_i1(value);
             }
             return strdup(value);
         }
@@ -810,18 +932,26 @@ char *expression(program *expr, bool to_double, bool to_i32)
     {
         if (strcmp(expr->annotation, "double") == 0)
         {
+            strcpy(string, expression(expr->children, true, false));
+            strcpy(string2, expression(expr->children->next, true, false));
             //divisao de floats
-            printf("%%%d = fdiv %s %s, %s\n", num_registo, var_type(expr->annotation), expression(expr->children, true, false), expression(expr->children->next, true, false));
+            printf("%%%d = fdiv %s %s, %s\n", num_registo, var_type(expr->annotation), string, string2);
             sprintf(value, "%%%d", num_registo++);
             return strdup(value);
         }
         else
         {
-            printf("%%%d = sdiv %s %s, %s\n", num_registo, var_type(expr->annotation), expression(expr->children, false, true), expression(expr->children->next, false, true));
+            strcpy(string, expression(expr->children, false, true));
+            strcpy(string2, expression(expr->children->next, false, true));
+            printf("%%%d = sdiv %s %s, %s\n", num_registo, var_type(expr->annotation), string, string2);
             sprintf(value, "%%%d", num_registo++);
             if (to_double)
             {
                 i32_to_double(value);
+            }
+            else if (!to_i32)
+            {
+                i32_to_i1(value);
             }
             return strdup(value);
         }
@@ -830,17 +960,25 @@ char *expression(program *expr, bool to_double, bool to_i32)
     {
         if (strcmp(expr->annotation, "double") == 0)
         {
-            printf("%%%d = frem %s %s, %s\n", num_registo, var_type(expr->annotation), expression(expr->children, true, false), expression(expr->children->next, true, false));
+            strcpy(string, expression(expr->children, true, false));
+            strcpy(string2, expression(expr->children->next, true, false));
+            printf("%%%d = frem %s %s, %s\n", num_registo, var_type(expr->annotation), string, string2);
             sprintf(value, "%%%d", num_registo++);
             return strdup(value);
         }
         else
         {
-            printf("%%%d = srem %s %s, %s\n", num_registo, var_type(expr->annotation), expression(expr->children, false, true), expression(expr->children->next, false, true));
+            strcpy(string, expression(expr->children, false, true));
+            strcpy(string2, expression(expr->children->next, false, true));
+            printf("%%%d = srem %s %s, %s\n", num_registo, var_type(expr->annotation), string, string2);
             sprintf(value, "%%%d", num_registo++);
             if (to_double)
             {
                 i32_to_double(value);
+            }
+            else if (!to_i32)
+            {
+                i32_to_i1(value);
             }
             return strdup(value);
         }
@@ -854,17 +992,6 @@ char *expression(program *expr, bool to_double, bool to_i32)
         }
         else
         {
-            // o qeu vem pode ser double, i32 ou i1
-            /*
-            
-            to double -> true
-
-            to i32 -> true
-
-            to i1 == to double -> false && to i32 -> false =  -> true
-
-            */
-
             strcpy(value, expression(expr->children->next, false, true));
 
             if (to_double)
@@ -1038,7 +1165,7 @@ void i1_to_i32(char *value)
 {
     print_tab(tab_indent);
     sprintf(value, "%%%d", num_registo++);
-    printf("%s = sext i1 %%%d to i32\n", value, num_registo - 2);
+    printf("%s = zext i1 %%%d to i32\n", value, num_registo - 2);
 }
 
 void i1_to_double(char *value)
@@ -1152,4 +1279,10 @@ void initialize_global_vars(void)
             aux = aux->next;
         }
     }
+}
+
+int check_true_false(char *value)
+{
+    printf("\n\n%s\n\n", value);
+    return 0;
 }

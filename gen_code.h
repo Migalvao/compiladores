@@ -33,3 +33,4 @@ void check_gen_while(program *node);
 void check_gen_if(program *node);
 void initialize_global_vars(void);
 void insert_global_var(struct _s1 *node, char *var_name);
+int check_true_false(char *value);

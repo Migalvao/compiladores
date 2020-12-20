@@ -1,4 +1,4 @@
-void ruben(int a, double b);
+/*void ruben(int a, double b);
 void antonio(void);
 
 void esse(void){
@@ -35,4 +35,5 @@ int sum(int a, double k){
 int main(void){
     int kapa = sum(3, 1.1);
     return kapa;
-}
+}*/
+
