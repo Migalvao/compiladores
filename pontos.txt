@@ -4,4 +4,6 @@ C - Arithmetic, relational and logical expressions - 0/100
 D - Statements if and while, and comma expressions - 0/100
 E - Calls, return, expressions, side-effects - 0/100
 F - bigmod, division by hand, fibonacci, gcd, first, primes, factorial 0/200
-718bbq
+
+
+AND/OR -> so verificar o seugndo em funçao do resultado do primeiro
