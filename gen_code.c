@@ -1286,9 +1286,3 @@ void initialize_global_vars(void)
         }
     }
 }
-
-int check_true_false(char *value)
-{
-    printf("\n\n%s\n\n", value);
-    return 0;
-}

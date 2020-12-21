@@ -26,6 +26,7 @@ void d(int a){
     return;
     return;
     return;
+    fabio = 20;
 }
 
 int e(int a){
@@ -42,6 +43,7 @@ double f(int a){
 }
 
 int main(void){
+    d(5);
     int var;
     double d_var;
 
